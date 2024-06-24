@@ -41,7 +41,6 @@ public class User {
         this.department = userDto.getDepartment();
         this.address = userDto.getAddress();
         this.position = userDto.getPosition();
-        this.authority = userDto.isAuthority();
     }
 
 }
