@@ -5,7 +5,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.5'
 }
 
-group = 'com.example'
+group = 'com.pacs'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -37,8 +37,35 @@ dependencies {
     implementation group: 'taglibs', name: 'standard', version: '1.1.2'
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '9.0.87'
     implementation group: 'com.oracle.database.jdbc', name: 'ojdbc8', version: '21.3.0.0'
+    // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+    implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.3.0'
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks.withType(JavaCompile) {
+    options.incremental = true
+}
+
+tasks.withType(AbstractArchiveTask) {
+    outputs.cacheIf { true }
+}
+
+tasks.register('webpackBuild', Exec) {
+    workingDir 'src/main/resources/static'
+    commandLine 'C:/Program Files/nodejs/npm.cmd', 'run', 'build'
+    environment 'PATH', System.getenv('PATH')
+    inputs.dir 'src/main/resources/static'
+    outputs.dir 'build/resources/main/static'
+    standardOutput = new ByteArrayOutputStream()
+    errorOutput = standardOutput
+    doLast {
+        println standardOutput.toString()
+    }
+}
+
+processResources.dependsOn tasks.named('webpackBuild')
+
