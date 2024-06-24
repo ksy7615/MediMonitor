@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.example.medimonitor.test",
+        basePackages = "com.example.medimonitor.user",
         entityManagerFactoryRef = "medimonitorEntityManager",
         transactionManagerRef = "medimonitorTransactionManager"
 )
@@ -53,7 +53,7 @@ class MediMonitorDatasourceConfig {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.example.medimonitor.test");
+        factory.setPackagesToScan("com.example.medimonitor.user");
         factory.setDataSource(dataSource());
 
         Map<String, Object> properties = new HashMap<>();
