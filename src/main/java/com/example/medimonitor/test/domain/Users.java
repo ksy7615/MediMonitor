@@ -25,9 +25,7 @@ public class Users {
     private String address;
     private String position;
     private boolean authority;
-    @Column(name = "reg_date")
-    private Timestamp regDate;
-    @Column(name = "mod_date")
-    private Timestamp modDate;
+    private Timestamp reg_date;
+    private Timestamp mod_date;
 
 }

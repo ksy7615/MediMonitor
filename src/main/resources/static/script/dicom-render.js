@@ -40,12 +40,19 @@ input.addEventListener("change", (e) => {
 
 const render = async (arrayBuffer) => {
     const imageId = `dicomweb:${URL.createObjectURL(new Blob([arrayBuffer], { type: 'application/dicom' }))}`;
-    console.log('imageId : ', imageId);
 
     const imageIds = [imageId];
 
     const renderingEngineId = 'myRenderingEngine';
     const viewportId = 'CT_AXIAL_STACK';
+
+    // 1. 툴을 먼저 셋
+    try {
+        setTools(viewportId, renderingEngineId);
+    }catch (exception) {
+        console.log(exception)
+    }
+
     const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
 
     const viewportInput = {
@@ -59,8 +66,8 @@ const render = async (arrayBuffer) => {
 
     await viewport.setStack(imageIds, 0);
 
-    // 이미지가 로드된 후에 툴 설정을 수행
-    setTools(viewportId, renderingEngineId);
+    // 2.이미지가 로드된 후에 툴 설정을 수행
+    // setTools(viewportId, renderingEngineId);
 
     // 뷰포트 리랜더링
     viewport.render();
@@ -96,7 +103,7 @@ const setTools = (viewportId, renderingEngineId) => {
     });
 
     toolGroup.addViewport(viewportId, renderingEngineId);
-}
+};
 
 const init = async () => {
     await cornerstone.init();
