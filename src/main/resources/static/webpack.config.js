@@ -10,5 +10,9 @@ module.exports = {
         modules:['node_modules'],             // 모듈 검색 경로
         extensions: ['.ts','.js', 'json', '.wasm']
     },
+    cache: {
+        type: 'filesystem',
+        cacheDirectory: path.resolve(__dirname, '.webpack_cache'),
+    },
     mode: 'development'                     // 개발 모드
 }
