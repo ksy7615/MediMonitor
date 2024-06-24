@@ -1,6 +1,5 @@
-package com.example.medimonitor.pacs.study.service;
+package com.example.medimonitor.pacs.study.domain;
 
-import com.example.medimonitor.pacs.study.domain.Study;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
