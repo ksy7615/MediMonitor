@@ -18,5 +18,4 @@ public class UserRequestDto {
     private String department;
     private String address;
     private String position;
-    private boolean authority;
 }
