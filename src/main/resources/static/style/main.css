@@ -1,0 +1,182 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #222;
+    padding: 10px;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+header .admin {
+    font-size: 18px;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #444;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sidebar .button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #555;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.sidebar .search {
+    margin-top: 20px;
+}
+
+.sidebar .search label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.sidebar .search input,
+.sidebar .search select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    background-color: #666;
+    border: none;
+    color: #fff;
+}
+
+.sidebar .search .date-range {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .search .date-range input {
+    width: calc(50% - 10px);
+}
+
+.sidebar .search .date-range span {
+    margin: 0 10px;
+}
+
+.sidebar .button.search-button {
+    background-color: #5C88C4;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.data-table,
+.previous-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.data-table th,
+.data-table td,
+.previous-table th,
+.previous-table td {
+    border: 1px solid #555;
+    padding: 10px;
+    text-align: left;
+}
+
+.data-table th,
+.previous-table th {
+    background-color: #555;
+}
+
+.previous {
+    margin-bottom: 20px;
+}
+
+.previous h2 {
+    margin-top: 0;
+}
+
+.report {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.report h2 {
+    width: 100%;
+}
+
+.report textarea {
+    width: calc(50% - 20px);
+    height: 100px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    background-color: #666;
+    border: none;
+    padding: 10px;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.report button {
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #555;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.report input {
+    width: calc(33.33% - 20px);
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #666;
+    border: none;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.button.blue-button {
+    background-color: #5C88C4;
+}
+
+.button-set {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
