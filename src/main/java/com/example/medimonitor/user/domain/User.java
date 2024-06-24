@@ -1,5 +1,6 @@
 package com.example.medimonitor.user.domain;
 
+import com.example.medimonitor.user.dto.UserRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,18 @@ public class User {
     private Timestamp regDate;
     private Timestamp modDate;
 
-
+    public User(UserRequestDto userDto) {
+        this.username = userDto.getUsername();
+        this.password = userDto.getPassword();
+        this.name = userDto.getName();
+        this.group = userDto.getGroup();
+        this.telecom = userDto.getTelecom();
+        this.phone = userDto.getPhone();
+        this.birth = userDto.getBirth();
+        this.department = userDto.getDepartment();
+        this.address = userDto.getAddress();
+        this.position = userDto.getPosition();
+        this.authority = userDto.isAuthority();
+    }
 
 }
