@@ -79,8 +79,9 @@
 
             <div class="previous">
                 <h2>Previous</h2>
-                <p>환자 아이디: 17192</p>
-                <table class="previous-table">
+                <p class="previous-id">환자 아이디: </p>
+                <p class="previous-name">환자 이름: </p>
+                <table id="previous-table">
                     <thead>
                     <tr>
                         <th>검사장비</th>
@@ -93,24 +94,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>CT</td>
-                        <td>CT BRAIN</td>
-                        <td>20230319</td>
-                        <td>판독</td>
-                        <td>7</td>
-                        <td>173</td>
-                        <td>아니오</td>
-                    </tr>
-                    <tr>
-                        <td>CR</td>
-                        <td>Pelvis AP</td>
-                        <td>20230319</td>
-                        <td>판독</td>
-                        <td>1</td>
-                        <td>3</td>
-                        <td>아니오</td>
-                    </tr>
+
                     </tbody>
                 </table>
             </div>
