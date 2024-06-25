@@ -1,6 +1,7 @@
 package com.example.medimonitor.user.domain;
 
 import com.example.medimonitor.user.dto.UserRequestDto;
+import com.example.medimonitor.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,7 @@ import java.sql.Timestamp;
 @Getter
 @Table(name = "users")
 @Entity
-public class User {
+public class User extends Timestamped {
 
     @Id
     private String username;
@@ -27,8 +28,6 @@ public class User {
     private String address;
     private String position;
     private boolean authority;
-    private Timestamp regDate;
-    private Timestamp modDate;
 
     public User(UserRequestDto userDto) {
         this.username = userDto.getUsername();
