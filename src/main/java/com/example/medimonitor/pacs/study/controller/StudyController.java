@@ -11,7 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
-public class SearchController {
+public class StudyController {
 
     private final StudyService studyService;
 
