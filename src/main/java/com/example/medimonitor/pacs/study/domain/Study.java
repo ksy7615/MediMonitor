@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
-@Table(name = "V_STUDYTAB", schema="PACSPLUS")
+@Table(name = "STUDYTAB", schema="PACSPLUS")
 @Entity
 public class Study {
     @Id
@@ -17,6 +17,7 @@ public class Study {
     private String modality;
     private String studydesc;
     private String studydate;
+    private String studyinsuid;
     private long reportstatus;
     private long seriescnt;
     private long imagecnt;

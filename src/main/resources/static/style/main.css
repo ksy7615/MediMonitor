@@ -180,3 +180,8 @@ header .admin {
     justify-content: center;
     align-items: center;
 }
+
+.data-table tbody tr:hover {
+    background-color: #979797;
+    cursor: pointer;
+}

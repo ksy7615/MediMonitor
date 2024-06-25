@@ -69,3 +69,5 @@ tasks.register('webpackBuild', Exec) {
 
 processResources.dependsOn tasks.named('webpackBuild')
 
+
+

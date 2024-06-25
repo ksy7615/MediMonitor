@@ -65,9 +65,10 @@
                         <th>Verify</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="contentBody">
 
                     <!-- Add more rows as necessary -->
+
                     </tbody>
                 </table>
                 <div class="button-set">
