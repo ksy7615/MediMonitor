@@ -14,7 +14,7 @@ public class UserResponseDto {
 
     private String username;
     private String name;
-    private String group;
+    private String userGroup;
     private String telecom;
     private String phone;
     private int birth;
@@ -28,7 +28,7 @@ public class UserResponseDto {
     public UserResponseDto(User user) {
         this.username = user.getUsername();
         this.name = user.getName();
-        this.group = user.getGroup();
+        this.userGroup = user.getUserGroup();
         this.telecom = user.getTelecom();
         this.phone = user.getPhone();
         this.birth = user.getBirth();
