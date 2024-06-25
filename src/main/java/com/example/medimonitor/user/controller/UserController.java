@@ -27,6 +27,9 @@ public class UserController {
     @ResponseBody
     @PostMapping("/user/join")
     public ResponseEntity<Response> addUser(@RequestBody UserRequestDto userDto) {
+        System.out.println("userDto : " + userDto);
+        System.out.println("join");
+
         UserResponseDto user = null;
         Response response =  new Response();
 
