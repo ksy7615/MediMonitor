@@ -80,6 +80,30 @@ function updateTable(data) {
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
             <td>${study.examstatus}</td>
+            <td><input type="hidden" class="studyinsuid" value="${study.studyinsuid}"></td>
+            <td><input type="hidden" class="pid" value="${study.pid}"></td>
         `;
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetchStudies(currentPage, pageSize);
+
+    const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+
+    table.addEventListener('dblclick', function (event) {
+        const targetRow = event.target.closest('tr');
+        if (targetRow) {
+            // 데이터 추출
+            const studyKey = targetRow.querySelector('td:nth-child(1)').textContent;
+            const studyInsUid = targetRow.querySelector('.studyinsuid').value;
+            const pid = targetRow.querySelector('.pid').value;
+
+            // URL 생성
+            const url = `/path/to/destinationPage?studykey=${encodeURIComponent(studyKey)}&studyinsuid=${encodeURIComponent(studyInsUid)}&pid=${encodeURIComponent(pid)}`;
+
+            // 페이지 이동
+            window.location.href = url;
+        }
+    });
+});
