@@ -20,8 +20,9 @@
             <input type="text" placeholder="휴대폰번호" required>
             <input type="number" placeholder="생년월일" required>
             <input type="text" placeholder="주소" required>
+            <input type="text" placeholder="부서" required>
             <select required>
-                <option value="group" selected disabled>그룹</option>
+                <option value="userGroup" selected disabled>그룹</option>
                 <option value="admin">admin</option>
                 <option value="radiologist">radiologist</option>
                 <option value="doctor">doctor</option>
