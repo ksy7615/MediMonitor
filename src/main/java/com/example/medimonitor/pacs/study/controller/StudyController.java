@@ -4,15 +4,14 @@ import com.example.medimonitor.pacs.study.domain.Study;
 import com.example.medimonitor.pacs.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequiredArgsConstructor
-@Controller
-public class SearchController {
+@org.springframework.stereotype.Controller
+public class StudyController {
 
     private final StudyService studyService;
 
