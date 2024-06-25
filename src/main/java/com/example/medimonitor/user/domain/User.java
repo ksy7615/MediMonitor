@@ -19,7 +19,7 @@ public class User {
     private String username;
     private String password;
     private String name;
-    private String group;
+    private String userGroup;
     private String telecom;
     private String phone;
     private int birth;
@@ -34,7 +34,7 @@ public class User {
         this.username = userDto.getUsername();
         this.password = userDto.getPassword();
         this.name = userDto.getName();
-        this.group = userDto.getGroup();
+        this.userGroup = userDto.getUserGroup();
         this.telecom = userDto.getTelecom();
         this.phone = userDto.getPhone();
         this.birth = userDto.getBirth();

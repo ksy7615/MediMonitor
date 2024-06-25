@@ -11,7 +11,7 @@ public class UserRequestDto {
     private String username;
     private String password;
     private String name;
-    private String group;
+    private String userGroup;
     private String telecom;
     private String phone;
     private int birth;
