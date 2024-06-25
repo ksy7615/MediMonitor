@@ -30,7 +30,7 @@ body {
     top: 0;
     bottom: 60px; /* Adjust to ensure it stops before the button */
     width: 5px;
-    height: 450px;
+    height: 490px;
     background-color: #5C88C4;
 }
 
@@ -65,4 +65,17 @@ body {
 
 .signup-form button:hover {
     background-color: #4a74a3;
+}
+
+.error-container {
+    margin: 10px 0 0 0;
+    color: #ff3f3f;
+    width: 100%;
+    font-size: 0.8em;
+    line-height: 1.5em;
+    text-align: left;
+}
+
+.error-container > p {
+    display: none;
 }
