@@ -38,7 +38,7 @@ dependencies {
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '9.0.87'
     implementation group: 'com.oracle.database.jdbc', name: 'ojdbc8', version: '21.3.0.0'
     // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-    implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.3.0'
+    implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.33'
 
 }
 
@@ -56,7 +56,7 @@ tasks.withType(AbstractArchiveTask) {
 
 tasks.register('webpackBuild', Exec) {
     workingDir 'src/main/resources/static'
-    commandLine 'C:/Program Files/nodejs/npm.cmd', 'run', 'build'
+    commandLine 'npm.cmd', 'run', 'build'
     environment 'PATH', System.getenv('PATH')
     inputs.dir 'src/main/resources/static'
     outputs.dir 'build/resources/main/static'
