@@ -4,22 +4,28 @@ import com.example.medimonitor.pacs.study.domain.Study;
 import com.example.medimonitor.pacs.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
-@org.springframework.stereotype.Controller
-public class StudyController {
+@Controller
+public class SearchController {
 
     private final StudyService studyService;
 
     @CrossOrigin
-    @GetMapping("/mainData")
+    @GetMapping("/mainAllSearch")
     @ResponseBody
     public Page<Study> getAllStudies(@RequestParam(defaultValue="0") int page, @RequestParam(defaultValue = "5") int size ) {
         return studyService.findStudiesWithPagination(page, size);
+    }
+
+    @GetMapping("/mainPrevious/{pId}")
+    @ResponseBody
+    public List<Study> getStudiesByPid(@PathVariable String pId) {
+        return studyService.getStudiesByPid(pId);
     }
 
     @GetMapping("/main")
