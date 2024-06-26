@@ -112,6 +112,16 @@ header .admin {
     margin-bottom: 20px;
 }
 
+.data-table {
+    table-layout: fixed;
+}
+
+.data-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .data-table th,
 .data-table td,
 .previous-table th,
@@ -173,7 +183,7 @@ header .admin {
 
 .previous,
 .report {
-   width: 50%;
+    width: 50%;
 }
 
 .previous,
@@ -201,7 +211,7 @@ header .admin {
 .previous-id,
 .previous-name,
 .write-box,
-.input-box{
+.input-box {
     width: 50%;
 }
 
@@ -250,6 +260,42 @@ header .admin {
 .reading-box {
     display: flex;
     justify-content: center;
+}
+
+.data-table > thead > tr > th:nth-child(1) {
+    width: 15%;
+}
+
+.data-table > thead > tr > th:nth-child(2) {
+    width: 15%;
+}
+
+.data-table > thead > tr > th:nth-child(3) {
+    width: 10%;
+}
+
+.data-table > thead > tr > th:nth-child(4) {
+    width: 25%;
+}
+
+.data-table > thead > tr > th:nth-child(5) {
+    width: 15%;
+}
+
+.data-table > thead > tr > th:nth-child(6) {
+    width: 5%;
+}
+
+.data-table > thead > tr > th:nth-child(7) {
+    width: 5%;
+}
+
+.data-table > thead > tr > th:nth-child(8) {
+    width: 5%;
+}
+
+.data-table > thead > tr > th:nth-child(9) {
+    width: 5%;
 }
 
 
