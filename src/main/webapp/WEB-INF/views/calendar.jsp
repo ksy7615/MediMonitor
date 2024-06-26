@@ -30,7 +30,7 @@
 <div class="date-select">
     <input type="date" class="date-start" value="1990-01-01"/>
     <span> To </span>
-    <input type="date" class="date-end" value="2024-06-24"/>
+    <input type="date" class="date-end" />
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/calendar.js"></script>
 </body>

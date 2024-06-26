@@ -2,6 +2,13 @@ let date = new Date();
 let currYear = date.getFullYear(),
     currMonth = date.getMonth();
 
+// 달력 밑 input 요소 value에 today 설정
+let day = String(date.getDate()).padStart(2, '0');
+let month = String(date.getMonth() + 1).padStart(2, '0');
+let todayString = currYear + '-' + month + '-' + day;
+
+document.querySelector('.date-end').value = todayString;
+
 const months = [
     'January',
     'February',
@@ -25,6 +32,21 @@ const currentDate = document.querySelector('.current-date');
 currentDate.innerHTML = `${months[currMonth]} ${currYear}`;
 
 const daysTag = document.querySelector('.days');
+
+let startDate = null;
+let endDate = null;
+
+// input date 설정 함수
+const updateInputDates = () => {
+    const dateStartInput = document.querySelector('.date-start');
+    const dateEndInput = document.querySelector('.date-end');
+    if (startDate) {
+        dateStartInput.value = startDate.toISOString().split('T')[0];
+    }
+    if (endDate) {
+        dateEndInput.value = endDate.toISOString().split('T')[0];
+    }
+};
 
 // month 넘기기
 prevNextIcon.forEach((icon) => {
@@ -56,7 +78,7 @@ const renderCalendar = () => {
     let lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate();
 
     for (let i = firstDayofMonth; i > 0; i--) {
-        liTag += `<li class = "inactive">${lastDateofLastMonth - i + 1}</li>`;
+        liTag += `<li class = "inactive" data-date="${currYear}-${String(currMonth).padStart(2, '0')}-${String(lastDateofLastMonth - i + 1).padStart(2, '0')}">${lastDateofLastMonth - i + 1}</li>`;
     }
 
     // 오늘의 날짜를 표시하며 날짜 출력
@@ -67,13 +89,35 @@ const renderCalendar = () => {
             currYear === new Date().getFullYear()
                 ? 'active'
                 : '';
-        liTag += `<li class="${isToday}">${i}</li>`;
+        liTag += `<li class="${isToday}" data-date="${currYear}-${String(currMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}">${i}</li>`;
     }
 
     // 이후 달 날짜
     for (let i = lastDayofMonth; i < 6; i++) {
-        liTag += `<li class = "inactive">${i - lastDayofMonth + 1}</li>`;
+        liTag += `<li class = "inactive" data-date="${currYear}-${String(currMonth + 2).padStart(2, '0')}-${String(i - lastDayofMonth + 1).padStart(2, '0')}">${i - lastDayofMonth + 1}</li>`;
     }
     daysTag.innerHTML = liTag;
+
+    // 기간 설정
+    document.querySelectorAll('.days li').forEach(day => {
+        day.addEventListener('click', () => {
+            if (!day.classList.contains('inactive')) {
+                const selectedDate = new Date(day.getAttribute('data-date'));
+                if (!startDate || (startDate && endDate)) {
+                    startDate = selectedDate;
+                    endDate = null;
+                } else if (startDate && !endDate) {
+                    if (selectedDate < startDate) {
+                        endDate = startDate;
+                        startDate = selectedDate;
+                    } else {
+                        endDate = selectedDate;
+                    }
+                }
+                updateInputDates();
+                renderCalendar();
+            }
+        });
+    });
 };
 renderCalendar();
