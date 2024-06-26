@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/grid.css">
-    <title>Title</title>
+    <title>Cornerstone Sample</title>
 </head>
 <body>
 <h1>Cornerstone Sample</h1>
