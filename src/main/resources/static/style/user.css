@@ -12,7 +12,7 @@ body {
 
 .container {
     width: 100%;
-    max-width: 400px;
+    max-width: 1000px; /* 변경된 너비 */
     margin: 0 auto;
     padding: 20px;
 }
@@ -78,4 +78,84 @@ body {
 
 .error-container > p {
     display: none;
+}
+
+.table-container {
+    margin-top: 20px;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #444;
+}
+
+table, th, td {
+    border: 1px solid #555;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #555;
+}
+
+th.checkbox-cell, td.checkbox-cell {
+    width: 2%;
+    text-align: center;
+}
+
+th:nth-child(2), td:nth-child(2) { /* 아이디 */
+    width: 10%;
+}
+
+th:nth-child(3), td:nth-child(3) { /* 이름 */
+    width: 6%;
+}
+
+th:nth-child(4), td:nth-child(4) { /* 그룹 */
+    width: 9%;
+}
+
+th:nth-child(5), td:nth-child(5) { /* 부서 */
+    width: 14%;
+}
+
+th:nth-child(6), td:nth-child(6) { /* 직책 */
+    width: 12%;
+}
+
+th:nth-child(7), td:nth-child(7) { /* 휴대폰번호 */
+    width: 16%;
+}
+
+th:nth-child(8), td:nth-child(8) { /* 주소 */
+    width: 16%;
+}
+
+th:nth-child(9), td:nth-child(9) { /* 신청일시 */
+    width: 20%;
+}
+
+th {
+    background-color: #555;
+}
+
+tr:nth-child(even) {
+    background-color: #3a3a3a;
+}
+
+.checkbox-cell {
+    width: 40px;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.actions button {
+    margin-left: 10px;
 }
