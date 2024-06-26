@@ -185,3 +185,43 @@ header .admin {
     background-color: #979797;
     cursor: pointer;
 }
+
+.box {
+    display: flex;
+}
+
+.previous,
+.report {
+   width: 50%;
+}
+
+.previous,
+.report {
+    background-color: #242424;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+    height: 350px;
+}
+
+.date-table > thead > tr > th {
+    font-size: 15px
+}
+
+.previous-table > thead > tr > th {
+    font-size: 10px
+}
+
+.info-box {
+    display: flex;
+}
+
+.previous-id {
+    width: 50%;
+}
+
+.previous-name {
+    width: 50%;
+}
+
+

@@ -77,37 +77,41 @@
                 </div>
             </div>
 
-            <div class="previous">
-                <h2>Previous</h2>
-                <p class="previous-id">환자 아이디: </p>
-                <p class="previous-name">환자 이름: </p>
-                <table id="previous-table">
-                    <thead>
-                    <tr>
-                        <th>검사장비</th>
-                        <th>검사설명</th>
-                        <th>검사일시</th>
-                        <th>판독상태</th>
-                        <th>시리즈</th>
-                        <th>이미지</th>
-                        <th>Verify</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+            <div class="box">
+                <div class="previous">
+                    <h2>Previous</h2>
+                    <div class="info-box">
+                        <p class="previous-id">환자 아이디: </p>
+                        <p class="previous-name">환자 이름: </p>
+                    </div>
+                    <table class="previous-table" id="previous-table">
+                        <thead>
+                        <tr>
+                            <th>검사장비</th>
+                            <th>검사설명</th>
+                            <th>검사일시</th>
+                            <th>판독상태</th>
+                            <th>시리즈</th>
+                            <th>이미지</th>
+                            <th>Verify</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-                    </tbody>
-                </table>
-            </div>
-            <div class="report">
-                <h2>Report</h2>
-                <textarea placeholder="코멘트"></textarea>
-                <textarea placeholder="탐색"></textarea>
-                <button class="button">판독지우기</button>
-                <input type="text" placeholder="예비판독의">
-                <input type="text" placeholder="판독의1">
-                <input type="text" placeholder="판독의2">
-                <button class="button blue-button">판독</button>
-                <button class="button blue-button">예비판독</button>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="report">
+                    <h2>Report</h2>
+                    <textarea placeholder="코멘트"></textarea>
+                    <textarea placeholder="탐색"></textarea>
+                    <button class="button">판독지우기</button>
+                    <input type="text" placeholder="예비판독의">
+                    <input type="text" placeholder="판독의1">
+                    <input type="text" placeholder="판독의2">
+                    <button class="button blue-button">판독</button>
+                    <button class="button blue-button">예비판독</button>
+                </div>
             </div>
         </main>
     </div>
