@@ -81,8 +81,8 @@ function updateTable(data) {
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
             <td>${study.examstatus}</td>
-            <td><input type="hidden" class="studyinsuid" value="${study.studyinsuid}"></td>
-            <td><input type="hidden" class="studykey" value="${study.studykey}"></td>
+            <input type="hidden" class="studyinsuid" value="${study.studyinsuid}">
+            <input type="hidden" class="studykey" value="${study.studykey}">
         `;
     });
 }
@@ -148,8 +148,8 @@ function displayStudyKeys(data) {
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
             <td>${study.examstatus}</td>
-            <td><input type="hidden" class="pid" value="${study.pid}"></td>
-            <td><input type="hidden" class="pname" value="${study.pname}"></td>
+           <input type="hidden" class="pid" value="${study.pid}">
+            <input type="hidden" class="pname" value="${study.pname}">
     `;
 
         const previousId = document.querySelector('.previous-id');
