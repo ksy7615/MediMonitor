@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEDIMONITOR</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/main.css">
 </head>
 <body>
@@ -21,12 +22,32 @@
                 <label>판독 상태</label>
                 <input type="text">
                 <label>달력</label>
-                <input type="text" class="calendar">
+                <div class="wrapper">
+                    <header>
+                        <div class="nav">
+                            <button class="material-icons" id="prev">chevron_left</button>
+                            <p class="current-date"></p>
+                            <button class="material-icons" id="next">chevron_right</button>
+                        </div>
+                    </header>
+                    <div class="calendar">
+                        <ul class="weeks">
+                            <li>Sun</li>
+                            <li>Mon</li>
+                            <li>Tue</li>
+                            <li>Wed</li>
+                            <li>Thu</li>
+                            <li>Fri</li>
+                            <li>Sat</li>
+                        </ul>
+                        <ul class="days"></ul>
+                    </div>
+                </div>
                 <label>검사일자</label>
-                <div class="date-range">
-                    <input type="date">
+                <div class="date-select">
+                    <input type="date" class="date-start" value="1990-01-01"/>
                     <span>To</span>
-                    <input type="date">
+                    <input type="date" class="date-end" />
                 </div>
                 <label>검사장비</label>
                 <select>
