@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -6,6 +8,9 @@
 }
 
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #383838;
     color: white;
 }
@@ -238,4 +243,78 @@ tr:nth-child(even) {
 
 #rejectBtn:hover {
     background-color: #555555;
+}
+
+
+#login-container {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#login-container h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+#login-container h1 img {
+    margin-right: 10px;
+}
+
+#login-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+#login-container input[type="text"],
+#login-container input[type="password"] {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#login-container button {
+    padding: 10px;
+    background-color: #5c88c4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#login-container button:hover {
+    background-color: #4a74a3;
+}
+
+#login-container a {
+    color: #ffffff;
+    text-decoration: underline;
+    margin-top: 15px;
+    display: inline-block;
+}
+
+#login-container a:hover {
+    text-decoration: underline;
+}
+
+#login-logo {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-size: 80px;
+    font-style: normal;
+    text-align: center;
+    color: #5c88c4;
+}
+
+#login-logo-back {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-size: 80px;
+    font-style: normal;
+    text-align: center;
 }
