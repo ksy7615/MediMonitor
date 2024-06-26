@@ -32,7 +32,6 @@ public class UserService {
         return result;
     }
 
-
     public List<UserResponseDto> findByAuthorityTrue() {
         List<User> list = userRepository.findByAuthorityTrue();
         List<UserResponseDto> result = new ArrayList<>();
@@ -43,5 +42,11 @@ public class UserService {
         }
 
         return result;
+    }
+
+    public UserResponseDto findUserByIdAndPassword(String username, String password) {
+        User user = userRepository.findByUsernameAndPassword(username, password);
+        UserResponseDto userDto = new UserResponseDto(user);
+        return userDto;
     }
 }
