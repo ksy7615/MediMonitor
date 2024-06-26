@@ -133,7 +133,7 @@ header .admin {
 
 .data-table th,
 .previous-table th {
-    background-color: #555;
+    background-color: #242424;
 }
 
 .previous {
@@ -164,12 +164,22 @@ header .admin {
 .button.blue-button {
     background-color: #5C88C4;
     border-radius: 5px;
+    border: none;
+}
+
+#left,
+#right {
+    color: #fff;
+    width: 50px;
+    height: 30px;
+    margin-right: 10px;
 }
 
 .button-set {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .data-table tbody tr:hover {
@@ -196,7 +206,7 @@ header .admin {
 }
 
 .date-table > thead > tr > th {
-    font-size: 15px
+    font-size: 15px;
 }
 
 .previous-table > thead > tr > th {
@@ -298,6 +308,12 @@ header .admin {
     width: 5%;
 }
 
+tr:nth-child(even) td {
+    background-color: #393939;
+}
 
+tr:nth-child(odd) td {
+    background-color: #2f2f2f;
+}
 
 

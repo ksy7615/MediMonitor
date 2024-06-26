@@ -81,7 +81,7 @@ function updateTable(data) {
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
             <td>${study.examstatus}</td>
-            <input type="hidden" class="studyinsuid" value="${study.studyinsuid}">
+<!--            <input type="hidden" class="studyinsuid" value="${study.studyinsuid}">-->
             <input type="hidden" class="studykey" value="${study.studykey}">
         `;
     });
@@ -103,12 +103,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
             // 데이터 추출
-            const pid = targetRow.querySelector('td:nth-child(1)').textContent;
-            const studyInsUid = targetRow.querySelector('.studyinsuid').value;
+            // const pid = targetRow.querySelector('td:nth-child(1)').textContent;
+            // const studyInsUid = targetRow.querySelector('.studyinsuid').value;
             const studyKey = targetRow.querySelector('.studykey').value;
 
             // URL 생성
-            const url = `/path/to/destinationPage?studykey=${encodeURIComponent(studyKey)}&studyinsuid=${encodeURIComponent(studyInsUid)}&pid=${encodeURIComponent(pid)}`;
+            // const url = `/path/to/destinationPage?studykey=${encodeURIComponent(studyKey)}&studyinsuid=${encodeURIComponent(studyInsUid)}&pid=${encodeURIComponent(pid)}`;
+            const url = `/path/to/destinationPage?studykey=${encodeURIComponent(studyKey)}`;
 
             // 페이지 이동
             window.location.href = url;
@@ -133,7 +134,6 @@ function fetchStudiesByPid(pId){
         });
 }
 
-// 검사장비	검사설명	검사일시	판독상태	시리즈	이미지	Verify
 function displayStudyKeys(data) {
     const dataTable = document.getElementById('previous-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
