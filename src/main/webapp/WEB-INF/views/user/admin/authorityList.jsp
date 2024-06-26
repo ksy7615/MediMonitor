@@ -39,30 +39,14 @@
             </c:forEach>
             </tbody>
         </table>
-        <div class="actions">
-            <button id="approveBtn">사용자 승인</button>
-            <button id="deleteBtn">사용자 삭제</button>
-        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button id="approveBtn">승인</button>
+        <button id="rejectBtn">거절</button>
     </div>
 </div>
 
-<script>
-    // Select all checkboxes
-    $("#selectAll").click(function() {
-        $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
-    });
-
-    // Approve selected users
-    $("#approveBtn").click(function() {
-        // Implement approval logic
-        alert('Selected users approved.');
-    });
-
-    // Delete selected users
-    $("#deleteBtn").click(function() {
-        // Implement deletion logic
-        alert('Selected users deleted.');
-    });
-</script>
 </body>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/menuButton.js"></script>
 </html>
