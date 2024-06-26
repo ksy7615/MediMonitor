@@ -3,6 +3,7 @@ package com.example.medimonitor.pacs.series.controller;
 import com.example.medimonitor.pacs.series.domain.Series;
 import com.example.medimonitor.pacs.series.service.SeriesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @RequiredArgsConstructor
-@org.springframework.stereotype.Controller
+@Controller
 public class SeriesController {
 
     private final SeriesService seriesService;
