@@ -22,8 +22,9 @@ public class StudyService {
         return studyRepository.findAll(pageable);
     }
 
+
+
     public List<Study> getStudiesByPid(String pId){
         return studyRepository.findByPid(pId);
     }
-
 }

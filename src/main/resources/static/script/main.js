@@ -71,13 +71,30 @@ function updateTable(data) {
 
     data.content.forEach(study => {
         const row = dataTable.insertRow();
+
+        let reportStatusText = '';
+        switch (study.reportstatus) {
+            case 6:
+                reportStatusText = '판독';
+                break;
+            case 5:
+                reportStatusText = '예비판독';
+                break;
+            case 4:
+                reportStatusText = '열람중';
+                break;
+            case 3:
+                reportStatusText = '읽지않음';
+                break;
+        }
+
         row.innerHTML = `
             <td>${study.pid}</td>
             <td>${study.pname}</td>
             <td>${study.modality}</td>
             <td>${study.studydesc}</td>
             <td>${study.studydate}</td>
-            <td>${study.reportstatus}</td>
+            <td>${reportStatusText}</td>
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
             <td>${study.examstatus}</td>
@@ -140,11 +157,28 @@ function displayStudyKeys(data) {
 
     data.forEach(study => {
         const row = dataTable.insertRow();
+
+        let reportStatusText = '';
+        switch (study.reportstatus) {
+            case 6:
+                reportStatusText = '판독';
+                break;
+            case 5:
+                reportStatusText = '예비판독';
+                break;
+            case 4:
+                reportStatusText = '열람중';
+                break;
+            case 3:
+                reportStatusText = '읽지않음';
+                break;
+        }
+
         row.innerHTML = `
             <td>${study.modality}</td>
             <td>${study.studydesc}</td>
             <td>${study.studydate}</td>
-            <td>${study.reportstatus}</td>
+            <td>${reportStatusText}</td>
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
             <td>${study.examstatus}</td>
