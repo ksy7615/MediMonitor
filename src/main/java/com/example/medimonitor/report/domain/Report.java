@@ -1,4 +1,4 @@
-package report.domain;
+package com.example.medimonitor.report.domain;
 
 import lombok.Getter;
 
