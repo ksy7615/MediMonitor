@@ -102,15 +102,28 @@
                     </table>
                 </div>
                 <div class="report">
-                    <h2>Report</h2>
-                    <textarea placeholder="코멘트"></textarea>
-                    <textarea placeholder="탐색"></textarea>
-                    <button class="button">판독지우기</button>
-                    <input type="text" placeholder="예비판독의">
-                    <input type="text" placeholder="판독의1">
-                    <input type="text" placeholder="판독의2">
-                    <button class="button blue-button">판독</button>
-                    <button class="button blue-button">예비판독</button>
+                    <div class="report-title">
+                        <h2>Report</h2>
+                        <button class="button">판독지우기</button>
+                    </div>
+                    <div class="report-box">
+                        <div class="write-box">
+                            <textarea class="comment" placeholder="코멘트"></textarea>
+                            <textarea class="quest" placeholder="탐색"></textarea>
+                        </div>
+                        <div class="input-box">
+                            <label>예비판독의</label>
+                            <input class="inputText" type="text">
+                            <label>판독의1</label>
+                            <input class="inputText" type="text">
+                            <label>판독의2</label>
+                            <input class="inputText" type="text">
+                            <div class="reading-box">
+                                <button class="button blue-button">판독</button>
+                                <button class="button">예비판독</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
