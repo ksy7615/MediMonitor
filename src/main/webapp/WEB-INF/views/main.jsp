@@ -121,7 +121,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/searchAll.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/main.js"></script>
 
 </body>
 </html>
