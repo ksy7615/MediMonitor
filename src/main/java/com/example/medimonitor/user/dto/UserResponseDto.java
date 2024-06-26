@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 @Getter
 @Setter
@@ -38,5 +39,10 @@ public class UserResponseDto {
         this.authority = user.isAuthority();
         this.regDate = user.getRegDate();
         this.modDate = user.getModDate();
+    }
+
+    public String getFormattedRegDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return sdf.format(this.regDate);
     }
 }
