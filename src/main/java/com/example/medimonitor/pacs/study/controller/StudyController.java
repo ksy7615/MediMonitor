@@ -30,7 +30,7 @@ public class StudyController {
 
     @GetMapping("/main")
     public String getMainView() {
-        return "main/main";
+        return "main";
     }
 
 }
