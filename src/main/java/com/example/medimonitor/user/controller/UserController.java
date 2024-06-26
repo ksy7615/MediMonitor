@@ -50,6 +50,16 @@ public class UserController {
 
     @GetMapping("/admin")
     public ModelAndView adminUserList() {
+        ModelAndView mv = new ModelAndView("user/admin/userList");
+
+        List<UserResponseDto> userList = userService.findByAuthorityTrue();
+        mv.addObject("users", userList);
+
+        return mv;
+    }
+
+    @GetMapping("/admin/authority")
+    public ModelAndView adminUserAuthorityList() {
         ModelAndView mv = new ModelAndView("user/admin/authorityList");
 
         List<UserResponseDto> userList = userService.findByAuthority();
