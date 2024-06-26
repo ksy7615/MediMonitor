@@ -9,15 +9,6 @@
 </head>
 <body>
 <div class="container">
-    <header>
-        <div class="logo">
-            <img src="logo.png" alt="MEDIMONITOR Logo">
-            <span>MEDIMONITOR</span>
-        </div>
-        <div class="admin">
-            <span>Admin</span>
-        </div>
-    </header>
     <div class="content">
         <aside class="sidebar">
             <button class="button" id="getAllStudiesBtn">전체</button>
