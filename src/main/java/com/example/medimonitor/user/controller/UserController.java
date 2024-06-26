@@ -68,4 +68,19 @@ public class UserController {
         return mv;
     }
 
+    @GetMapping("/login")
+    public String userLogin() { return "user/login"; }
+
+    @ResponseBody
+    @PostMapping("/login")
+    public UserResponseDto getUser(@RequestBody UserRequestDto userRequestDto) {
+        UserResponseDto user = null;
+
+        String username = userRequestDto.getUsername();
+        String password = userRequestDto.getPassword();
+        user = userService.findUserByIdAndPassword(username, password);
+
+        return user;
+    }
+
 }
