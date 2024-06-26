@@ -245,32 +245,43 @@ tr:nth-child(even) {
     background-color: #555555;
 }
 
+#login-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+#login-logo {
+    justify-content: center;
+    text-align: center;
+    /*padding: 20px;*/
+}
 
 #login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
     text-align: center;
     padding: 20px;
     border-radius: 10px;
 }
 
-#login-container h1 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    margin-bottom: 20px;
-}
-
-#login-container h1 img {
+#login-container img {
     margin-right: 10px;
 }
 
 #login-container form {
+    margin-left: 12px;
     display: flex;
     flex-direction: column;
 }
 
 #login-container input[type="text"],
 #login-container input[type="password"] {
+    width: 400px;
+    height: 40px;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -278,6 +289,8 @@ tr:nth-child(even) {
 }
 
 #login-container button {
+    width: 400px;
+    height: 40px;
     padding: 10px;
     background-color: #5c88c4;
     color: white;
@@ -302,7 +315,7 @@ tr:nth-child(even) {
     text-decoration: underline;
 }
 
-#login-logo {
+#login-logo-front {
     font-family: "Bebas Neue", sans-serif;
     font-weight: 400;
     font-size: 80px;
