@@ -8,10 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -19,24 +20,20 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user/join")
+    @GetMapping("/join")
     public String join() {
         return "user/join";
     }
 
     @ResponseBody
-    @PostMapping("/user/join")
+    @PostMapping("/join")
     public ResponseEntity<Response> addUser(@RequestBody UserRequestDto userDto) {
-        System.out.println("userDto : " + userDto);
-        System.out.println("join");
-
         UserResponseDto user = null;
         Response response =  new Response();
 
         String message = "join is success";
 
         user = userService.save(userDto);
-        System.out.println("user : " + user);
 
         if(user != null) {
             response.setStatus(200);
@@ -49,6 +46,16 @@ public class UserController {
 
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-
     }
+
+    @GetMapping("/admin")
+    public ModelAndView adminUserList() {
+        ModelAndView mv = new ModelAndView("user/admin/authorityList");
+
+        List<UserResponseDto> userList = userService.findByAuthority();
+        mv.addObject("users", userList);
+
+        return mv;
+    }
+
 }
