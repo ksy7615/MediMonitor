@@ -8,7 +8,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/join.js"></script>
 <body>
     <div class="container">
-        <form class="signup-form" method="POST" action="/user/join">
+        <form class="signup-form" method="POST" action="${pageContext.request.contextPath}/join">
             <div class="blue-line"></div>
             <input type="text" id="username" placeholder="아이디">
             <input type="password" id="password" placeholder="비밀번호">
