@@ -207,7 +207,7 @@ $(document).ready(() => {
 
         if(isValid) {
             var settings = {
-                "url": "/user/join",
+                "url": "/join",
                 "method": "POST",
                 "headers": {
                     "Content-Type": "application/json"
@@ -229,10 +229,12 @@ $(document).ready(() => {
             $.ajax(settings).done(function (response) {
                 if(response.status === 200) {
                     alert(response.message);
-                    location.href = "/";
-                }else if(resonse.status === 400) {
-                    alert(response.message);
-                    location.href = "/user/join";
+                    location.href = "/login";
+                }
+            }).fail(function (response) {
+                if(response.status === 400) {
+                    alert(response.responseJSON.message);
+                    location.href = "/join";
                 }
             });
         }
