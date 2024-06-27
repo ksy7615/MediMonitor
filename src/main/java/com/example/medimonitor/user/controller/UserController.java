@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -73,14 +74,35 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/login")
-    public UserResponseDto getUser(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<Response> getUser(@RequestBody UserRequestDto userRequestDto, HttpSession session) {
         UserResponseDto user = null;
+        Response response =  new Response();
+
+        String message = "login is success";
 
         String username = userRequestDto.getUsername();
         String password = userRequestDto.getPassword();
-        user = userService.findUserByIdAndPassword(username, password);
 
-        return user;
+        user = userService.findByUsernameAndPassword(username, password);
+
+        if(user != null) {
+            if(!user.isAuthority()){
+                response.setStatus(400);
+                response.setMessage("Processing authority request.");
+
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+            response.setStatus(200);
+            response.setMessage(message);
+
+            session.setAttribute("user", user);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            response.setStatus(404);
+            response.setMessage("login is not success");
+
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
     }
 
 }
