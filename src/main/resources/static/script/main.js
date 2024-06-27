@@ -159,7 +159,8 @@ function fetchReportByStudykey(studykey) {
         })
         .then(data => {
             console.log(JSON.stringify(data, null, 2))
-            if(data !== '') {
+            console.log(data);
+            if(data.length !== 0) {
                 displayReport(data);
             }
         })
