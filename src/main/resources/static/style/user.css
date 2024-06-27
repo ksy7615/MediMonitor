@@ -8,18 +8,20 @@
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #383838;
     color: white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
 .container {
     width: 100%;
-    max-width: 1000px; /* 변경된 너비 */
+    max-width: 400px;
     margin: 0 auto;
     padding: 20px;
+    border-radius: 10px;
 }
 
 .signup-form {
@@ -33,9 +35,9 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    bottom: 60px; /* Adjust to ensure it stops before the button */
-    width: 5px;
-    height: 490px;
+    bottom: 60px;
+    width: 6px;
+    height: calc(100% - 100px);
     background-color: #5C88C4;
 }
 
@@ -61,7 +63,7 @@ body {
 }
 
 .signup-form button {
-    margin: 30px;
+    margin-top: 30px;
     background-color: #5C88C4;
     color: white;
     border: none;
