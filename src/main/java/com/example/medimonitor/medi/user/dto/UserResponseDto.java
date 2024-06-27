@@ -1,6 +1,6 @@
-package com.example.medimonitor.user.dto;
+package com.example.medimonitor.medi.user.dto;
 
-import com.example.medimonitor.user.domain.User;
+import com.example.medimonitor.medi.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

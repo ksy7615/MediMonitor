@@ -1,4 +1,4 @@
-package com.example.medimonitor.report.domain;
+package com.example.medimonitor.medi.report.domain;
 
 import lombok.Getter;
 
@@ -14,9 +14,9 @@ public class Report {
     private int code;
     private String comment;
     private String exploration;
-    private String pre_doctor;
-    private String first_doctor;
-    private String second_doctor;
+    private String preDoctor;
+    private String firstDoctor;
+    private String secondDoctor;
     private String status;
-    private int studykey;
+    private long studykey;
 }

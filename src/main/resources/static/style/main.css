@@ -126,10 +126,15 @@ header .admin {
     table-layout: fixed;
 }
 
-.data-table td {
+.data-table td,
+.previous-table td{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.previous-table td {
+    font-size: 10px;
 }
 
 .data-table th,
@@ -299,11 +304,11 @@ header .admin {
 }
 
 .data-table > thead > tr > th:nth-child(5) {
-    width: 15%;
+    width: 12%;
 }
 
 .data-table > thead > tr > th:nth-child(6) {
-    width: 7%;
+    width: 10%;
 }
 
 .data-table > thead > tr > th:nth-child(7) {
@@ -316,6 +321,58 @@ header .admin {
 
 .data-table > thead > tr > th:nth-child(9) {
     width: 5%;
+}
+
+/* previous-table */
+
+.previous-table > thead > tr > th:nth-child(1) {
+    width: 13%;
+}
+
+.previous-table > thead > tr > th:nth-child(2) {
+    width: 24%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.previous-table > thead > tr > th:nth-child(3) {
+    width: 18%;
+}
+
+.previous-table > thead > tr > th:nth-child(4) {
+    width: 15%;
+}
+
+.previous-table > thead > tr > th:nth-child(5) {
+    width: 10%;
+}
+
+.previous-table > thead > tr > th:nth-child(6) {
+    width: 10%;
+}
+
+.previous-table > thead > tr > th:nth-child(7) {
+    width: 10%;
 }
 
 tr:nth-child(even) td {

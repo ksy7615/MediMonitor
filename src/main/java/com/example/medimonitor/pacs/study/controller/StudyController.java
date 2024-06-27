@@ -1,6 +1,7 @@
 package com.example.medimonitor.pacs.study.controller;
 
 import com.example.medimonitor.pacs.study.domain.Study;
+import com.example.medimonitor.pacs.study.dto.InfoResponseDto;
 import com.example.medimonitor.pacs.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,16 +16,17 @@ public class StudyController {
 
     private final StudyService studyService;
 
+
     @CrossOrigin
     @GetMapping("/mainAllSearch")
     @ResponseBody
-    public Page<Study> getAllStudies(@RequestParam(defaultValue="0") int page, @RequestParam(defaultValue = "5") int size ) {
+    public Page<InfoResponseDto> getAllStudies(@RequestParam(defaultValue="0") int page, @RequestParam(defaultValue = "5") int size) {
         return studyService.findStudiesWithPagination(page, size);
     }
 
     @GetMapping("/mainPrevious/{pId}")
     @ResponseBody
-    public List<Study> getStudiesByPid(@PathVariable String pId) {
+    public List<InfoResponseDto> getStudiesByPid(@PathVariable String pId) {
         return studyService.getStudiesByPid(pId);
     }
 

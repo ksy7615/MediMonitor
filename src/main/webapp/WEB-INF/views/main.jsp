@@ -131,8 +131,8 @@
                             <label>판독의2</label>
                             <input class="inputText" type="text">
                             <div class="reading-box">
-                                <button class="button blue-button">판독</button>
-                                <button class="button">예비판독</button>
+                                <button class="button blue-button" id="btn-reading">판독</button>
+                                <button class="button" id="btn-pre-reading">예비판독</button>
                             </div>
                         </div>
                     </div>

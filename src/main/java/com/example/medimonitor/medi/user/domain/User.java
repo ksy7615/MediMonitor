@@ -1,6 +1,6 @@
-package com.example.medimonitor.user.domain;
+package com.example.medimonitor.medi.user.domain;
 
-import com.example.medimonitor.user.dto.UserRequestDto;
+import com.example.medimonitor.medi.user.dto.UserRequestDto;
 import com.example.medimonitor.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

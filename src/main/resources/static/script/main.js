@@ -65,25 +65,32 @@ function fetchStudies(page, size) {
         });
 }
 
+
 function updateTable(data) {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
 
-    data.content.forEach(study => {
+    data.content.forEach(item => {
         const row = dataTable.insertRow();
 
+        const study = item.study;
+        const reportStatus = item.report.status;
+
         let reportStatusText = '';
-        switch (study.reportstatus) {
-            case 6:
+        switch (reportStatus) {
+            case 'decipher':
                 reportStatusText = '판독';
                 break;
-            case 5:
+            case 'predecipher':
                 reportStatusText = '예비판독';
                 break;
-            case 4:
+            case 'reading':
                 reportStatusText = '열람중';
                 break;
-            case 3:
+            case 'notread':
+                reportStatusText = '읽지않음';
+                break;
+            default:
                 reportStatusText = '읽지않음';
                 break;
         }
@@ -109,11 +116,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
 
-    table.addEventListener('click', function(event) {
+    table.addEventListener('click', function (event) {
         const targetRow = event.target.closest('tr');
 
         const pid = targetRow.querySelector('td:nth-child(1)').textContent;
+        const studykey = targetRow.querySelector('input').value;
+
         fetchStudiesByPid(pid);
+        fetchReportByStudykey(studykey);
     })
 
     table.addEventListener('dblclick', function (event) {
@@ -134,16 +144,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function fetchStudiesByPid(pId){
+function fetchStudiesByPid(pId) {
     fetch(`/mainPrevious/${pId}`)
         .then(response => {
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error('서버 응답 오류: ' + response.status);
             }
             return response.json();
         })
         .then(data => {
-            displayStudyKeys(data);
+            displayPrevious(data);
         })
         .catch(error => {
             console.error('오류 발생', error);
@@ -151,25 +161,53 @@ function fetchStudiesByPid(pId){
         });
 }
 
-function displayStudyKeys(data) {
+function fetchReportByStudykey(studykey) {
+    fetch(`/mainReport/${studykey}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('서버 응답 오류: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(JSON.stringify(data, null, 2))
+            displayReport(data);
+        })
+        .catch(error => {
+            console.error('오류 발생', error);
+            alert('데이터를 불러오는 중 오류가 발생했습니다.');
+        })
+}
+
+function displayReport(data) {
+
+}
+
+function displayPrevious(data) {
     const dataTable = document.getElementById('previous-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
 
-    data.forEach(study => {
+    data.forEach(item => {
         const row = dataTable.insertRow();
 
+        const study = item.study;
+        const reportStatus = item.report.status;
+
         let reportStatusText = '';
-        switch (study.reportstatus) {
-            case 6:
+        switch (reportStatus) {
+            case 'decipher':
                 reportStatusText = '판독';
                 break;
-            case 5:
+            case 'predecipher':
                 reportStatusText = '예비판독';
                 break;
-            case 4:
+            case 'reading':
                 reportStatusText = '열람중';
                 break;
-            case 3:
+            case 'notread':
+                reportStatusText = '읽지않음';
+                break;
+            default:
                 reportStatusText = '읽지않음';
                 break;
         }
@@ -193,6 +231,18 @@ function displayStudyKeys(data) {
         previousName.textContent = `환자 이름: ${study.pname}`;
 
     });
+}
+
+// 판독, 예비판독 버튼클릭
+document.getElementById("btn-reading").addEventListener('click', clickReading);
+document.getElementById("btn-pre-reading").addEventListener('click', clickPreReading);
+
+function clickReading() {
+    alert("판독");
+}
+
+function clickPreReading() {
+    alert("예비판독");
 }
 
 // 달력 PART
