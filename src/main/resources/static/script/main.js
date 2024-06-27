@@ -159,7 +159,9 @@ function fetchReportByStudykey(studykey) {
         })
         .then(data => {
             console.log(JSON.stringify(data, null, 2))
-            displayReport(data);
+            if(data !== '') {
+                displayReport(data);
+            }
         })
         .catch(error => {
             console.error('오류 발생', error);
@@ -168,6 +170,34 @@ function fetchReportByStudykey(studykey) {
 }
 
 function displayReport(data) {
+    const commentBox = document.getElementById('comment');
+    const questBox = document.getElementById('quest');
+    const preDoctorBox = document.getElementById('preDoctor');
+    const firstDoctorBox = document.getElementById('firstDoctor');
+    const secondDoctorBox = document.getElementById('secondDoctor');
+
+    const comment = data[0].comment;
+    const exploration = data[0].exploration;
+    const preDoctor = data[0].preDoctor;
+    const firstDoctor = data[0].firstDoctor;
+    const secondDoctor = data[0].secondDoctor;
+
+    if(comment !== null) {
+        commentBox.value = comment;
+    }
+    if(exploration !== null) {
+        questBox.value = exploration;
+    }
+    if(preDoctor !== null) {
+        preDoctorBox.value = preDoctor;
+    }
+    if(firstDoctor !== null) {
+        firstDoctorBox.value = firstDoctor;
+    }
+    if(secondDoctor !== null) {
+        secondDoctorBox.value = secondDoctor;
+    }
+
 
 }
 
