@@ -1,5 +1,6 @@
 let currentPage = 0;
 const pageSize = 5;
+let totalPages = 0;
 
 document.getElementById('getAllStudiesBtn').addEventListener('click', function () {
     currentPage = 0;
@@ -16,32 +17,13 @@ document.getElementById('left').addEventListener('click', function () {
 });
 
 document.getElementById('right').addEventListener('click', function () {
-    fetch(`/mainAllSearch?page=${currentPage + 1}&size=${pageSize}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('서버 응답 오류: ' + response.status);
-            }
-            const contentType = response.headers.get('Content-Type');
-            if (contentType && contentType.includes('application/json')) {
-                return response.json();
-            } else {
-                throw new Error('서버에서 올바른 형식의 데이터를 반환하지 않았습니다.');
-            }
-        })
-        .then(data => {
-            if (data.content.length > 0) {
-                currentPage++;
-                updateTable(data);
-            } else {
-                alert("다음 페이지가 없습니다.");
-            }
-        })
-        .catch(error => {
-            console.error('오류 발생:', error);
-            alert('데이터를 불러오는 중 오류가 발생했습니다.');
-        });
+    if (currentPage < totalPages - 1) {
+        currentPage++;
+        fetchStudies(currentPage, pageSize);
+    } else {
+        alert("다음 페이지가 없습니다.");
+    }
 });
-
 
 function fetchStudies(page, size) {
     fetch(`/mainAllSearch?page=${page}&size=${size}`)
@@ -58,6 +40,8 @@ function fetchStudies(page, size) {
         })
         .then(data => {
             updateTable(data);
+            totalPages = data.totalPages;  // Update the totalPages variable here
+            updatePageInfo(data.pageable.pageNumber, totalPages);
         })
         .catch(error => {
             console.error('오류 발생:', error);
@@ -65,6 +49,10 @@ function fetchStudies(page, size) {
         });
 }
 
+function updatePageInfo(currentPage, totalPages) {
+    const pageInfo = document.getElementById('pageCnt');
+    pageInfo.textContent = `${currentPage + 1}/${totalPages}ㅤ`;
+}
 
 function updateTable(data) {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
