@@ -241,6 +241,7 @@ header .admin {
 }
 
 .comment {
+    resize: none;
     width: 90%;
     height: 100px;
     border-radius: 10px;
@@ -252,8 +253,9 @@ header .admin {
 }
 
 .quest {
+    resize: none;
     width: 90%;
-    height: 180px;
+    height: 160px;
     border-radius: 10px;
     background-color: #464646;
     margin-bottom: 10px;

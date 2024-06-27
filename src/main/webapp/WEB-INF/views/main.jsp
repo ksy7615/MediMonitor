@@ -14,7 +14,7 @@
         <aside class="sidebar">
             <button class="button" id="getAllStudiesBtn">전체</button>
             <button class="button">재설정</button>
-            <div class="search">
+            <div class="ddd search">
                 <label>환자 아이디</label>
                 <input type="text">
                 <label>환자 이름</label>
