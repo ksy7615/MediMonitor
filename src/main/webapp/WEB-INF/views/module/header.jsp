@@ -34,7 +34,7 @@
                     <c:if test="${user.userGroup eq 'admin'}">
                         <a href="#">관리자 설정</a>
                     </c:if>
-                    <a href="#">로그아웃</a>
+                    <a href="${pageContext.request.contextPath}/logout">로그아웃</a>
                 </div>
             </div>
             <span class="admin-text">${user.name}</span>
