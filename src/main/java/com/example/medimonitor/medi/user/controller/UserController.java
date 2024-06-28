@@ -136,8 +136,6 @@ public class UserController {
         Response response =  new Response();
         String message = "승인이 완료되었습니다.";
 
-        System.out.println("usernames : " + usernames);
-        System.out.println("length : " + usernames.size());
         try {
             for(String username : usernames){
                 userService.update(username);
@@ -160,8 +158,6 @@ public class UserController {
         Response response =  new Response();
         String message = "거절이 완료되었습니다.";
 
-        System.out.println("usernames : " + usernames);
-        System.out.println("length : " + usernames.size());
         try {
             for(String username : usernames){
                 userService.delete(username);
