@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -7,9 +8,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/login.js"></script>
 <body>
+<c:if test="${not empty user}">
+    <script type="text/javascript">
+        alert("로그아웃 후 이용가능합니다.");
+        location.href='/main';
+    </script>
+</c:if>
 <div id="login-main">
     <div id="login-logo">
-        <span id="login-logo-front"><img src="${pageContext.request.contextPath}/style/image/logo.png" width="120px" height="90px" alt="MEDIMONITOR">MEDI</span>
+        <img src="${pageContext.request.contextPath}/style/image/logo.png" alt="MEDIMONITOR">
+        <span id="login-logo-front">MEDI</span>
         <span id="login-logo-back">MONITOR</span>
     </div>
     <div id="login-container">
