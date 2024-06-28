@@ -5,6 +5,7 @@ import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,5 +61,16 @@ public class UserService {
 
         UserResponseDto userDto = new UserResponseDto(user);
         return userDto;
+    }
+
+    @Transactional
+    public UserResponseDto update(String username) {
+        User user = userRepository.findById(username).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 사용자입니다.")
+        );
+        user.update();
+        UserResponseDto userResponseDto = new UserResponseDto(user);
+
+        return userResponseDto;
     }
 }
