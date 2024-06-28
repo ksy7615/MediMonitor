@@ -52,4 +52,13 @@ public class UserService {
         UserResponseDto userDto = new UserResponseDto(user);
         return userDto;
     }
+
+    public UserResponseDto findUserByUsername(String username) {
+        User user = userRepository.findById(username).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 사용자입니다.")
+        );
+
+        UserResponseDto userDto = new UserResponseDto(user);
+        return userDto;
+    }
 }
