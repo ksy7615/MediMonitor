@@ -113,7 +113,7 @@ document.getElementById("btn-pre-reading").addEventListener('click', function(){
     const username = document.getElementById('username').value;
 
     if (!currentStudyKey) {
-        alert("먼저 데이터를 클릭하여 studykey를 선택하세요.");
+        alert("항목을 선택하세요.");
         return;
     }
 
