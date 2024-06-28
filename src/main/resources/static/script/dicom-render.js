@@ -1,37 +1,25 @@
 import * as cornerstone from '@cornerstonejs/core';
 import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader';
 import * as dicomParser from 'dicom-parser';
-import { init as csToolsInit } from "@cornerstonejs/tools";
+import {init as csToolsInit} from "@cornerstonejs/tools";
 import * as cornerstoneTools from "@cornerstonejs/tools";
 
-// 뷰 포트 생성
+const {ToolGroupManager, Enums: csToolsEnums} = cornerstoneTools;
+const {MouseBindings} = csToolsEnums;
+
 const content = document.getElementById('content');
 const element = document.createElement('div');
-
-// 툴 정의
-const {
-    MagnifyTool,
-    TrackballRotateTool,
-    ZoomTool,
-    StackScrollMouseWheelTool,
-    ToolGroupManager,
-    Enums: csToolsEnums,
-} = cornerstoneTools;
-
-const { MouseBindings } = csToolsEnums;
-
-element.oncontextmenu = (e) => e.preventDefault();
 element.style.width = '500px';
 element.style.height = '500px';
 content.appendChild(element);
 
 // URL에서 studyKey와 seriesKey 추출
-const path = window.location.pathname;
-const pathParts = path.split('/');
+const paths = window.location.pathname;
+const pathParts = paths.split('/');
 const studyKey = pathParts[2];
 const seriesKey = pathParts[3];
 
-// 초기화 함수
+// Cornerstone 초기화
 const init = async () => {
     await cornerstone.init();
 
@@ -54,45 +42,70 @@ const init = async () => {
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
 };
 
-// 요청
+// 이미지 불러오기 및 렌더링 함수
 const fetchDataAndRender = async () => {
-    const endpoint = `http://localhost:8080/api/images/${studyKey}/${seriesKey}`;
+    // 예제에서는 API를 통해 이미지 URL을 가져옴
+
+    // 1) studykey와 serieskey를 통해 api 호출
+    // 2) 이미지데이터(시리즈에대한 전체 이미지)를 응답으로 받아
+    // 3) 각 이미지데이터(buffer)를 가지고 imageId를 생성
+    // 4) viewpoer에 랜더링 하기위한 imageIds 배열 완성
+
+    const endpoint = `/api/image/${studyKey}/${seriesKey}`;
+
+    const imageIds = [];
 
     try {
-        const response = await fetch(endpoint);
-        const data = await response.json();
-        console.log(data);
+        const response = await fetch(endpoint, {
+            method: "POST"
+        });
+        const list = await response.json();
 
-        // 시리즈 배열
-        const imageIds = await Promise.all(data.map(async (item) => {
-            const { path, fname, id } = item;
-            const { studykey, serieskey, imagekey } = id;
-            const dicomEndpoint = `http://192.168.30.70:8081/api/v1/dicom/studies/${studykey}/series/${serieskey}/instances/${imagekey}`;
+        list.forEach((base64, index) => {
+            // api가 응답한 base64 인코딩 데이터를 -> 바이너리 스트링으로 디코딩
+            const binaryString = atob(base64);
+            // 디코딩된 문자열로 이미지아이디를 만들기위한 버퍼 생성
+            const arrayBuffer = Uint8Array.from(binaryString, c => c.charCodeAt(0));
+            // 이미지 아이디 만들기
+            const imageId = `dicomweb:${URL.createObjectURL(new Blob([arrayBuffer], {type: 'application/dicom'}))}`;
+            imageIds.push(imageId);
 
-            const fileResponse = await fetch(dicomEndpoint);
-            const blob = await fileResponse.blob();
-            const dicomUrl = `dicomweb:${URL.createObjectURL(blob)}`;
 
-            return dicomUrl;
-        }));
+            // *번외
+            if(index === 0) {
+                try
+                {
+                    const options = { TransferSyntaxUID: '1.2.840.10008.1.2' };
+                    var dataSet = dicomParser.parseDicom(arrayBuffer, options);
+
+                    var studyInstanceUid = dataSet.string('x0020000d');
+                    console.log('studyInstanceUid : ', studyInstanceUid);
+
+                    var pname = dataSet.string('x00100010');
+                    console.log('studyInstanceUid : ', pname);
+                }
+                catch(ex)
+                {
+                    console.log('Error parsing byte stream', ex);
+                }
+            }
+        });
 
         render(imageIds);
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('에러 : ', error);
     }
 };
 
-const render = async (imageIds) => {
+// 렌더링 함수
+const render = (imageIds) => {
     const renderingEngineId = 'myRenderingEngine';
     const viewportId = 'CT_AXIAL_STACK';
 
-    // 1. 툴을 먼저 셋
-    try {
-        setTools(viewportId, renderingEngineId);
-    } catch (exception) {
-        console.log(exception)
-    }
+    // 툴 설정
+    setTools(viewportId, renderingEngineId);
 
+    // Rendering Engine 및 Viewport 설정
     const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
 
     const viewportInput = {
@@ -104,47 +117,50 @@ const render = async (imageIds) => {
     renderingEngine.enableElement(viewportInput);
     const viewport = renderingEngine.getViewport(viewportInput.viewportId);
 
-    await viewport.setStack(imageIds, 0);
+    // 스택 설정
+    viewport.setStack(imageIds, 0);
 
-    // 뷰포트 리랜더링
+    // Viewport 렌더링
     viewport.render();
 };
 
+// 툴 설정 함수
 const setTools = (viewportId, renderingEngineId) => {
-    // 툴 추가
     csToolsInit();
 
     const toolGroupId = 'NAVIGATION_TOOL_GROUP_ID';
 
+    const {MagnifyTool, TrackballRotateTool, ZoomTool, StackScrollMouseWheelTool} = cornerstoneTools;
+
     cornerstoneTools.addTool(MagnifyTool);
     cornerstoneTools.addTool(TrackballRotateTool);
     cornerstoneTools.addTool(ZoomTool);
-    cornerstoneTools.addTool(StackScrollMouseWheelTool); // 마우스 휠 스크롤 툴 추가
+    cornerstoneTools.addTool(StackScrollMouseWheelTool);
 
     const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
 
-    toolGroup.addTool(MagnifyTool.toolName, { cursor: 'move' });
-    toolGroup.addTool(TrackballRotateTool.toolName, { cursor: 'crosshair' });
-    toolGroup.addTool(ZoomTool.toolName, { cursor: 'zoom-in' });
+    toolGroup.addTool(MagnifyTool.toolName, {cursor: 'move'});
+    toolGroup.addTool(TrackballRotateTool.toolName, {cursor: 'crosshair'});
+    toolGroup.addTool(ZoomTool.toolName, {cursor: 'zoom-in'});
     toolGroup.addTool(StackScrollMouseWheelTool.toolName);
 
-    // 툴 활성화
+    // 툴 활성화 설정
     toolGroup.setToolActive(MagnifyTool.toolName, {
-        bindings: [{ mouseButton: MouseBindings.Primary }],
+        bindings: [{mouseButton: MouseBindings.Primary}],
     });
 
     toolGroup.setToolActive(TrackballRotateTool.toolName, {
-        bindings: [{ mouseButton: MouseBindings.Auxiliary }],
+        bindings: [{mouseButton: MouseBindings.Auxiliary}],
     });
 
     toolGroup.setToolActive(ZoomTool.toolName, {
-        bindings: [{ mouseButton: MouseBindings.Secondary }],
+        bindings: [{mouseButton: MouseBindings.Secondary}],
     });
 
-    toolGroup.setToolActive(StackScrollMouseWheelTool.toolName); // 마우스 휠 스크롤 활성화
+    toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
 
     toolGroup.addViewport(viewportId, renderingEngineId);
 };
 
-// 초기화 후 데이터 페치 및 렌더링
+// 초기화 함수 호출 후 데이터 불러오기 및 렌더링
 init().then(fetchDataAndRender).catch(console.error);
