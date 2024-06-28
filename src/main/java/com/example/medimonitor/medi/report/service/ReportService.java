@@ -11,12 +11,17 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReportService {
 
+    private final ReportRepository reportRepository;
+
     @Autowired
-    ReportRepository reportRepository;
+    public ReportService(ReportRepository reportRepository) {
+        this.reportRepository = reportRepository;
+    }
 
     public boolean checkIfStudyKeyExists(long studyKey) {
         return reportRepository.existsByStudykey(studyKey);
@@ -30,10 +35,22 @@ public class ReportService {
         }
     }
 
-    public ReportResponseDto saveReport(ReportRequestDto dto){
+    public void updateReport(ReportRequestDto dto) {
+        Optional<Report> optionalReport = reportRepository.findFirstByStudykey(dto.getStudykey());
+        if (optionalReport.isPresent()) {
+            Report report = optionalReport.get();
+            report.setComment(dto.getComment());
+            report.setExploration(dto.getExploration());
+            report.setStatus(dto.getStatus());
+            report.setPreDoctor(dto.getPreDoctor());
+            // 필요한 경우 다른 필드들도 업데이트
+            reportRepository.save(report);
+        }
+    }
+
+    public ReportResponseDto saveReport(ReportRequestDto dto) {
         Report report = new Report(dto);
         reportRepository.save(report);
-        ReportResponseDto result = new ReportResponseDto(report);
-        return result;
+        return new ReportResponseDto(report);
     }
 }

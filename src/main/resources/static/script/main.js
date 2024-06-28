@@ -107,30 +107,81 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-document.getElementById("btn-pre-reading").addEventListener('click', function(){
+document.getElementById("btn-pre-reading").addEventListener('click', () => {
     const comment = document.getElementById('comment').value;
     const quest = document.getElementById('quest').value;
     const username = document.getElementById('username').value;
 
     if (!currentStudyKey) {
-        alert("항목을 선택하세요.");
+        alert("먼저 항목을 선택하세요.");
         return;
     }
 
     const reportData = {
-        studykey: currentStudyKey, // currentStudyKey 사용
+        studykey: currentStudyKey,
         comment: comment,
         exploration: quest,
         status: 'predecipher',
         preDoctor: username
     };
 
-    console.log('comment: ' + comment);
-    console.log('quest: ' + quest);
-    console.log('studykey: ' + currentStudyKey);
-    console.log('username: ' + username);
-    console.log(JSON.stringify(reportData))
+    // studykey가 존재하는지 확인하는 함수 호출
+    checkStudyKeyExistence(currentStudyKey)
+        .then(exists => {
+            if (exists) {
+                // studykey가 존재하면 업데이트
+                updateReport(reportData);
+            } else {
+                // studykey가 존재하지 않으면 삽입
+                saveReport(reportData);
+            }
+        })
+        .catch(error => {
+            console.error('오류 발생:', error);
+            alert('저장 중 오류가 발생했습니다.');
+        });
+});
 
+function checkStudyKeyExistence(studykey) {
+    return fetch(`/checkStudyKeyExistence?studykey=${studykey}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => data)
+        .catch(error => {
+            console.error('오류 발생:', error);
+            throw error;
+        });
+}
+
+function updateReport(reportData) {
+    fetch('/updateReport', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reportData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error('네트워크 응답이 올바르지 않습니다: ' + text); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('업데이트 성공:', data);
+            alert('성공적으로 업데이트 되었습니다.');
+        })
+        .catch(error => {
+            console.error('업데이트 중 오류 발생:', error);
+            alert('업데이트 중 오류가 발생했습니다.');
+        });
+}
+
+function saveReport(reportData) {
     fetch('/savePreReport', {
         method: 'POST',
         headers: {
@@ -140,18 +191,19 @@ document.getElementById("btn-pre-reading").addEventListener('click', function(){
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+                return response.text().then(text => { throw new Error('네트워크 응답이 올바르지 않습니다: ' + text); });
             }
             return response.json();
         })
         .then(data => {
-            console.log(data);
+            console.log('저장 성공:', data);
+            alert('성공적으로 저장되었습니다.');
         })
         .catch(error => {
-            console.error('Error: ', error);
+            console.error('저장 중 오류 발생:', error);
             alert('저장 중 오류가 발생했습니다.');
         });
-});
+}
 
 function enableReportInputs() {
     document.getElementById('comment').disabled = false;

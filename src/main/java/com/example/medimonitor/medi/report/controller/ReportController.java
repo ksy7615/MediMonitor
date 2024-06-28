@@ -6,6 +6,7 @@ import com.example.medimonitor.medi.report.dto.ReportResponseDto;
 import com.example.medimonitor.medi.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,6 @@ import java.util.List;
 @Controller
 public class ReportController {
 
-    @Autowired
     private final ReportService reportService;
 
     @GetMapping("/mainReport/{studykey}")
@@ -24,9 +24,30 @@ public class ReportController {
         return reportService.getReportsByStudyKey(studykey);
     }
 
-    @ResponseBody
     @PostMapping("/savePreReport")
-    public ReportResponseDto savePreReport(@RequestBody ReportRequestDto report){
-        return reportService.saveReport(report);
+    public ResponseEntity<?> savePreReport(@RequestBody ReportRequestDto report) {
+        try {
+            ReportResponseDto savedReport = reportService.saveReport(report);
+            return ResponseEntity.ok(savedReport);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("{\"error\":\"저장 중 오류 발생: " + e.getMessage() + "\"}");
+        }
+    }
+
+    @GetMapping("/checkStudyKeyExistence")
+    @ResponseBody
+    public ResponseEntity<Boolean> checkStudyKeyExistence(@RequestParam long studykey) {
+        boolean exists = reportService.checkIfStudyKeyExists(studykey);
+        return ResponseEntity.ok(exists);
+    }
+
+    @PutMapping("/updateReport")
+    public ResponseEntity<?> updateReport(@RequestBody ReportRequestDto reportRequestDto) {
+        try {
+            reportService.updateReport(reportRequestDto);
+            return ResponseEntity.ok().body("{\"message\":\"업데이트 성공\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("{\"error\":\"업데이트 중 오류 발생: " + e.getMessage() + "\"}");
+        }
     }
 }

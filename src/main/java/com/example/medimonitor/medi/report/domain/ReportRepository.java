@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    Optional<Report> findFristByStudykey(long studykey);
+    Optional<Report> findFirstByStudykey(long studykey);
     List<Report> findByStudykey(long studykey);
     Boolean existsByStudykey(long studykey);
 }
