@@ -154,4 +154,28 @@ public class UserController {
         }
     }
 
+    @ResponseBody
+    @DeleteMapping("/user/reject")
+    public ResponseEntity<Response> reject(@RequestBody List<String> usernames) {
+        Response response =  new Response();
+        String message = "거절이 완료되었습니다.";
+
+        System.out.println("usernames : " + usernames);
+        System.out.println("length : " + usernames.size());
+        try {
+            for(String username : usernames){
+                userService.delete(username);
+            }
+            response.setStatus(200);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            message = "거절에 실패하였습니다.";
+
+            response.setStatus(400);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+    }
+
 }
