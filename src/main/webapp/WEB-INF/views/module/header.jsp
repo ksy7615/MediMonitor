@@ -13,7 +13,7 @@
 <body>
 <header class="header">
     <div id="header-logo">
-        <img src="${pageContext.request.contextPath}/style/image/logo.png" width="45px" height="40px" alt="MEDIMONITOR">
+        <img src="${pageContext.request.contextPath}/style/image/logo.png" width="40px" height="35px" alt="MEDIMONITOR">
         <span id="header-logo-front">MEDI</span>
         <span id="header-logo-back">MONITOR</span>
     </div>
@@ -34,7 +34,7 @@
                     <c:if test="${user.userGroup eq 'admin'}">
                         <a href="#">관리자 설정</a>
                     </c:if>
-                    <a href="#">로그아웃</a>
+                    <a href="${pageContext.request.contextPath}/logout">로그아웃</a>
                 </div>
             </div>
             <span class="admin-text">${user.name}</span>

@@ -9,6 +9,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/join.js"></script>
 <body>
     <div class="container">
+        <h1>회원가입</h1>
         <form class="signup-form" method="POST" action="${pageContext.request.contextPath}/join">
             <div class="blue-line"></div>
             <input type="text" id="username" placeholder="아이디">

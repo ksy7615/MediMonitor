@@ -4,6 +4,7 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/user.css">
+    <c:import url="/header" />
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <body>
@@ -26,7 +27,7 @@
             <tbody>
             <c:forEach var="user" items="${users}">
                 <tr>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox" class="userCheckbox" data-username="${user.username}"></td>
                     <td>${user.username}</td>
                     <td>${user.name}</td>
                     <td>${user.userGroup}</td>
@@ -46,7 +47,7 @@
     <div class="hamburger-button" onclick="toggleDropdownMenu()">☰</div>
     <div class="dropdown-menu" id="dropdownMenu">
         <button id="adminApproveBtn" onclick="location.href='/admin/authority'">사용자 승인 관리</button>
-        <button id="deleteBtn">사용자 삭제</button>
+        <button id="deleteBtn" onclick="deleteBtnMenu()">사용자 삭제</button>
     </div>
 </div>
 

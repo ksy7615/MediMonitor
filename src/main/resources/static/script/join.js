@@ -6,6 +6,26 @@ $(document).ready(() => {
         } else {
             $('#error-msg-id').hide();
             $('#username').css('border', 'solid 1px lightgrey');
+
+            var settings = {
+                "url": "/check/username?username="+$('#username').val(),
+                "method": "POST",
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+            };
+
+            $.ajax(settings).done(function (response) {
+                if(response.status === 200) {
+                    $('#error-msg-id-dupl').show();
+                    $('#username').css('border', 'solid 1px #ff3f3f');
+                }
+            }).fail(function (response) {
+                if(response.status === 400) {
+                    $('#error-msg-id-dupl').hide();
+                    $('#username').css('border', 'solid 1px lightgrey');
+                }
+            });
         }
     });
 

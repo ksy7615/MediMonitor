@@ -48,6 +48,25 @@ public class UserController {
         }
     }
 
+    @PostMapping("/check/username")
+    @ResponseBody
+    public ResponseEntity<Response> findUserByUsername(@RequestParam String username) {
+        Response response =  new Response();
+        UserResponseDto user = null;
+
+        try {
+            user = userService.findUserByUsername(username);
+            if(user != null) {
+                response.setStatus(200);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        } catch (IllegalArgumentException e) {
+            response.setStatus(400);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping("/admin")
     public ModelAndView adminUserList() {
         ModelAndView mv = new ModelAndView("user/admin/userList");
@@ -101,6 +120,57 @@ public class UserController {
             response.setMessage("login is not success");
 
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("user");
+
+        return "user/login";
+    }
+
+    @ResponseBody
+    @PutMapping("/user/approval")
+    public ResponseEntity<Response> approval(@RequestBody List<String> usernames) {
+        Response response =  new Response();
+        String message = "승인이 완료되었습니다.";
+
+        try {
+            for(String username : usernames){
+                userService.update(username);
+            }
+            response.setStatus(200);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            message = "승인에 실패하였습니다.";
+
+            response.setStatus(400);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+    }
+
+    @ResponseBody
+    @DeleteMapping("/user/reject")
+    public ResponseEntity<Response> reject(@RequestBody List<String> usernames) {
+        Response response =  new Response();
+        String message = "거절이 완료되었습니다.";
+
+        try {
+            for(String username : usernames){
+                userService.delete(username);
+            }
+            response.setStatus(200);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            message = "거절에 실패하였습니다.";
+
+            response.setStatus(400);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
 
