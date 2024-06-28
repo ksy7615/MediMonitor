@@ -1,4 +1,4 @@
-// Select all checkboxes
+// 모든 체크박스를 선택하거나 해제하는 기능
 $("#selectAll").click(function() {
     $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
 });
@@ -9,28 +9,36 @@ function toggleDropdownMenu() {
     dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
 }
 
-// Approve selected users
-document.getElementById('approveBtn').addEventListener('click', function() {
-    alert('Selected users approved.');
-    toggleDropdownMenu(); // Close dropdown after action
-});
-
-// Delete selected users
-document.getElementById('deleteBtn').addEventListener('click', function() {
-    alert('Selected users deleted.');
-    toggleDropdownMenu(); // Close dropdown after action
-});
-
-// menuButton.js 파일에 추가
-
-// 모든 체크박스를 선택하거나 해제하는 기능
-$("#selectAll").click(function() {
-    $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
-});
-
 // 선택된 사용자를 승인하는 기능
 document.getElementById('approveBtn').addEventListener('click', function() {
-    alert('Selected users approved.');
+    let selectedUsers = [];
+    $(".userCheckbox:checked").each(function() {
+        selectedUsers.push($(this).data('username'));
+    });
+
+    if (selectedUsers.length > 0) {
+        var settings = {
+            "url": "/user/approval",
+            "method": "PUT",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify(selectedUsers),
+        };
+
+        $.ajax(settings).done(function (response) {
+            if(response.status === 200) {
+                alert(response.message);
+                location.reload();
+            }
+        }).fail(function (response) {
+            if(response.status === 400) {
+                alert(response.message);
+            }
+        });
+    } else {
+        alert('승인할 사용자를 선택해주세요.');
+    }
 });
 
 // 선택된 사용자를 거절하는 기능
