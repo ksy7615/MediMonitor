@@ -125,6 +125,7 @@
                 </table>
                 <div class="button-set">
                     <button class="button blue-button" id="left">◀</button>
+                    <label id="pageCnt"></label>
                     <button class="button blue-button" id="right">▶</button>
                 </div>
             </div>
