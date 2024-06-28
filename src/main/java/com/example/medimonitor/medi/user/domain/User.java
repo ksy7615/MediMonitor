@@ -41,4 +41,8 @@ public class User extends Timestamped {
         this.position = userDto.getPosition();
     }
 
+    public void update() {
+        this.authority = true;
+    }
+
 }
