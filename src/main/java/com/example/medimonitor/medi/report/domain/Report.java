@@ -1,12 +1,15 @@
 package com.example.medimonitor.medi.report.domain;
 
+import com.example.medimonitor.medi.report.dto.ReportRequestDto;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
+@Setter
 @Table(name = "report")
 @Entity
 public class Report {
@@ -19,4 +22,20 @@ public class Report {
     private String secondDoctor;
     private String status;
     private long studykey;
+
+
+    public Report(ReportRequestDto dto){
+        this.comment = dto.getComment();
+        this.exploration = dto.getExploration();
+        this.preDoctor = dto.getPreDoctor();
+        this.firstDoctor = dto.getFirstDoctor();
+        this.secondDoctor = dto.getSecondDoctor();
+        this.status = dto.getStatus();
+        this.studykey = dto.getStudykey();
+    }
+
+    public Report() {
+
+    }
 }
+

@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const pid = targetRow.querySelector('td:nth-child(1)').textContent;
         const studykey = targetRow.querySelector('input').value;
 
+        enableReportInputs();
         fetchStudiesByPid(pid);
         fetchReportByStudykey(studykey);
     })
@@ -166,6 +167,10 @@ function fetchReportByStudykey(studykey) {
             console.error('오류 발생', error);
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         })
+}
+function enableReportInputs() {
+    document.getElementById('comment').disabled = false;
+    document.getElementById('quest').disabled = false;
 }
 
 function displayReport(data) {
@@ -249,9 +254,54 @@ function displayPrevious(data) {
     });
 }
 
+
+
+
+
 // 판독, 예비판독 버튼클릭
 document.getElementById("btn-reading").addEventListener('click', clickReading);
-document.getElementById("btn-pre-reading").addEventListener('click', clickPreReading);
+document.getElementById("btn-pre-reading").addEventListener('click', function(){
+    const comment = document.getElementById('comment').value;
+    const quest = document.getElementById('quest').value;
+    const studykey = document.querySelector('.studykey').value;
+    const username = document.getElementById('username').value;
+
+    const reportData = {
+        studykey: studykey,
+        comment: comment,
+        exploration: quest,
+        status: 'predecipher',
+        preDoctor: username
+    };
+
+    console.log('comment: ' + comment);
+    console.log('quest: ' + quest);
+    console.log('studykey: ' + studykey);
+    console.log('username: ' + username);
+    console.log(JSON.stringify(reportData))
+
+    fetch('/savePreReport', {
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify(reportData)
+
+    })
+        .then (function(response) {
+            if(!response.ok){
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch (error => {
+            console.error('Error: ', error);
+            alert('저장 중 오류가 발생했습니다.');
+        });
+});
 
 function clickReading() {
     alert("판독");
