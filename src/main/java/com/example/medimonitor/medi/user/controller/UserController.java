@@ -48,6 +48,25 @@ public class UserController {
         }
     }
 
+    @PostMapping("/check/username")
+    @ResponseBody
+    public ResponseEntity<Response> findUserByUsername(@RequestParam String username) {
+        Response response =  new Response();
+        UserResponseDto user = null;
+
+        try {
+            user = userService.findUserByUsername(username);
+            if(user != null) {
+                response.setStatus(200);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        } catch (IllegalArgumentException e) {
+            response.setStatus(400);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping("/admin")
     public ModelAndView adminUserList() {
         ModelAndView mv = new ModelAndView("user/admin/userList");
@@ -102,6 +121,13 @@ public class UserController {
 
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("user");
+
+        return "user/login";
     }
 
 }
