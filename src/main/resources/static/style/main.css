@@ -197,8 +197,8 @@ header .admin {
     margin-bottom: 10px;
 }
 
-.data-table tbody tr:hover {
-    background-color: #979797;
+#data-table tbody tr:hover td {
+    background-color: #777777;
     cursor: pointer;
 }
 
@@ -289,6 +289,11 @@ header .admin {
     justify-content: center;
 }
 
+#data-table tbody tr:hover {
+    background-color: #9c9c9c; /* 회색 배경색 */
+    cursor: pointer; /* 커서를 포인터로 변경 */
+}
+
 .data-table > thead > tr > th:nth-child(1) {
     width: 15%;
 }
@@ -334,28 +339,6 @@ header .admin {
 .previous-table > thead > tr > th:nth-child(2) {
     width: 24%;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .previous-table > thead > tr > th:nth-child(3) {
     width: 18%;

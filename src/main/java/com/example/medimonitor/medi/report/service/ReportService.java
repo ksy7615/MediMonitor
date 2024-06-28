@@ -2,6 +2,9 @@ package com.example.medimonitor.medi.report.service;
 
 import com.example.medimonitor.medi.report.domain.Report;
 import com.example.medimonitor.medi.report.domain.ReportRepository;
+import com.example.medimonitor.medi.report.dto.ReportRequestDto;
+import com.example.medimonitor.medi.report.dto.ReportResponseDto;
+import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +28,12 @@ public class ReportService {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ReportResponseDto saveReport(ReportRequestDto dto){
+        Report report = new Report(dto);
+        reportRepository.save(report);
+        ReportResponseDto result = new ReportResponseDto(report);
+        return result;
     }
 }

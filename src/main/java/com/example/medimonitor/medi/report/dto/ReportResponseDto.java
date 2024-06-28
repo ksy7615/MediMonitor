@@ -1,6 +1,7 @@
 package com.example.medimonitor.medi.report.dto;
 
 
+import com.example.medimonitor.medi.report.domain.Report;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,16 @@ public class ReportResponseDto {
     public ReportResponseDto(long studykey, String status) {
         this.studykey = studykey;
         this.status = status;
+    }
+
+    public ReportResponseDto(Report report){
+        this.comment = report.getComment();
+        this.exploration = report.getExploration();
+        this.preDoctor = report.getPreDoctor();
+        this.firstDoctor = report.getFirstDoctor();
+        this.secondDoctor = report.getSecondDoctor();
+        this.status = report.getStatus();
+        this.studykey = report.getStudykey();
     }
 }
 

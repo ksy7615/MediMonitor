@@ -161,16 +161,24 @@
                     </div>
                     <div class="report-box">
                         <div class="write-box">
-                            <textarea class="comment" id='comment' placeholder="코멘트"></textarea>
-                            <textarea class="quest" id='quest' placeholder="탐색"></textarea>
+                            <textarea class="comment" id='comment' placeholder="코멘트" disabled></textarea>
+                            <textarea class="quest" id='quest' placeholder="
+[Finding]
+
+[Conclusion]
+
+[Recommend]
+
+" disabled></textarea>
                         </div>
                         <div class="input-box">
                             <label>예비판독의</label>
-                            <input class="inputText" type="text" id="preDoctor">
+                            <input class="inputText" type="text" id="preDoctor" disabled>
                             <label>판독의1</label>
-                            <input class="inputText" type="text" id="firstDoctor">
+                            <input class="inputText" type="text" id="firstDoctor" disabled>
                             <label>판독의2</label>
-                            <input class="inputText" type="text" id="secondDoctor">
+                            <input class="inputText" type="text" id="secondDoctor" disabled>
+                            <input type="hidden" id="username" value=${user.username}>
                             <div class="reading-box">
                                 <button class="button blue-button" id="btn-reading">판독</button>
                                 <button class="button" id="btn-pre-reading">예비판독</button>

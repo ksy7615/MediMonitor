@@ -1,6 +1,7 @@
 let currentPage = 0;
 const pageSize = 5;
 let totalPages = 0;
+let currentStudyKey = null; // 전역 변수 추가
 
 document.getElementById('getAllStudiesBtn').addEventListener('click', function () {
     currentPage = 0;
@@ -27,20 +28,10 @@ document.getElementById('right').addEventListener('click', function () {
 
 function fetchStudies(page, size) {
     fetch(`/mainAllSearch?page=${page}&size=${size}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('서버 응답 오류: ' + response.status);
-            }
-            const contentType = response.headers.get('Content-Type');
-            if (contentType && contentType.includes('application/json')) {
-                return response.json();
-            } else {
-                throw new Error('서버에서 올바른 형식의 데이터를 반환하지 않았습니다.');
-            }
-        })
+        .then(response => response.ok ? response.json() : Promise.reject(response))
         .then(data => {
             updateTable(data);
-            totalPages = data.totalPages;  // Update the totalPages variable here
+            totalPages = data.totalPages;
             updatePageInfo(data.pageable.pageNumber, totalPages);
         })
         .catch(error => {
@@ -50,8 +41,7 @@ function fetchStudies(page, size) {
 }
 
 function updatePageInfo(currentPage, totalPages) {
-    const pageInfo = document.getElementById('pageCnt');
-    pageInfo.textContent = `${currentPage + 1}/${totalPages}ㅤ`;
+    document.getElementById('pageCnt').textContent = `${currentPage + 1}/${totalPages}ㅤ`;
 }
 
 function updateTable(data) {
@@ -60,28 +50,10 @@ function updateTable(data) {
 
     data.content.forEach(item => {
         const row = dataTable.insertRow();
-
         const study = item.study;
         const reportStatus = item.report.status;
 
-        let reportStatusText = '';
-        switch (reportStatus) {
-            case 'decipher':
-                reportStatusText = '판독';
-                break;
-            case 'predecipher':
-                reportStatusText = '예비판독';
-                break;
-            case 'reading':
-                reportStatusText = '열람중';
-                break;
-            case 'notread':
-                reportStatusText = '읽지않음';
-                break;
-            default:
-                reportStatusText = '읽지않음';
-                break;
-        }
+        const reportStatusText = getReportStatusText(reportStatus);
 
         row.innerHTML = `
             <td>${study.pid}</td>
@@ -93,10 +65,19 @@ function updateTable(data) {
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
             <td>${study.examstatus}</td>
-<!--            <input type="hidden" class="studyinsuid" value="${study.studyinsuid}">-->
             <input type="hidden" class="studykey" value="${study.studykey}">
         `;
     });
+}
+
+function getReportStatusText(status) {
+    switch (status) {
+        case 'decipher': return '판독';
+        case 'predecipher': return '예비판독';
+        case 'reading': return '열람중';
+        case 'notread': return '읽지않음';
+        default: return '읽지않음';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -106,40 +87,80 @@ document.addEventListener('DOMContentLoaded', function () {
 
     table.addEventListener('click', function (event) {
         const targetRow = event.target.closest('tr');
+        if (targetRow) {
+            const pid = targetRow.querySelector('td:nth-child(1)').textContent;
+            currentStudyKey = targetRow.querySelector('.studykey').value; // currentStudyKey 업데이트
 
-        const pid = targetRow.querySelector('td:nth-child(1)').textContent;
-        const studykey = targetRow.querySelector('input').value;
-
-        fetchStudiesByPid(pid);
-        fetchReportByStudykey(studykey);
-    })
+            enableReportInputs();
+            fetchStudiesByPid(pid);
+            fetchReportByStudykey(currentStudyKey);
+        }
+    });
 
     table.addEventListener('dblclick', function (event) {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
-            // 데이터 추출
-            // const pid = targetRow.querySelector('td:nth-child(1)').textContent;
-            // const studyInsUid = targetRow.querySelector('.studyinsuid').value;
             const studyKey = targetRow.querySelector('.studykey').value;
-
-            // URL 생성
-            // const url = `/path/to/destinationPage?studykey=${encodeURIComponent(studyKey)}&studyinsuid=${encodeURIComponent(studyInsUid)}&pid=${encodeURIComponent(pid)}`;
             const url = `/path/to/destinationPage?studykey=${encodeURIComponent(studyKey)}`;
-
-            // 페이지 이동
             window.location.href = url;
         }
     });
 });
 
-function fetchStudiesByPid(pId) {
-    fetch(`/mainPrevious/${pId}`)
+document.getElementById("btn-pre-reading").addEventListener('click', function(){
+    const comment = document.getElementById('comment').value;
+    const quest = document.getElementById('quest').value;
+    const username = document.getElementById('username').value;
+
+    if (!currentStudyKey) {
+        alert("항목을 선택하세요.");
+        return;
+    }
+
+    const reportData = {
+        studykey: currentStudyKey, // currentStudyKey 사용
+        comment: comment,
+        exploration: quest,
+        status: 'predecipher',
+        preDoctor: username
+    };
+
+    console.log('comment: ' + comment);
+    console.log('quest: ' + quest);
+    console.log('studykey: ' + currentStudyKey);
+    console.log('username: ' + username);
+    console.log(JSON.stringify(reportData))
+
+    fetch('/savePreReport', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reportData)
+    })
         .then(response => {
             if (!response.ok) {
-                throw new Error('서버 응답 오류: ' + response.status);
+                throw new Error('Network response was not ok ' + response.statusText);
             }
             return response.json();
         })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error: ', error);
+            alert('저장 중 오류가 발생했습니다.');
+        });
+});
+
+function enableReportInputs() {
+    document.getElementById('comment').disabled = false;
+    document.getElementById('quest').disabled = false;
+}
+
+function fetchStudiesByPid(pId) {
+    fetch(`/mainPrevious/${pId}`)
+        .then(response => response.ok ? response.json() : Promise.reject(response))
         .then(data => {
             displayPrevious(data);
         })
@@ -151,23 +172,14 @@ function fetchStudiesByPid(pId) {
 
 function fetchReportByStudykey(studykey) {
     fetch(`/mainReport/${studykey}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('서버 응답 오류: ' + response.status);
-            }
-            return response.json();
-        })
+        .then(response => response.ok ? response.json() : Promise.reject(response))
         .then(data => {
-            console.log(JSON.stringify(data, null, 2))
-            console.log(data);
-            if(data.length !== 0) {
-                displayReport(data);
-            }
+            displayReport(data);
         })
         .catch(error => {
             console.error('오류 발생', error);
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
-        })
+        });
 }
 
 function displayReport(data) {
@@ -177,29 +189,25 @@ function displayReport(data) {
     const firstDoctorBox = document.getElementById('firstDoctor');
     const secondDoctorBox = document.getElementById('secondDoctor');
 
-    const comment = data[0].comment;
-    const exploration = data[0].exploration;
-    const preDoctor = data[0].preDoctor;
-    const firstDoctor = data[0].firstDoctor;
-    const secondDoctor = data[0].secondDoctor;
+    if (data.length >= 1) {
+        const comment = data[0].comment;
+        const exploration = data[0].exploration;
+        const preDoctor = data[0].preDoctor;
+        const firstDoctor = data[0].firstDoctor;
+        const secondDoctor = data[0].secondDoctor;
 
-    if(comment !== null) {
-        commentBox.value = comment;
+        commentBox.value = comment !== null ? comment : '';
+        questBox.value = exploration !== null ? exploration : '';
+        preDoctorBox.value = preDoctor !== null ? preDoctor : '';
+        firstDoctorBox.value = firstDoctor !== null ? firstDoctor : '';
+        secondDoctorBox.value = secondDoctor !== null ? secondDoctor : '';
+    } else {
+        commentBox.value = '';
+        questBox.value = '';
+        preDoctorBox.value = '';
+        firstDoctorBox.value = '';
+        secondDoctorBox.value = '';
     }
-    if(exploration !== null) {
-        questBox.value = exploration;
-    }
-    if(preDoctor !== null) {
-        preDoctorBox.value = preDoctor;
-    }
-    if(firstDoctor !== null) {
-        firstDoctorBox.value = firstDoctor;
-    }
-    if(secondDoctor !== null) {
-        secondDoctorBox.value = secondDoctor;
-    }
-
-
 }
 
 function displayPrevious(data) {
@@ -212,24 +220,7 @@ function displayPrevious(data) {
         const study = item.study;
         const reportStatus = item.report.status;
 
-        let reportStatusText = '';
-        switch (reportStatus) {
-            case 'decipher':
-                reportStatusText = '판독';
-                break;
-            case 'predecipher':
-                reportStatusText = '예비판독';
-                break;
-            case 'reading':
-                reportStatusText = '열람중';
-                break;
-            case 'notread':
-                reportStatusText = '읽지않음';
-                break;
-            default:
-                reportStatusText = '읽지않음';
-                break;
-        }
+        const reportStatusText = getReportStatusText(reportStatus);
 
         row.innerHTML = `
             <td>${study.modality}</td>
@@ -239,29 +230,13 @@ function displayPrevious(data) {
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
             <td>${study.examstatus}</td>
-           <input type="hidden" class="pid" value="${study.pid}">
+            <input type="hidden" class="pid" value="${study.pid}">
             <input type="hidden" class="pname" value="${study.pname}">
-    `;
+        `;
 
-        const previousId = document.querySelector('.previous-id');
-        const previousName = document.querySelector('.previous-name');
-
-        previousId.textContent = `환자 아이디: ${study.pid}`;
-        previousName.textContent = `환자 이름: ${study.pname}`;
-
+        document.querySelector('.previous-id').textContent = `환자 아이디: ${study.pid}`;
+        document.querySelector('.previous-name').textContent = `환자 이름: ${study.pname}`;
     });
-}
-
-// 판독, 예비판독 버튼클릭
-document.getElementById("btn-reading").addEventListener('click', clickReading);
-document.getElementById("btn-pre-reading").addEventListener('click', clickPreReading);
-
-function clickReading() {
-    alert("판독");
-}
-
-function clickPreReading() {
-    alert("예비판독");
 }
 
 // 달력 PART
