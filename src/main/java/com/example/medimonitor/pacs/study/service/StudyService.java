@@ -6,10 +6,12 @@ import com.example.medimonitor.pacs.study.dto.InfoResponseDto;
 import com.example.medimonitor.medi.report.domain.Report;
 import com.example.medimonitor.medi.report.domain.ReportRepository;
 import com.example.medimonitor.medi.report.dto.ReportResponseDto;
+import com.example.medimonitor.pacs.study.dto.StudyRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,5 +48,23 @@ public class StudyService {
 
             return new InfoResponseDto(reportResponseDto, study);
         });
+    }
+
+    public List<Study> findByPidLike(String pid){
+        return studyRepository.findByPidLike("%" + pid + "%");
+    }
+
+    public List<Study> findByReportstatus(long reportStatus){
+        return studyRepository.findByReportstatus(reportStatus);
+    }
+
+
+    public List<Study> findByModality(String modality){
+        return studyRepository.findByModality(modality);
+    }
+
+
+    public List<Study> findByPnameLike(String pname){
+        return studyRepository.findByPnameLike("%" + pname + "%");
     }
 }

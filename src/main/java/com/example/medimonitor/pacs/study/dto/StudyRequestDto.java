@@ -1,0 +1,27 @@
+package com.example.medimonitor.pacs.study.dto;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Id;
+import java.time.LocalDate;
+import java.util.Date;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class StudyRequestDto {
+    private long studykey;
+    private String pid;
+    private String pname;
+    private String modality;
+    private String studydesc;
+    private Date startDate;
+    private Date endDate;
+    private String studyinsuid;
+    private long reportstatus;
+    private long seriescnt;
+    private long imagecnt;
+    private long examstatus;
+}

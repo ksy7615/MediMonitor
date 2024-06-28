@@ -14,51 +14,91 @@
         <aside class="sidebar">
             <button class="button" id="getAllStudiesBtn">전체</button>
             <button class="button">재설정</button>
-            <div class="ddd search">
-                <label>환자 아이디</label>
-                <input type="text">
-                <label>환자 이름</label>
-                <input type="text">
-                <label>판독 상태</label>
-                <input type="text">
-                <label>달력</label>
-                <div class="wrapper">
-                    <header>
-                        <div class="nav">
-                            <button class="material-icons" id="prev">chevron_left</button>
-                            <p class="current-date"></p>
-                            <button class="material-icons" id="next">chevron_right</button>
+            <form id="searchForm">
+                <div class="search">
+                    <input type="text" id="pid" name="pid" placeholder="환자 아이디">
+                    <input type="text" id="pname" name="pname" placeholder="환자 이름">
+                    <select id="reportstatus" name="reportstatus" >
+                        <option value="">판독상태</option>
+                        <option value="3">읽지않음</option>
+                        <option value="4">열람중</option>
+                        <option value="5">예비판독</option>
+                        <option value="6">판독</option>
+                    </select>
+                    <div class="wrapper">
+                        <header>
+                            <div class="nav">
+                                <button class="material-icons" id="prev">chevron_left</button>
+                                <p class="current-date"></p>
+                                <button class="material-icons" id="next">chevron_right</button>
+                            </div>
+                        </header>
+                        <div class="calendar">
+                            <ul class="weeks">
+                                <li>Sun</li>
+                                <li>Mon</li>
+                                <li>Tue</li>
+                                <li>Wed</li>
+                                <li>Thu</li>
+                                <li>Fri</li>
+                                <li>Sat</li>
+                            </ul>
+                            <ul class="days"></ul>
                         </div>
-                    </header>
-                    <div class="calendar">
-                        <ul class="weeks">
-                            <li>Sun</li>
-                            <li>Mon</li>
-                            <li>Tue</li>
-                            <li>Wed</li>
-                            <li>Thu</li>
-                            <li>Fri</li>
-                            <li>Sat</li>
-                        </ul>
-                        <ul class="days"></ul>
                     </div>
+                    <label>검사일자</label>
+                    <div class="date-select">
+                        <input type="date" class="date-start" value="1990-01-01"/>
+                        <span>To</span>
+                        <input type="date" class="date-end"/>
+                    </div>
+                    <label>검사장비</label>
+                    <select id="modality" name="modality">
+                        <option value="">선택</option>
+                        <option value="AS">AS</option>
+                        <option value="AU">AU</option>
+                        <option value="BI">BI</option>
+                        <option value="CD">CD</option>
+                        <option value="CF">CF</option>
+                        <option value="CP">CP</option>
+                        <option value="CR">CR</option>
+                        <option value="CS">CS</option>
+                        <option value="CT">CT</option>
+                        <option value="DD">DD</option>
+                        <option value="DF">DF</option>
+                        <option value="DG">DG</option>
+                        <option value="DM">DM</option>
+                        <option value="DR">DR</option>
+                        <option value="DS">DS</option>
+                        <option value="DX">DX</option>
+                        <option value="EC">EC</option>
+                        <option value="ES">ES</option>
+                        <option value="FA">FA</option>
+                        <option value="FS">FS</option>
+                        <option value="LS">LS</option>
+                        <option value="LP">LP</option>
+                        <option value="MA">MA</option>
+                        <option value="MR">MR</option>
+                        <option value="MS">MS</option>
+                        <option value="NM">NM</option>
+                        <option value="OT">OT</option>
+                        <option value="PT">PT</option>
+                        <option value="RF">RF</option>
+                        <option value="RG">RG</option>
+                        <option value="ST">ST</option>
+                        <option value="TG">TG</option>
+                        <option value="US">US</option>
+                        <option value="VF">VF</option>
+                    </select>
+                    <label>Verify</label>
+                    <select id="examstatus">
+                        <option value="">선택해주세요</option>
+                        <option value="NR">Not Requested</option>
+                        <option value="RC">Request Completed</option>
+                    </select>
+                    <button class="button search-button" onclick="searchStudies()">검색</button>
                 </div>
-                <label>검사일자</label>
-                <div class="date-select">
-                    <input type="date" class="date-start" value="1990-01-01"/>
-                    <span>To</span>
-                    <input type="date" class="date-end" />
-                </div>
-                <label>검사장비</label>
-                <select>
-                    <option>선택해주세요</option>
-                </select>
-                <label>Verify</label>
-                <select>
-                    <option>선택해주세요</option>
-                </select>
-                <button class="button search-button">검색</button>
-            </div>
+            </form>
         </aside>
 
         <main class="main-content">
@@ -85,7 +125,6 @@
                 </table>
                 <div class="button-set">
                     <button class="button blue-button" id="left">◀</button>
-                    <label id="pageCnt"></label>
                     <button class="button blue-button" id="right">▶</button>
                 </div>
             </div>
