@@ -130,4 +130,28 @@ public class UserController {
         return "user/login";
     }
 
+    @ResponseBody
+    @PutMapping("/user/approval")
+    public ResponseEntity<Response> approval(@RequestBody List<String> usernames) {
+        Response response =  new Response();
+        String message = "승인이 완료되었습니다.";
+
+        System.out.println("usernames : " + usernames);
+        System.out.println("length : " + usernames.size());
+        try {
+            for(String username : usernames){
+                userService.update(username);
+            }
+            response.setStatus(200);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            message = "승인에 실패하였습니다.";
+
+            response.setStatus(400);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+    }
+
 }
