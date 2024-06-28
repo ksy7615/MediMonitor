@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <body>
+<div id="content"></div>
 
+<script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 </body>
 </html>

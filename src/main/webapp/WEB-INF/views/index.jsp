@@ -7,7 +7,6 @@
 <body>
 <h1>Cornerstone Sample</h1>
 <div id="content"></div>
-<input id="file" type="file" accept="application/dicom">
 
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 </body>
