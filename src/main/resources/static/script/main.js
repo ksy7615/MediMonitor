@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
 
-    table.addEventListener('click', function(event) {
+    table.addEventListener('click', function (event) {
         const targetRow = event.target.closest('tr');
 
         const pid = targetRow.querySelector('td:nth-child(1)').textContent;
@@ -134,10 +134,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function fetchStudiesByPid(pId){
+function fetchStudiesByPid(pId) {
     fetch(`/mainPrevious/${pId}`)
         .then(response => {
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error('서버 응답 오류: ' + response.status);
             }
             return response.json();
@@ -319,3 +319,78 @@ const renderCalendar = () => {
     });
 };
 renderCalendar();
+
+function searchStudies() {
+    const pid = document.getElementById('pid').value;
+    const pname = document.getElementById('pname').value;
+    const reportstatus = document.getElementById('reportstatus').value;
+    const modality = document.getElementById('modality').value;
+    const startDate = document.getElementById('startDate').value; // Assuming startDate and endDate are input fields
+    const endDate = document.getElementById('endDate').value;
+
+    const requestData = {
+        pid: pid,
+        pname: pname,
+        reportstatus: reportstatus,
+        modality: modality,
+        startDate: startDate,
+        endDate: endDate
+    };
+
+    const params = new URLSearchParams(requestData).toString();
+
+    fetch(`/search?${params}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('서버 응답 오류: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('검색 결과:', data);
+            displayResults(data); // displayResults 함수로 결과를 보여줍니다.
+        })
+        .catch(error => {
+            console.error('데이터를 불러오는 중 오류 발생:', error);
+            alert('데이터를 불러오는 중 오류가 발생했습니다.');
+        });
+}
+
+function displayResults(data) {
+    const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+    dataTable.innerHTML = '';
+
+    data.forEach(study => {
+        const row = dataTable.insertRow();
+
+        let reportStatusText = '';
+        switch (study.reportstatus) {
+            case 6:
+                reportStatusText = '판독';
+                break;
+            case 5:
+                reportStatusText = '예비판독';
+                break;
+            case 4:
+                reportStatusText = '열람중';
+                break;
+            case 3:
+                reportStatusText = '읽지않음';
+                break;
+            default:
+                reportStatusText = '알 수 없음';
+        }
+
+        row.innerHTML = `
+            <td>${study.pid}</td>
+            <td>${study.pname}</td>
+            <td>${study.modality}</td>
+            <td>${study.studydesc}</td>
+            <td>${study.studydate}</td>
+            <td>${reportStatusText}</td>
+            <td>${study.seriescnt}</td>
+            <td>${study.imagecnt}</td>
+            <td>${study.examstatus}</td>
+        `;
+    });
+}
