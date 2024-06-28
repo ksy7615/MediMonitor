@@ -160,9 +160,7 @@ function fetchReportByStudykey(studykey) {
         .then(data => {
             console.log(JSON.stringify(data, null, 2))
             console.log(data);
-            if(data.length !== 0) {
-                displayReport(data);
-            }
+            displayReport(data);
         })
         .catch(error => {
             console.error('오류 발생', error);
@@ -177,28 +175,27 @@ function displayReport(data) {
     const firstDoctorBox = document.getElementById('firstDoctor');
     const secondDoctorBox = document.getElementById('secondDoctor');
 
-    const comment = data[0].comment;
-    const exploration = data[0].exploration;
-    const preDoctor = data[0].preDoctor;
-    const firstDoctor = data[0].firstDoctor;
-    const secondDoctor = data[0].secondDoctor;
+    if (data.length >= 1) {
 
-    if(comment !== null) {
-        commentBox.value = comment;
-    }
-    if(exploration !== null) {
-        questBox.value = exploration;
-    }
-    if(preDoctor !== null) {
-        preDoctorBox.value = preDoctor;
-    }
-    if(firstDoctor !== null) {
-        firstDoctorBox.value = firstDoctor;
-    }
-    if(secondDoctor !== null) {
-        secondDoctorBox.value = secondDoctor;
-    }
+        const comment = data[0].comment;
+        const exploration = data[0].exploration;
+        const preDoctor = data[0].preDoctor;
+        const firstDoctor = data[0].firstDoctor;
+        const secondDoctor = data[0].secondDoctor;
 
+        commentBox.value = comment !== null ? comment : '';
+        questBox.value = exploration !== null ? exploration : '';
+        preDoctorBox.value = preDoctor !== null ? preDoctor : '';
+        firstDoctorBox.value = firstDoctor !== null ? firstDoctor : '';
+        secondDoctorBox.value = secondDoctor !== null ? secondDoctor : '';
+    } else {
+        console.log('진입');
+        commentBox.value = '';
+        questBox.value = '';
+        preDoctorBox.value = '';
+        firstDoctorBox.value = '';
+        secondDoctorBox.value = '';
+    }
 
 }
 
