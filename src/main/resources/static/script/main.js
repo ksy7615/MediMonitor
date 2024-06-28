@@ -317,7 +317,8 @@ const updateInputDates = () => {
 
 // month 넘기기
 prevNextIcon.forEach((icon) => {
-    icon.addEventListener('click', () => {
+    icon.addEventListener('click', (event) => {
+        event.preventDefault();
         currMonth = icon.id === 'prev' ? currMonth - 1 : currMonth + 1;
         if (currMonth < 0 || currMonth > 11) {
             date = new Date(currYear, currMonth);
@@ -389,13 +390,17 @@ const renderCalendar = () => {
 };
 renderCalendar();
 
+// 검색 파트
 function searchStudies() {
-    const pid = document.getElementById('pid').value;
-    const pname = document.getElementById('pname').value;
-    const reportstatus = document.getElementById('reportstatus').value;
-    const modality = document.getElementById('modality').value;
-    const startDate = document.getElementById('startDate').value; // Assuming startDate and endDate are input fields
-    const endDate = document.getElementById('endDate').value;
+    const pid = document.getElementById('pid').value || '';
+    const pname = document.getElementById('pname').value || '';
+    const reportstatus = document.getElementById('reportstatus').value || -1;
+    const modality = document.getElementById('modality').value || '';
+    const startDateElem = document.getElementById('startDate');
+    const endDateElem = document.getElementById('endDate');
+
+    const startDate = startDateElem ? startDateElem.value : '';
+    const endDate = endDateElem ? endDateElem.value : '';
 
     const requestData = {
         pid: pid,
@@ -406,9 +411,13 @@ function searchStudies() {
         endDate: endDate
     };
 
-    const params = new URLSearchParams(requestData).toString();
-
-    fetch(`/search?${params}`)
+    fetch('/main/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('서버 응답 오류: ' + response.status);
@@ -424,6 +433,11 @@ function searchStudies() {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
+
+document.getElementById('searchButton').addEventListener('click', function (event) {
+    event.preventDefault(); // 기본 동작 막기
+    searchStudies();
+});
 
 function displayResults(data) {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
