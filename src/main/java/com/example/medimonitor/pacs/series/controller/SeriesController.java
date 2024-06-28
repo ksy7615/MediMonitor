@@ -17,7 +17,6 @@ public class SeriesController {
 
     private final SeriesService seriesService;
 
-    @CrossOrigin
     @GetMapping("/detail/{studykey}")
     @ResponseBody
     public List<Series> findAllSeriesByStudykey(@PathVariable("studykey") long studykey) {
