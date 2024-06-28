@@ -40,111 +40,28 @@ public class StudyController {
         return "main";
     }
 
-    @GetMapping("/search")
+    @PostMapping("/main/search")
     @ResponseBody
-    public List<Study> findStudies(@ModelAttribute StudyRequestDto studyRequestDto){
-        List<Study> result = new ArrayList<>();
-        List<Study> temp = new ArrayList<>();
-
-        List<Study> findPid = new ArrayList<>();
-        List<Study> findPName = new ArrayList<>();
-        List<Study> findReportStatus = new ArrayList<>();
-        List<Study> findModality = new ArrayList<>();
-
-        boolean pidFlag = false;
-        boolean pNameFlag = false;
-        boolean reportStatusFlag = false;
-        boolean modalityFlag = false;
-
-        boolean start = false;
-
+    public List<Study> findStudies(@RequestBody StudyRequestDto studyRequestDto){
         String pid = studyRequestDto.getPid();
         String pname = studyRequestDto.getPname();
-        long reportstatus = studyRequestDto.getReportstatus();
+        Long reportstatus = studyRequestDto.getReportstatus();
         String modality = studyRequestDto.getModality();
         Date startDate = studyRequestDto.getStartDate();
         Date endDate = studyRequestDto.getEndDate();
 
-        System.out.println(startDate + " - " + endDate);
+        List<Study> result = new ArrayList<>();
 
-        if(!pid.isEmpty()){
-            findPid = studyService.findByPidLike(pid);
-            pidFlag = true;
+        if (pid != null && !pid.isEmpty()) {
+            result.addAll(studyService.findByPidLike(pid));
+        } else if (pname != null && !pname.isEmpty()) {
+            result.addAll(studyService.findByPnameLike(pname));
+        } else if (reportstatus != null) {
+            result.addAll(studyService.findByReportstatus(reportstatus));
+        } else if (modality != null && !modality.isEmpty()) {
+            result.addAll(studyService.findByModality(modality));
         }
 
-        if(!pname.isEmpty()){
-            findPName = studyService.findByPnameLike(pname);
-            pNameFlag = true;
-        }
-
-        if(reportstatus != -1){
-            findReportStatus = studyService.findByReportstatus(reportstatus);
-            reportStatusFlag = true;
-        }
-
-        if(!modality.isEmpty()){
-            findModality = studyService.findByModality(modality);
-            modalityFlag = true;
-        }
-
-        if(pidFlag){
-            result.addAll(findPid);
-            start = true;
-        }
-
-        if(pNameFlag && !start){
-            result.addAll(findPName);
-            start = true;
-        } else if (pNameFlag && start) {
-            for(int i=0; i<findPName.size(); i++){
-                Study study = findPName.get(i);
-
-                for(int j=0; j<result.size(); j++){
-                    if(study.getStudykey() == result.get(j).getStudykey()){
-                        temp.add(study);
-                    }
-                }
-            }
-            result.clear();
-            result.addAll(temp);
-            temp.clear();
-        }
-
-        if(reportStatusFlag && !start){
-            result.addAll(findReportStatus);
-            start = true;
-        } else if (reportStatusFlag && start) {
-            for(int i=0; i<findReportStatus.size(); i++){
-                Study study = findReportStatus.get(i);
-
-                for(int j=0; j<result.size(); j++){
-                    if(study.getStudykey() == result.get(j).getStudykey()){
-                        temp.add(study);
-                    }
-                }
-            }
-            result.clear();
-            result.addAll(temp);
-            temp.clear();
-        }
-
-        if(modalityFlag && !start){
-            result.addAll(findModality);
-            start = true;
-        } else if (modalityFlag && start) {
-            for(int i=0; i<findModality.size(); i++){
-                Study study = findModality.get(i);
-
-                for(int j=0; j<result.size(); j++){
-                    if(study.getStudykey() == result.get(j).getStudykey()){
-                        temp.add(study);
-                    }
-                }
-            }
-            result.clear();
-            result.addAll(temp);
-            temp.clear();
-        }
-        return  result;
+        return result;
     }
 }
