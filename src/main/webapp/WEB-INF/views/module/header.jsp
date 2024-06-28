@@ -13,7 +13,7 @@
 <body>
 <header class="header">
     <div id="header-logo">
-        <img src="${pageContext.request.contextPath}/style/image/logo.png" width="45px" height="40px" alt="MEDIMONITOR">
+        <img src="${pageContext.request.contextPath}/style/image/logo.png" width="40px" height="35px" alt="MEDIMONITOR">
         <span id="header-logo-front">MEDI</span>
         <span id="header-logo-back">MONITOR</span>
     </div>
