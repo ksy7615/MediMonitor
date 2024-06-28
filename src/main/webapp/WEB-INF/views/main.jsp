@@ -14,11 +14,11 @@
         <aside class="sidebar">
             <button class="button" id="getAllStudiesBtn">전체</button>
             <button class="button">재설정</button>
-            <form id="searchForm">
-                <div class="search">
+            <div class="search">
+                <form id="searchForm">
                     <input type="text" id="pid" name="pid" placeholder="환자 아이디">
                     <input type="text" id="pname" name="pname" placeholder="환자 이름">
-                    <select id="reportstatus" name="reportstatus" >
+                    <select id="reportstatus" name="reportstatus">
                         <option value="">판독상태</option>
                         <option value="3">읽지않음</option>
                         <option value="4">열람중</option>
@@ -48,9 +48,9 @@
                     </div>
                     <label>검사일자</label>
                     <div class="date-select">
-                        <input type="date" class="date-start" value="1990-01-01"/>
+                        <input type="date" id="startDate" name="startDate" class="date-start" value="1990-01-01"/>
                         <span>To</span>
-                        <input type="date" class="date-end"/>
+                        <input type="date" id="endDate" name="endDate" class="date-end"/>
                     </div>
                     <label>검사장비</label>
                     <select id="modality" name="modality">
@@ -96,9 +96,9 @@
                         <option value="NR">Not Requested</option>
                         <option value="RC">Request Completed</option>
                     </select>
-                    <button class="button search-button" onclick="searchStudies()">검색</button>
-                </div>
-            </form>
+                    <button type="button" class="button search-button" id="searchButton">검색</button>
+                </form>
+            </div>
         </aside>
 
         <main class="main-content">
