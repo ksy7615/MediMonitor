@@ -73,4 +73,17 @@ public class UserService {
 
         return userResponseDto;
     }
+
+    public boolean delete(String username) {
+        boolean result = false;
+
+        try {
+            userRepository.deleteById(username);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }
