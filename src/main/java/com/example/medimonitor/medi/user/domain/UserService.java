@@ -44,8 +44,11 @@ public class UserService {
         return result;
     }
 
-    public UserResponseDto findUserByIdAndPassword(String username, String password) {
+    public UserResponseDto findByUsernameAndPassword(String username, String password) {
         User user = userRepository.findByUsernameAndPassword(username, password);
+        if(user == null) {
+            return null;
+        }
         UserResponseDto userDto = new UserResponseDto(user);
         return userDto;
     }

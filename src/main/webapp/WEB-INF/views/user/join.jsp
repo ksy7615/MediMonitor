@@ -1,14 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>회원가입</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/user.css">
+    <c:import url="/header" />
 </head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/join.js"></script>
 <body>
     <div class="container">
-        <form class="signup-form" method="POST" action="/user/join">
+        <form class="signup-form" method="POST" action="${pageContext.request.contextPath}/join">
             <div class="blue-line"></div>
             <input type="text" id="username" placeholder="아이디">
             <input type="password" id="password" placeholder="비밀번호">
