@@ -93,8 +93,8 @@
                     <label>Verify</label>
                     <select id="examstatus">
                         <option value="">선택해주세요</option>
-                        <option value="NR">Not Requested</option>
-                        <option value="RC">Request Completed</option>
+                        <option value="1">Not Requested</option>
+                        <option value="2">Request Completed</option>
                     </select>
                     <button type="button" class="button search-button" id="searchButton">검색</button>
                 </form>
