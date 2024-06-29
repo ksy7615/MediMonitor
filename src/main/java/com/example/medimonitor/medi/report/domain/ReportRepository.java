@@ -1,6 +1,8 @@
 package com.example.medimonitor.medi.report.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,4 +16,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     Boolean existsByPreDoctor(String username);
     Boolean existsByFirstDoctor(String username);
     Boolean existsBySecondDoctor(String username);
+
+    @Query("SELECT r.secondDoctor FROM Report r WHERE r.studykey = :studykey")
+    String findSecondDoctorByStudykey(@Param("studykey") Long studykey);
 }
