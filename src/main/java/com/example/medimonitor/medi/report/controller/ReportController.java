@@ -24,7 +24,7 @@ public class ReportController {
         return reportService.getReportsByStudyKey(studykey);
     }
 
-    @PostMapping("/savePreReport")
+    @PostMapping("/saveReport")
     public ResponseEntity<?> savePreReport(@RequestBody ReportRequestDto report) {
         try {
             ReportResponseDto savedReport = reportService.saveReport(report);
