@@ -12,4 +12,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     List<Report> findByStudykey(long studykey);
     Boolean existsByStudykey(long studykey);
     Boolean existsByPreDoctor(String username);
+    Boolean existsByFirstDoctor(String username);
+    Boolean existsBySecondDoctor(String username);
 }
