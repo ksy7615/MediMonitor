@@ -34,11 +34,26 @@ public class ReportController {
         }
     }
 
+    // *
+//    @PostMapping("/saveReport")
+//    public ResponseEntity<?> saveReport(@RequestBody ReportRequestDto report) {
+//        try {
+//            ReportResponseDto saveReport = reportService.saveReport(report);
+//            return ResponseEn
+//        }
+//    }
+
     @GetMapping("/checkStudyKeyExistence")
     @ResponseBody
     public ResponseEntity<Boolean> checkStudyKeyExistence(@RequestParam long studykey) {
         boolean exists = reportService.checkIfStudyKeyExists(studykey);
         return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("/checkUser")
+    public ResponseEntity<Boolean> checkUser(@RequestParam String username) {
+        boolean equals =  reportService.checkIfUserExists(username);
+        return ResponseEntity.ok(equals);
     }
 
     @PutMapping("/updateReport")
