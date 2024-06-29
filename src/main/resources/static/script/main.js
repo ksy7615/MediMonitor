@@ -154,6 +154,49 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
         });
 });
 
+document.getElementById("btn-reading").addEventListener('click', () => {
+    const comment = document.getElementById('comment').value;
+    const quest = document.getElementById('quest').value;
+    const username = document.getElementById('username').value;
+
+    if (!currentStudyKey) {
+        alert("먼저 항목을 선택하세요.");
+        return;
+    }
+
+    const reportData = {
+        studykey: currentStudyKey,
+        comment: comment,
+        exploration: quest,
+        status: 'decipher',
+        preDoctor: username
+    };
+
+    // studykey가 존재하는지 확인하는 함수 호출
+    checkStudyKeyExistence(currentStudyKey)
+        .then(exists => {
+            if (exists) {
+                const username = document.getElementById('username').value;
+                checkPreDoctor(username)
+                    .then(equals => {
+                        if (equals) {
+                            updateReport(reportData);
+                        } else {
+                            alert('담당자만 관리 가능합니다.')
+                        }
+                    })
+            } else {
+                // studykey가 존재하지 않으면 삽입
+                savePreReport(reportData);
+            }
+        })
+        .catch(error => {
+            console.error('오류 발생:', error);
+            alert('저장 중 오류가 발생했습니다.');
+        });
+});
+
+
 function checkStudyKeyExistence(studykey) {
     return fetch(`/checkStudyKeyExistence?studykey=${studykey}`)
         .then(response => {
@@ -170,7 +213,7 @@ function checkStudyKeyExistence(studykey) {
 }
 
 function checkPreDoctor(username) {
-    return fetch(`/checkUser?username=${username}`)
+    return fetch(`/checkPreDoctor?username=${username}`)
         .then(response => {
             if(!response.ok) {
                 throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
@@ -183,6 +226,7 @@ function checkPreDoctor(username) {
             throw error;
         })
 }
+
 
 function updateReport(reportData) {
     fetch('/updateReport', {
