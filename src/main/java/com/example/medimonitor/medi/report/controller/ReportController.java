@@ -66,6 +66,12 @@ public class ReportController {
         return ResponseEntity.ok(equals);
     }
 
+    @GetMapping("/checkSecondDoctorValue")
+    public ResponseEntity<Boolean> checkSecondDoctorValue(@RequestParam Long studykey) {
+        boolean isEmpty = reportService.isSecondDoctorValueEmpty(studykey);
+        return ResponseEntity.ok(isEmpty);
+    }
+
     @GetMapping("/checkFirstDoctor")
     public ResponseEntity<Boolean> checkFirstDoctor(@RequestParam String username) {
         boolean equals = reportService.checkIfFirstDoctorExists(username);
