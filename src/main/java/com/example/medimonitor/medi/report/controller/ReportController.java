@@ -51,8 +51,20 @@ public class ReportController {
     }
 
     @GetMapping("/checkPreDoctor")
-    public ResponseEntity<Boolean> checkUser(@RequestParam String username) {
+    public ResponseEntity<Boolean> checkPreDoctor(@RequestParam String username) {
         boolean equals =  reportService.checkIfPreDoctorExists(username);
+        return ResponseEntity.ok(equals);
+    }
+
+    @GetMapping("/checkFirstDoctor")
+    public ResponseEntity<Boolean> checkFirstDoctor(@RequestParam String username) {
+        boolean equals = reportService.checkIfFirstDoctorExists(username);
+        return ResponseEntity.ok(equals);
+    }
+
+    @GetMapping("/checkSecondDoctor")
+    public ResponseEntity<Boolean> checkSecondDoctor(@RequestParam String username) {
+        boolean equals = reportService.checkIfSecondDoctorExists(username);
         return ResponseEntity.ok(equals);
     }
 
