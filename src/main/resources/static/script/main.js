@@ -145,7 +145,7 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
                     })
             } else {
                 // studykey가 존재하지 않으면 삽입
-                saveReport(reportData);
+                savePreReport(reportData);
             }
         })
         .catch(error => {
@@ -210,7 +210,7 @@ function updateReport(reportData) {
         });
 }
 
-function saveReport(reportData) {
+function savePreReport(reportData) {
     fetch('/savePreReport', {
         method: 'POST',
         headers: {
