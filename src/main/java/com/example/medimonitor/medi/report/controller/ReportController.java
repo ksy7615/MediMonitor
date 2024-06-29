@@ -52,7 +52,7 @@ public class ReportController {
 
     @GetMapping("/checkUser")
     public ResponseEntity<Boolean> checkUser(@RequestParam String username) {
-        boolean equals =  reportService.checkIfUserExists(username);
+        boolean equals =  reportService.checkIfPreDoctorExists(username);
         return ResponseEntity.ok(equals);
     }
 

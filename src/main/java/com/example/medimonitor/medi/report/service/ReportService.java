@@ -27,8 +27,8 @@ public class ReportService {
         return reportRepository.existsByStudykey(studyKey);
     }
 
-    public boolean checkIfUserExists(String username) {
-        return reportRepository.existsById(username);
+    public boolean checkIfPreDoctorExists(String username) {
+        return reportRepository.existsByPreDoctor(username);
     }
 
     public List<Report> getReportsByStudyKey(long studyKey) {
