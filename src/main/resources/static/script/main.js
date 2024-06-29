@@ -72,11 +72,16 @@ function updateTable(data) {
 
 function getReportStatusText(status) {
     switch (status) {
-        case 'decipher': return '판독';
-        case 'predecipher': return '예비판독';
-        case 'reading': return '열람중';
-        case 'notread': return '읽지않음';
-        default: return '읽지않음';
+        case 'decipher':
+            return '판독';
+        case 'predecipher':
+            return '예비판독';
+        case 'reading':
+            return '열람중';
+        case 'notread':
+            return '읽지않음';
+        default:
+            return '읽지않음';
     }
 }
 
@@ -129,8 +134,15 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
     checkStudyKeyExistence(currentStudyKey)
         .then(exists => {
             if (exists) {
-                // studykey가 존재하면 업데이트
-                updateReport(reportData);
+                const username = document.getElementById('username').value;
+                checkPreDoctor(username)
+                    .then(equals => {
+                        if (equals) {
+                            updateReport(reportData);
+                        } else {
+                            alert('담당자만 관리 가능합니다.')
+                        }
+                    })
             } else {
                 // studykey가 존재하지 않으면 삽입
                 saveReport(reportData);
@@ -157,6 +169,21 @@ function checkStudyKeyExistence(studykey) {
         });
 }
 
+function checkPreDoctor(username) {
+    return fetch(`/checkUser?username=${username}`)
+        .then(response => {
+            if(!response.ok) {
+                throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data=>data)
+        .catch(error => {
+            console.error('오류 발생:', error);
+            throw error;
+        })
+}
+
 function updateReport(reportData) {
     fetch('/updateReport', {
         method: 'PUT',
@@ -167,7 +194,9 @@ function updateReport(reportData) {
     })
         .then(response => {
             if (!response.ok) {
-                return response.text().then(text => { throw new Error('네트워크 응답이 올바르지 않습니다: ' + text); });
+                return response.text().then(text => {
+                    throw new Error('네트워크 응답이 올바르지 않습니다: ' + text);
+                });
             }
             return response.json();
         })
@@ -191,7 +220,9 @@ function saveReport(reportData) {
     })
         .then(response => {
             if (!response.ok) {
-                return response.text().then(text => { throw new Error('네트워크 응답이 올바르지 않습니다: ' + text); });
+                return response.text().then(text => {
+                    throw new Error('네트워크 응답이 올바르지 않습니다: ' + text);
+                });
             }
             return response.json();
         })
