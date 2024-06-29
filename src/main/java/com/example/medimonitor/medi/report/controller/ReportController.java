@@ -34,6 +34,16 @@ public class ReportController {
         }
     }
 
+    @PostMapping("/saveFirstReport")
+    public ResponseEntity<?> saveFirstReport(@RequestBody ReportRequestDto report) {
+        try {
+            ReportResponseDto savedReport = reportService.saveReport(report);
+            return ResponseEntity.ok(savedReport);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("{\"error\":\"저장 중 오류 발생: " + e.getMessage() + "\"}");
+        }
+    }
+
     // *
 //    @PostMapping("/saveReport")
 //    public ResponseEntity<?> saveReport(@RequestBody ReportRequestDto report) {
