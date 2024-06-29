@@ -27,6 +27,10 @@ public class ReportService {
         return reportRepository.existsByStudykey(studyKey);
     }
 
+    public boolean checkIfUserExists(String username) {
+        return reportRepository.existsById(username);
+    }
+
     public List<Report> getReportsByStudyKey(long studyKey) {
         if (checkIfStudyKeyExists(studyKey)) {
             return reportRepository.findByStudykey(studyKey);
@@ -42,7 +46,6 @@ public class ReportService {
             report.setComment(dto.getComment());
             report.setExploration(dto.getExploration());
             report.setStatus(dto.getStatus());
-            report.setPreDoctor(dto.getPreDoctor());
             // 필요한 경우 다른 필드들도 업데이트
             reportRepository.save(report);
         }
