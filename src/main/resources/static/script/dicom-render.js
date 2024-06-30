@@ -1,14 +1,14 @@
 import * as cornerstone from '@cornerstonejs/core';
 import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader';
 import * as dicomParser from 'dicom-parser';
-import {init as csToolsInit} from "@cornerstonejs/tools";
-import * as cornerstoneTools from "@cornerstonejs/tools";
+import * as tools from './setTools.js'
 
-const {ToolGroupManager, Enums: csToolsEnums} = cornerstoneTools;
-const {MouseBindings} = csToolsEnums;
 
 const content = document.getElementById('content');
 const element = document.createElement('div');
+
+// 우클릭 방지
+element.oncontextmenu = (e) => e.preventDefault();
 element.style.width = '500px';
 element.style.height = '500px';
 content.appendChild(element);
@@ -103,7 +103,7 @@ const render = (imageIds) => {
     const viewportId = 'CT_AXIAL_STACK';
 
     // 툴 설정
-    setTools(viewportId, renderingEngineId);
+    tools.setTools(viewportId, renderingEngineId);
 
     // Rendering Engine 및 Viewport 설정
     const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
@@ -122,44 +122,6 @@ const render = (imageIds) => {
 
     // Viewport 렌더링
     viewport.render();
-};
-
-// 툴 설정 함수
-const setTools = (viewportId, renderingEngineId) => {
-    csToolsInit();
-
-    const toolGroupId = 'NAVIGATION_TOOL_GROUP_ID';
-
-    const {MagnifyTool, TrackballRotateTool, ZoomTool, StackScrollMouseWheelTool} = cornerstoneTools;
-
-    cornerstoneTools.addTool(MagnifyTool);
-    cornerstoneTools.addTool(TrackballRotateTool);
-    cornerstoneTools.addTool(ZoomTool);
-    cornerstoneTools.addTool(StackScrollMouseWheelTool);
-
-    const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
-
-    toolGroup.addTool(MagnifyTool.toolName, {cursor: 'move'});
-    toolGroup.addTool(TrackballRotateTool.toolName, {cursor: 'crosshair'});
-    toolGroup.addTool(ZoomTool.toolName, {cursor: 'zoom-in'});
-    toolGroup.addTool(StackScrollMouseWheelTool.toolName);
-
-    // 툴 활성화 설정
-    toolGroup.setToolActive(MagnifyTool.toolName, {
-        bindings: [{mouseButton: MouseBindings.Primary}],
-    });
-
-    toolGroup.setToolActive(TrackballRotateTool.toolName, {
-        bindings: [{mouseButton: MouseBindings.Auxiliary}],
-    });
-
-    toolGroup.setToolActive(ZoomTool.toolName, {
-        bindings: [{mouseButton: MouseBindings.Secondary}],
-    });
-
-    toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
-
-    toolGroup.addViewport(viewportId, renderingEngineId);
 };
 
 // 초기화 함수 호출 후 데이터 불러오기 및 렌더링
