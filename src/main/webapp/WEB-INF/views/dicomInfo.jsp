@@ -12,6 +12,7 @@
 </head>
 <body>
 <div id="content"></div>
+<%--여기에 툴바 만들기--%>
 
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 </body>
