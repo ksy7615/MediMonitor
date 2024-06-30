@@ -185,7 +185,6 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                                 studykey: currentStudyKey,
                                 comment: comment,
                                 exploration: quest,
-                                status: 'decipher',
                                 secondDoctor: username
                             };
                             updateReport(reportData);
