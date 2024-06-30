@@ -180,14 +180,28 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                 checkSecondDoctorValue(currentStudyKey)
                     .then(isEmpty => {
                         if (isEmpty) {
-                            // firstDoctor 인지, secondDoctor인지 다르기 때문에 각각 써줌
-                            const reportData = {
-                                studykey: currentStudyKey,
-                                comment: comment,
-                                exploration: quest,
-                                secondDoctor: username
-                            };
-                            updateReport(reportData);
+                           checkFirstDoctor(username)
+                               .then(equals => {
+                                   if(equals){
+                                       const reportData = {
+                                           studykey: currentStudyKey,
+                                           comment: comment,
+                                           exploration: quest,
+                                           status: 'decipher',
+                                       };
+                                      updateReport(reportData);
+                                   } else {
+                                       const reportData = {
+                                           studykey: currentStudyKey,
+                                           comment: comment,
+                                           exploration: quest,
+                                           secondDoctor: username
+                                       };
+
+                                       updateSecondReport(reportData);
+                                   }
+                               })
+
                         } else {
                             checkFirstDoctor(username)
                                 .then(equals => {
@@ -353,6 +367,32 @@ function updateReport(reportData) {
         .then(data => {
             console.log('업데이트 성공:', data);
             alert('성공적으로 업데이트 되었습니다.');
+        })
+        .catch(error => {
+            console.error('업데이트 중 오류 발생:', error);
+            alert('업데이트 중 오류가 발생했습니다.');
+        });
+}
+
+function updateSecondReport(reportData) {
+    fetch('/updateSecondReport', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reportData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error('네트워크 응답이 올바르지 않습니다: ' + text);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('업데이트 성공:', data);
+            alert('성공적으로 저장 되었습니다.');
         })
         .catch(error => {
             console.error('업데이트 중 오류 발생:', error);
