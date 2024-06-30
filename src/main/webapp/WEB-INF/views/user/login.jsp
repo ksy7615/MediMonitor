@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/user.css">
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/login.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/user/login.js"></script>
 <body>
 <c:if test="${not empty user}">
     <script type="text/javascript">
