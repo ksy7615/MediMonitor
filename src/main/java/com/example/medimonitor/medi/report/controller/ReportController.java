@@ -90,4 +90,14 @@ public class ReportController {
             return ResponseEntity.status(500).body("{\"error\":\"업데이트 중 오류 발생: " + e.getMessage() + "\"}");
         }
     }
+
+    @PutMapping("/updateSecondReport")
+    public ResponseEntity<?> updateSecondReport(@RequestBody ReportRequestDto reportRequestDto) {
+        try {
+            reportService.updateReport(reportRequestDto);
+            return ResponseEntity.ok().body("{\"message\":\"업데이트 성공\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("{\"error\":\"업데이트 중 오류 발생: " + e.getMessage() + "\"}");
+        }
+    }
 }
