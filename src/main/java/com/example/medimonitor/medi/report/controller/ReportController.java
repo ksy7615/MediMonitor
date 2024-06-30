@@ -44,15 +44,6 @@ public class ReportController {
         }
     }
 
-    // *
-//    @PostMapping("/saveReport")
-//    public ResponseEntity<?> saveReport(@RequestBody ReportRequestDto report) {
-//        try {
-//            ReportResponseDto saveReport = reportService.saveReport(report);
-//            return ResponseEn
-//        }
-//    }
-
     @GetMapping("/checkStudyKeyExistence")
     @ResponseBody
     public ResponseEntity<Boolean> checkStudyKeyExistence(@RequestParam long studykey) {
@@ -61,14 +52,20 @@ public class ReportController {
     }
 
     @GetMapping("/checkPreDoctor")
-    public ResponseEntity<Boolean> checkPreDoctor(@RequestParam String username) {
-        boolean equals =  reportService.checkIfPreDoctorExists(username);
-        return ResponseEntity.ok(equals);
+    public ResponseEntity<Boolean> checkPreDoctor(@RequestParam Long studykey, @RequestParam String username) {
+        boolean matches = reportService.checkIfPreDoctorMatches(studykey, username);
+        return ResponseEntity.ok(matches);
     }
 
     @GetMapping("/checkSecondDoctorValue")
     public ResponseEntity<Boolean> checkSecondDoctorValue(@RequestParam Long studykey) {
         boolean isEmpty = reportService.isSecondDoctorValueEmpty(studykey);
+        return ResponseEntity.ok(isEmpty);
+    }
+
+    @GetMapping("/checkFirstDoctorValue")
+    public ResponseEntity<Boolean> checkFirstDoctorValue(@RequestParam Long studykey) {
+        boolean isEmpty = reportService.isFirstDoctorValueEmpty(studykey);
         return ResponseEntity.ok(isEmpty);
     }
 

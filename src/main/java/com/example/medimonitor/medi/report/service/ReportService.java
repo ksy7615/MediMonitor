@@ -4,11 +4,9 @@ import com.example.medimonitor.medi.report.domain.Report;
 import com.example.medimonitor.medi.report.domain.ReportRepository;
 import com.example.medimonitor.medi.report.dto.ReportRequestDto;
 import com.example.medimonitor.medi.report.dto.ReportResponseDto;
-import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +25,8 @@ public class ReportService {
         return reportRepository.existsByStudykey(studyKey);
     }
 
-    public boolean checkIfPreDoctorExists(String username) {
-        return reportRepository.existsByPreDoctor(username);
+    public boolean checkIfPreDoctorMatches(Long studykey, String username) {
+        return reportRepository.existsByStudykeyAndPreDoctor(studykey, username);
     }
 
     public boolean checkIfFirstDoctorExists(String username) {
@@ -46,6 +44,15 @@ public class ReportService {
     public boolean isSecondDoctorValueEmpty(Long studykey) {
         String secondDoctor = getSecondDoctorByStudykey(studykey);
         return secondDoctor == null || secondDoctor.isEmpty();
+    }
+
+    public String getFirstDoctorByStudykey(Long studykey) {
+        return reportRepository.findFirstDoctorByStudykey(studykey);
+    }
+
+    public boolean isFirstDoctorValueEmpty(Long studykey) {
+        String firstDoctor = getFirstDoctorByStudykey(studykey);
+        return firstDoctor == null || firstDoctor.isEmpty();
     }
 
 
