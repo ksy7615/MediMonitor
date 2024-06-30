@@ -2,7 +2,7 @@ const path = require("path");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 module.exports = {
-    entry: './script/dicom-render.js',      // 시작 파일의 경로 명세
+    entry: ['./script/dicom-render.js','./script/setTools.js'],      // 시작 파일의 경로 명세
     output: {
         filename: 'bundle.js',              // 출력 파일의 이름
         path: path.resolve(__dirname, 'dist')// 출력 디렉토리
