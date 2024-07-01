@@ -17,7 +17,7 @@
 <div class="container">
     <h1>회원정보 수정</h1>
     <form class="signup-form" method="POST" action="${pageContext.request.contextPath}/join">
-        <div class="blue-line"></div>
+        <div class="join-blue-line"></div>
         <input type="text" id="username" placeholder="아이디" value="${user.username}" disabled>
         <input type="password" id="new-password" placeholder="새비밀번호">
         <input type="text" id="name" placeholder="이름" value="${user.name}" disabled>
