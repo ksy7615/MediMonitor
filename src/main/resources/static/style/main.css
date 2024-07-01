@@ -198,7 +198,8 @@ header .admin {
     margin-bottom: 10px;
 }
 
-#data-table tbody tr:hover td {
+#data-table tbody tr:hover td,
+#previous-table tbody tr:hover td{
     background-color: #777777;
     cursor: pointer;
 }

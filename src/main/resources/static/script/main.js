@@ -54,7 +54,7 @@ function updateTable(data) {
             <td>${study.pname}</td>
             <td>${study.modality}</td>
             <td>${study.studydesc}</td>
-            <td>${study.studydate}</td>
+            <td class="studydate">${study.studydate}</td>
             <td>${reportStatusText}</td>
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
@@ -96,7 +96,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
             const studyKey = targetRow.querySelector('.studykey').value;
-            const url = `/path/to/destinationPage?studykey=${encodeURIComponent(studyKey)}`;
+            const studyDate = targetRow.querySelector('.studydate').value;
+            const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}/1`;
             window.location.href = url;
         }
     });
@@ -495,18 +496,38 @@ function displayPrevious(data) {
         row.innerHTML = `
             <td>${study.modality}</td>
             <td>${study.studydesc}</td>
-            <td>${study.studydate}</td>
+            <td class="studydate">${study.studydate}</td>
             <td>${reportStatusText}</td>
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
             <td>${study.examstatus}</td>
             <input type="hidden" class="pid" value="${study.pid}">
             <input type="hidden" class="pname" value="${study.pname}">
+            <input type="hidden" class="studykey" value="${study.studykey}">
         `;
         document.querySelector('.previous-id').textContent = `환자 아이디: ${study.pid}`;
         document.querySelector('.previous-name').textContent = `환자 이름: ${study.pname}`;
     });
 }
+
+const previousTable = document.getElementById('previous-table').getElementsByTagName('tbody')[0];
+previousTable.addEventListener('click', function(event) {
+    const targetRow = event.target.closest('tr');
+    if(targetRow){
+        currentStudyKey = targetRow.querySelector('.studykey').value;
+        fetchReportByStudykey(currentStudyKey);
+    }
+});
+
+previousTable.addEventListener('dblclick', function(event){
+    const targetRow = event.target.closest('tr');
+    if(targetRow){
+        const studyKey = targetRow.querySelector('.studykey').value;
+        const studyDate = targetRow.querySelector('.studydate').value;
+        const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}/1`;
+        window.location.href = url;
+    }
+});
 
 // 달력 PART
 let date = new Date();
@@ -690,7 +711,7 @@ function displayResults(data) {
             <td>${study.pname}</td>
             <td>${study.modality}</td>
             <td>${study.studydesc}</td>
-            <td>${study.studydate}</td>
+            <td class="studydate">${study.studydate}</td>
             <td>${reportStatusText}</td>
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
