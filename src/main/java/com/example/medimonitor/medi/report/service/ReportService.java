@@ -64,7 +64,7 @@ public class ReportService {
         }
     }
 
-    public void updateReport(ReportRequestDto dto) {
+    public void updateSecondReport(ReportRequestDto dto) {
         Optional<Report> optionalReport = reportRepository.findFirstByStudykey(dto.getStudykey());
         if (optionalReport.isPresent()) {
             Report report = optionalReport.get();
@@ -77,13 +77,14 @@ public class ReportService {
         }
     }
 
-    public void updateSecondReport(ReportRequestDto dto) {
+    public void updateReport(ReportRequestDto dto) {
         Optional<Report> optionalReport = reportRepository.findFirstByStudykey(dto.getStudykey());
         if (optionalReport.isPresent()) {
             Report report = optionalReport.get();
             report.setComment(dto.getComment());
             report.setExploration(dto.getExploration());
             report.setStatus(dto.getStatus());
+
             // 필요한 경우 다른 필드들도 업데이트
             reportRepository.save(report);
         }

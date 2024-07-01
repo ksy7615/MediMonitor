@@ -2,12 +2,10 @@ let currentPage = 0;
 const pageSize = 5;
 let totalPages = 0;
 let currentStudyKey = null; // 전역 변수 추가
-
 document.getElementById('getAllStudiesBtn').addEventListener('click', function () {
     currentPage = 0;
     fetchStudies(currentPage, pageSize);
 });
-
 document.getElementById('left').addEventListener('click', function () {
     if (currentPage > 0) {
         currentPage--;
@@ -16,7 +14,6 @@ document.getElementById('left').addEventListener('click', function () {
         alert("첫 페이지입니다.");
     }
 });
-
 document.getElementById('right').addEventListener('click', function () {
     if (currentPage < totalPages - 1) {
         currentPage++;
@@ -25,7 +22,6 @@ document.getElementById('right').addEventListener('click', function () {
         alert("다음 페이지가 없습니다.");
     }
 });
-
 function fetchStudies(page, size) {
     fetch(`/mainAllSearch?page=${page}&size=${size}`)
         .then(response => response.ok ? response.json() : Promise.reject(response))
@@ -39,22 +35,17 @@ function fetchStudies(page, size) {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
-
 function updatePageInfo(currentPage, totalPages) {
     document.getElementById('pageCnt').textContent = `${currentPage + 1}/${totalPages}ㅤ`;
 }
-
 function updateTable(data) {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
-
     data.content.forEach(item => {
         const row = dataTable.insertRow();
         const study = item.study;
         const reportStatus = item.report.status;
-
         const reportStatusText = getReportStatusText(reportStatus);
-
         row.innerHTML = `
             <td>${study.pid}</td>
             <td>${study.pname}</td>
@@ -69,7 +60,6 @@ function updateTable(data) {
         `;
     });
 }
-
 function getReportStatusText(status) {
     switch (status) {
         case 'decipher':
@@ -84,24 +74,19 @@ function getReportStatusText(status) {
             return '읽지않음';
     }
 }
-
 document.addEventListener('DOMContentLoaded', function () {
     fetchStudies(currentPage, pageSize);
-
     const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-
     table.addEventListener('click', function (event) {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
             const pid = targetRow.querySelector('td:nth-child(1)').textContent;
             currentStudyKey = targetRow.querySelector('.studykey').value; // currentStudyKey 업데이트
-
             enableReportInputs();
             fetchStudiesByPid(pid);
             fetchReportByStudykey(currentStudyKey);
         }
     });
-
     table.addEventListener('dblclick', function (event) {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
@@ -111,17 +96,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
 document.getElementById("btn-pre-reading").addEventListener('click', () => {
     const comment = document.getElementById('comment').value;
     const quest = document.getElementById('quest').value;
     const username = document.getElementById('username').value;
-
     if (!currentStudyKey) {
         alert("먼저 항목을 선택하세요.");
         return;
     }
-
     const reportData = {
         studykey: currentStudyKey,
         comment: comment,
@@ -129,7 +111,6 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
         status: 'predecipher',
         preDoctor: username
     };
-
     // studykey가 존재하는지 확인하는 함수 호출
     checkStudyKeyExistence(currentStudyKey)
         .then(exists => {
@@ -145,11 +126,9 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
                                     if(exists) {
                                         alert('담당자만 관리 가능합니다.');
                                     } else {
-
                                         alert('이미 판독이 완료되었습니다.')
                                     }
                                 })
-
                         }
                     });
             } else {
@@ -162,51 +141,46 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
             alert('저장 중 오류가 발생했습니다.');
         });
 });
-
 document.getElementById("btn-reading").addEventListener('click', () => {
     const comment = document.getElementById('comment').value;
     const quest = document.getElementById('quest').value;
     const username = document.getElementById('username').value;
-
     if (!currentStudyKey) {
         alert("먼저 항목을 선택하세요.");
         return;
     }
-
     // studykey가 존재하는지 확인하는 함수 호출
     checkStudyKeyExistence(currentStudyKey)
         .then(exists => {
             if (exists) {
                 checkSecondDoctorValue(currentStudyKey)
                     .then(isEmpty => {
-                        if (isEmpty) {
-                           checkFirstDoctor(username)
-                               .then(equals => {
-                                   if(equals){
-                                       const reportData = {
-                                           studykey: currentStudyKey,
-                                           comment: comment,
-                                           exploration: quest,
-                                           status: 'decipher',
-                                       };
-                                      updateReport(reportData);
-                                   } else {
-                                       const reportData = {
-                                           studykey: currentStudyKey,
-                                           comment: comment,
-                                           exploration: quest,
-                                           secondDoctor: username
-                                       };
+                        if (isEmpty) { checkFirstDoctor(username)
+                            .then(equals => {
+                                if(equals){
+                                    const reportData = {
+                                        studykey: currentStudyKey,
+                                        comment: comment,
+                                        exploration: quest,
+                                        status: 'decipher',
+                                    };
+                                    updateReport(reportData);
+                                } else {
+                                    const reportData = {
+                                        studykey: currentStudyKey,
+                                        comment: comment,
+                                        exploration: quest,
+                                        secondDoctor: username
+                                    };
 
-                                       updateSecondReport(reportData);
-                                   }
-                               })
+                                    updateSecondReport(reportData);
+                                }
+                            })
 
                         } else {
                             checkFirstDoctor(username)
                                 .then(equals => {
                                     if (equals) {
-
                                         const reportData = {
                                             studykey: currentStudyKey,
                                             comment: comment,
@@ -214,14 +188,11 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                                             status: 'decipher',
                                             firstDoctor: username
                                         };
-
                                         updateReport(reportData);
-
                                     } else {
                                         checkSecondDoctor(username)
                                             .then(equals => {
                                                 if (equals) {
-
                                                     const reportData = {
                                                         studykey: currentStudyKey,
                                                         comment: comment,
@@ -229,7 +200,6 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                                                         status: 'decipher',
                                                         secondDoctor: username
                                                     };
-
                                                     updateReport(reportData);
                                                 } else {
                                                     alert('담당자만 관리 가능합니다.');
@@ -257,7 +227,6 @@ document.getElementById("btn-reading").addEventListener('click', () => {
             alert('저장 중 오류가 발생했습니다.');
         });
 });
-
 function checkStudyKeyExistence(studykey) {
     return fetch(`/checkStudyKeyExistence?studykey=${studykey}`)
         .then(response => {
@@ -272,7 +241,6 @@ function checkStudyKeyExistence(studykey) {
             throw error;
         });
 }
-
 function checkSecondDoctorValue(studykey) {
     return fetch(`/checkSecondDoctorValue?studykey=${studykey}`)
         .then(response => {
@@ -287,7 +255,6 @@ function checkSecondDoctorValue(studykey) {
             throw error;
         });
 }
-
 function checkFirstDoctorValue(studykey) {
     return fetch(`/checkFirstDoctorValue?studykey=${studykey}`)
         .then(response => {
@@ -302,7 +269,6 @@ function checkFirstDoctorValue(studykey) {
             throw error;
         });
 }
-
 function checkPreDoctor(username) {
     return fetch(`/checkPreDoctor?studykey=${currentStudyKey}&username=${username}`)
         .then(response => {
@@ -317,7 +283,6 @@ function checkPreDoctor(username) {
             throw error;
         });
 }
-
 function checkFirstDoctor(username) {
     return fetch(`/checkFirstDoctor?username=${username}`)
         .then(response => {
@@ -332,7 +297,6 @@ function checkFirstDoctor(username) {
             throw error;
         });
 }
-
 function checkSecondDoctor(username) {
     return fetch(`/checkSecondDoctor?username=${username}`)
         .then(response => {
@@ -347,7 +311,6 @@ function checkSecondDoctor(username) {
             throw error;
         });
 }
-
 function updateReport(reportData) {
     fetch('/updateReport', {
         method: 'PUT',
@@ -425,12 +388,10 @@ function saveReport(reportData) {
             alert('저장 중 오류가 발생했습니다.');
         });
 }
-
 function enableReportInputs() {
     document.getElementById('comment').disabled = false;
     document.getElementById('quest').disabled = false;
 }
-
 function fetchStudiesByPid(pId) {
     fetch(`/mainPrevious/${pId}`)
         .then(response => response.ok ? response.json() : Promise.reject(response))
@@ -442,7 +403,6 @@ function fetchStudiesByPid(pId) {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
-
 function fetchReportByStudykey(studykey) {
     fetch(`/mainReport/${studykey}`)
         .then(response => response.ok ? response.json() : Promise.reject(response))
@@ -454,21 +414,18 @@ function fetchReportByStudykey(studykey) {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
-
 function displayReport(data) {
     const commentBox = document.getElementById('comment');
     const questBox = document.getElementById('quest');
     const preDoctorBox = document.getElementById('preDoctor');
     const firstDoctorBox = document.getElementById('firstDoctor');
     const secondDoctorBox = document.getElementById('secondDoctor');
-
     if (data.length >= 1) {
         const comment = data[0].comment;
         const exploration = data[0].exploration;
         const preDoctor = data[0].preDoctor;
         const firstDoctor = data[0].firstDoctor;
         const secondDoctor = data[0].secondDoctor;
-
         commentBox.value = comment !== null ? comment : '';
         questBox.value = exploration !== null ? exploration : '';
         preDoctorBox.value = preDoctor !== null ? preDoctor : '';
@@ -482,19 +439,14 @@ function displayReport(data) {
         secondDoctorBox.value = '';
     }
 }
-
 function displayPrevious(data) {
     const dataTable = document.getElementById('previous-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
-
     data.forEach(item => {
         const row = dataTable.insertRow();
-
         const study = item.study;
         const reportStatus = item.report.status;
-
         const reportStatusText = getReportStatusText(reportStatus);
-
         row.innerHTML = `
             <td>${study.modality}</td>
             <td>${study.studydesc}</td>
@@ -506,24 +458,19 @@ function displayPrevious(data) {
             <input type="hidden" class="pid" value="${study.pid}">
             <input type="hidden" class="pname" value="${study.pname}">
         `;
-
         document.querySelector('.previous-id').textContent = `환자 아이디: ${study.pid}`;
         document.querySelector('.previous-name').textContent = `환자 이름: ${study.pname}`;
     });
 }
-
 // 달력 PART
 let date = new Date();
 let currYear = date.getFullYear(),
     currMonth = date.getMonth();
-
 // 달력 밑 input 요소 value에 today 설정
 let day = String(date.getDate()).padStart(2, '0');
 let month = String(date.getMonth() + 1).padStart(2, '0');
 let todayString = currYear + '-' + month + '-' + day;
-
 document.querySelector('.date-end').value = todayString;
-
 const months = [
     'January',
     'February',
@@ -538,19 +485,14 @@ const months = [
     'November',
     'December',
 ];
-
 // 달력 월 넘기는 버튼
 const prevNextIcon = document.querySelectorAll('.material-icons');
-
 // 달력 상단 연도, 월 출력
 const currentDate = document.querySelector('.current-date');
 currentDate.innerHTML = `${months[currMonth]} ${currYear}`;
-
 const daysTag = document.querySelector('.days');
-
 let startDate = null;
 let endDate = null;
-
 // input date 설정 함수
 const updateInputDates = () => {
     const dateStartInput = document.querySelector('.date-start');
@@ -562,7 +504,6 @@ const updateInputDates = () => {
         dateEndInput.value = endDate.toISOString().split('T')[0];
     }
 };
-
 // month 넘기기
 prevNextIcon.forEach((icon) => {
     icon.addEventListener('click', (event) => {
@@ -578,25 +519,19 @@ prevNextIcon.forEach((icon) => {
         renderCalendar();
     });
 });
-
 // 캘린더를 불러오는 함수
 const renderCalendar = () => {
     currentDate.innerHTML = `${months[currMonth]} ${currYear}`;
-
     // 현재 달의 마지막 날짜 확인
     let lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate();
-
     let liTag = '';
-
     // 이전 달의 날짜 포함 출력
     let firstDayofMonth = new Date(currYear, currMonth, 1).getDay();
     let lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay();
     let lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate();
-
     for (let i = firstDayofMonth; i > 0; i--) {
         liTag += `<li class = "inactive" data-date="${currYear}-${String(currMonth).padStart(2, '0')}-${String(lastDateofLastMonth - i + 1).padStart(2, '0')}">${lastDateofLastMonth - i + 1}</li>`;
     }
-
     // 오늘의 날짜를 표시하며 날짜 출력
     for (let i = 1; i <= lastDateofMonth; i++) {
         let isToday =
@@ -607,13 +542,11 @@ const renderCalendar = () => {
                 : '';
         liTag += `<li class="${isToday}" data-date="${currYear}-${String(currMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}">${i}</li>`;
     }
-
     // 이후 달 날짜
     for (let i = lastDayofMonth; i < 6; i++) {
         liTag += `<li class = "inactive" data-date="${currYear}-${String(currMonth + 2).padStart(2, '0')}-${String(i - lastDayofMonth + 1).padStart(2, '0')}">${i - lastDayofMonth + 1}</li>`;
     }
     daysTag.innerHTML = liTag;
-
     // 기간 설정
     document.querySelectorAll('.days li').forEach(day => {
         day.addEventListener('click', () => {
@@ -637,7 +570,6 @@ const renderCalendar = () => {
     });
 };
 renderCalendar();
-
 // 검색 파트
 function searchStudies() {
     const pid = document.getElementById('pid').value || '';
@@ -646,10 +578,8 @@ function searchStudies() {
     const modality = document.getElementById('modality').value || '';
     const startDateElem = document.getElementById('startDate');
     const endDateElem = document.getElementById('endDate');
-
     const startDate = startDateElem ? startDateElem.value : '';
     const endDate = endDateElem ? endDateElem.value : '';
-
     const requestData = {
         pid: pid,
         pname: pname,
@@ -658,7 +588,6 @@ function searchStudies() {
         startDate: startDate,
         endDate: endDate
     };
-
     fetch('/main/search', {
         method: 'POST',
         headers: {
@@ -681,19 +610,15 @@ function searchStudies() {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
-
 document.getElementById('searchButton').addEventListener('click', function (event) {
     event.preventDefault(); // 기본 동작 막기
     searchStudies();
 });
-
 function displayResults(data) {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
-
     data.forEach(study => {
         const row = dataTable.insertRow();
-
         let reportStatusText = '';
         switch (study.reportstatus) {
             case 6:
@@ -711,7 +636,6 @@ function displayResults(data) {
             default:
                 reportStatusText = '알 수 없음';
         }
-
         row.innerHTML = `
             <td>${study.pid}</td>
             <td>${study.pname}</td>

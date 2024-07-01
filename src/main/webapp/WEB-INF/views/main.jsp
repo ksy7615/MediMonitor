@@ -157,7 +157,7 @@
                 <div class="report">
                     <div class="report-title">
                         <h2>Report</h2>
-                        <button class="button">판독지우기</button>
+                        <button class="button" id="removeReport">판독지우기</button>
                     </div>
                     <div class="report-box">
                         <div class="write-box">
