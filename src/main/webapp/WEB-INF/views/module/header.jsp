@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>Medimonitor</title>
 </head>
-<body>
+<body id="header-body">
 <header class="header">
     <div id="header-logo">
         <img src="${pageContext.request.contextPath}/style/image/logo.png" width="40px" height="35px" alt="MEDIMONITOR">
