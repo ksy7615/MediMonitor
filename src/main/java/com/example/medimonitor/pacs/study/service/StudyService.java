@@ -26,7 +26,7 @@ public class StudyService {
         List<Study> studies = studyRepository.findByPid(pId);
 
         List<InfoResponseDto> result = studies.stream().map(study -> {
-            Optional<Report> reportOpt = reportRepository.findFristByStudykey(study.getStudykey());
+            Optional<Report> reportOpt = reportRepository.findFirstByStudykey(study.getStudykey());
             String reportStatus = reportOpt.map(Report::getStatus).orElse("읽지않음");
             ReportResponseDto reportResponseDto = new ReportResponseDto(study.getStudykey(), reportStatus);
 
@@ -41,7 +41,7 @@ public class StudyService {
         Page<Study> studies = studyRepository.findAll(pageable);
 
         return studies.map(study -> {
-            Optional<Report> reportOpt = reportRepository.findFristByStudykey(study.getStudykey());
+            Optional<Report> reportOpt = reportRepository.findFirstByStudykey(study.getStudykey());
             String reportStatus = reportOpt.map(Report::getStatus).orElse("읽지않음");
             ReportResponseDto reportResponseDto = new ReportResponseDto(study.getStudykey(), reportStatus);
 
