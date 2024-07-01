@@ -32,7 +32,7 @@
                 <div class="dropdown-content" id="user-dropdown">
                     <a href="${pageContext.request.contextPath}/mypage">사용자 설정</a>
                     <c:if test="${user.userGroup eq 'admin'}">
-                        <a href="${pageContext.request.contextPath}/userList">관리자 설정</a>
+                        <a href="${pageContext.request.contextPath}/admin">관리자 설정</a>
                     </c:if>
                     <a href="${pageContext.request.contextPath}/logout">로그아웃</a>
                 </div>
