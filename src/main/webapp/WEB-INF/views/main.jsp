@@ -7,6 +7,7 @@
     <title>MEDIMONITOR</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/main.css">
+    <c:import url="/header" />
 </head>
 <body>
 <div class="container">
