@@ -11,12 +11,19 @@
 <div class="container">
     <div class="left-panel">
         <!-- 왼쪽 패널 -->
+        <button class="thumbnail-btn" onclick="toggleBox()">Toggle Box</button>
     </div>
-    <div class="top-panel">
+
+
+    <div class="top-panel" id="top-panel">
         <!-- 상단 패널 -->
     </div>
 
-    <div class="main-panel">
+    <div class="toggle-box" id="toggle-box">
+        <!-- 오른쪽에 나타날 네모칸 -->
+    </div>
+
+    <div class="main-panel" id="main-panel">
 <%--        <div class="top-left">--%>
 <%--            <!-- 상단 왼쪽 -->--%>
 <%--        </div>--%>
@@ -31,5 +38,8 @@
 <%--        </div>--%>
     </div>
 </div>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/detail.js"></script>
+
 </body>
 </html>
