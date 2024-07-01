@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/user.css">
     <c:import url="/header" />
 </head>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/join.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/user/join.js"></script>
 <body>
     <div class="container">
         <h1>회원가입</h1>
@@ -27,20 +27,21 @@
             <input id="department" type="text" placeholder="부서">
             <select id="userGroup">
                 <option value="userGroup" selected disabled>그룹</option>
-                <option value="admin">admin</option>
-                <option value="radiologist">radiologist</option>
-                <option value="doctor">doctor</option>
-                <option value="technician">technician</option>
+                <option value="admin">관리자</option>
+                <option value="radiologist">방사선사</option>
+                <option value="doctor">의사</option>
+                <option value="technician">테크니션</option>
             </select>
             <select id="position">
                 <option value="position" selected disabled>직책</option>
-                <option value="hd">Hospital Director</option>
-                <option value="vp">Vice President</option>
-                <option value="md">Medical Director</option>
-                <option value="ap">Attending Physician</option>
-                <option value="specialist">specialist</option>
-                <option value="resident">resident</option>
-                <option value="professor">professor</option>
+                <option value="admin">관리자</option>
+                <option value="hd">원장</option>
+                <option value="vp">부원장</option>
+                <option value="md">과장</option>
+                <option value="ap">주치의</option>
+                <option value="specialist">전문의</option>
+                <option value="resident">전공의</option>
+                <option value="professor">교수</option>
             </select>
             <div class="error-container">
                 <p class="error=msg" id="error-msg-id">아이디: 필수 정보입니다.</p>

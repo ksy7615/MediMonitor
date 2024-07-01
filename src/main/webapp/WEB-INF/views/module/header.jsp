@@ -30,9 +30,9 @@
             <div class="dropdown">
                 <span class="icon" id="user-icon"><i class="fas fa-user"></i></span>
                 <div class="dropdown-content" id="user-dropdown">
-                    <a href="#">사용자 설정</a>
+                    <a href="${pageContext.request.contextPath}/mypage">사용자 설정</a>
                     <c:if test="${user.userGroup eq 'admin'}">
-                        <a href="#">관리자 설정</a>
+                        <a href="${pageContext.request.contextPath}/userList">관리자 설정</a>
                     </c:if>
                     <a href="${pageContext.request.contextPath}/logout">로그아웃</a>
                 </div>

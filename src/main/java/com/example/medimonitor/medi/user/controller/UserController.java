@@ -156,7 +156,7 @@ public class UserController {
     @DeleteMapping("/user/reject")
     public ResponseEntity<Response> reject(@RequestBody List<String> usernames) {
         Response response =  new Response();
-        String message = "거절이 완료되었습니다.";
+        String message = "삭제/거절이 완료되었습니다.";
 
         try {
             for(String username : usernames){
@@ -166,7 +166,7 @@ public class UserController {
             response.setMessage(message);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            message = "거절에 실패하였습니다.";
+            message = "삭제/거절에 실패하였습니다.";
 
             response.setStatus(400);
             response.setMessage(message);
@@ -174,4 +174,75 @@ public class UserController {
         }
     }
 
+    @GetMapping("/mypage")
+    public ModelAndView mypage(HttpSession session) {
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
+        ModelAndView mv = new ModelAndView("user/mypage");
+
+        if(user != null) {
+            UserResponseDto result = userService.findUserByUsername(user.getUsername());
+            mv.addObject("user", result);
+        }
+
+        return mv;
+    }
+
+    @GetMapping("/check")
+    public String userCheck() { return "user/checkPassword"; }
+
+    @PostMapping("/check/password")
+    @ResponseBody
+    public ResponseEntity<Response> findUserByPassword(@RequestBody UserRequestDto userDto, HttpSession session) {
+        UserResponseDto sessionUser = (UserResponseDto) session.getAttribute("user");
+        Response response =  new Response();
+        UserResponseDto user = null;
+
+        user = userService.findByUsernameAndPassword(sessionUser.getUsername(), userDto.getPassword());
+        if(user != null) {
+            response.setStatus(200);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            String message = "비밀번호가 올바르지 않습니다.";
+            response.setStatus(400);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/update")
+    public ModelAndView userUpdate(HttpSession session) {
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
+        ModelAndView mv = new ModelAndView("user/update");
+
+        if(user != null) {
+            UserResponseDto result = userService.findUserByUsername(user.getUsername());
+            mv.addObject("user", result);
+        }
+
+        return mv;
+    }
+
+    @ResponseBody
+    @PutMapping("/update")
+    public ResponseEntity<Response> userUpdate(@RequestBody UserRequestDto userDto, HttpSession session) {
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
+        userDto.setUsername(user.getUsername());
+
+        Response response =  new Response();
+        String message = "수정이 완료되었습니다.";
+
+        try {
+            userService.update(userDto);
+
+            response.setStatus(200);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            message = "수정에 실패하였습니다.";
+
+            response.setStatus(400);
+            response.setMessage(message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+    }
 }

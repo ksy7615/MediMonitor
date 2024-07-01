@@ -10,6 +10,7 @@ import lombok.Setter;
 public class UserRequestDto {
     private String username;
     private String password;
+    private String newPassword;
     private String name;
     private String userGroup;
     private String telecom;

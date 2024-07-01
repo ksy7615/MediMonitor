@@ -74,6 +74,17 @@ public class UserService {
         return userResponseDto;
     }
 
+    @Transactional
+    public UserResponseDto update(UserRequestDto userDto) {
+        User user = userRepository.findById(userDto.getUsername()).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 사용자입니다.")
+        );
+        user.update(userDto);
+        UserResponseDto userResponseDto = new UserResponseDto(user);
+
+        return userResponseDto;
+    }
+
     public boolean delete(String username) {
         boolean result = false;
 

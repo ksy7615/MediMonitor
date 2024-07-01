@@ -8,6 +8,20 @@
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <body>
+<c:choose>
+    <c:when test="${empty user}">
+        <script type="text/javascript">
+            alert("로그인 후 이용가능합니다.");
+            location.href='/login';
+        </script>
+    </c:when>
+    <c:when test="${not empty user && user.userGroup ne 'admin'}">
+        <script type="text/javascript">
+            alert("관리자만 이용가능합니다.");
+            location.href='/main';
+        </script>
+    </c:when>
+</c:choose>
 <div class="container">
     <div class="table-container">
         <table>
@@ -52,5 +66,5 @@
 </div>
 
 </body>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/menuButton.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/user/menuButton.js"></script>
 </html>

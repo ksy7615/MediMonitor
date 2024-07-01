@@ -1,6 +1,7 @@
 package com.example.medimonitor.medi.user.domain;
 
 import com.example.medimonitor.medi.user.dto.UserRequestDto;
+import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import com.example.medimonitor.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,17 @@ public class User extends Timestamped {
 
     public void update() {
         this.authority = true;
+    }
+
+    public void update(UserRequestDto userDto) {
+        if(userDto.getNewPassword() != null)
+            this.password = userDto.getNewPassword();
+        this.userGroup = userDto.getUserGroup();
+        this.telecom = userDto.getTelecom();
+        this.phone = userDto.getPhone();
+        this.department = userDto.getDepartment();
+        this.address = userDto.getAddress();
+        this.position = userDto.getPosition();
     }
 
 }
