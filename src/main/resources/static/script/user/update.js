@@ -40,6 +40,7 @@ $(document).ready(() => {
                 if(phone.length === 11) {
                     const update = `${phone.substr(0,3)}-${phone.substr(3,4)}-${phone.substr(7,4)}`;
                     $('#phone').val(update);
+                    $('#error-msg-phone-pattern').hide();
                 }
             }
         }
