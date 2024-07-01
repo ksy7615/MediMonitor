@@ -51,6 +51,7 @@
                 <option value="재활의학과">재활의학과</option>
                 <option value="성형외과">성형외과</option>
                 <option value="정신건강의학과">정신건강의학과</option>
+                <option value="임상병리과">임상병리과</option>
             </select>
             <select id="userGroup">
                 <option value="userGroup" selected disabled>그룹</option>
