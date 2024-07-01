@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
             const studyKey = targetRow.querySelector('.studykey').value;
-            const url = `/path/to/destinationPage?studykey=${encodeURIComponent(studyKey)}`;
+            const url = `/detail/${encodeURIComponent(studyKey)}/1`;
             window.location.href = url;
         }
     });
