@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>Medimonitor</title>
 </head>
-<body>
+<body id="header-body">
 <header class="header">
     <div id="header-logo">
         <img src="${pageContext.request.contextPath}/style/image/logo.png" width="40px" height="35px" alt="MEDIMONITOR">
@@ -32,7 +32,7 @@
                 <div class="dropdown-content" id="user-dropdown">
                     <a href="${pageContext.request.contextPath}/mypage">사용자 설정</a>
                     <c:if test="${user.userGroup eq 'admin'}">
-                        <a href="${pageContext.request.contextPath}/userList">관리자 설정</a>
+                        <a href="${pageContext.request.contextPath}/admin">관리자 설정</a>
                     </c:if>
                     <a href="${pageContext.request.contextPath}/logout">로그아웃</a>
                 </div>

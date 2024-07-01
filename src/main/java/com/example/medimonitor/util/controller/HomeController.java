@@ -11,4 +11,12 @@ public class HomeController {
     public String join() {
         return "module/header";
     }
+
+    @GetMapping("/main")
+    public String getMainView() {
+        return "main";
+    }
+
+    @GetMapping("/detail")
+    public String getDetailView() {return "detail";}
 }

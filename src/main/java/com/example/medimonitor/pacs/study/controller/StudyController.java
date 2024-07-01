@@ -31,11 +31,6 @@ public class StudyController {
         return studyService.getStudiesByPid(pId);
     }
 
-    @GetMapping("/main")
-    public String getMainView() {
-        return "main";
-    }
-
     @PostMapping("/main/search")
     @ResponseBody
     public List<Study> findStudies(@RequestBody StudyRequestDto studyRequestDto){
