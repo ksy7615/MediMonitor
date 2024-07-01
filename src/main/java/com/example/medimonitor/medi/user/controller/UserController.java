@@ -245,4 +245,42 @@ public class UserController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/delete")
+    public String userDelete() { return "user/delete"; }
+
+    @ResponseBody
+    @DeleteMapping("/delete")
+    public ResponseEntity<Response> deleteUser(@RequestBody UserRequestDto userDto, HttpSession session) {
+        UserResponseDto sessionUser = (UserResponseDto) session.getAttribute("user");
+        UserResponseDto user = userService.findByUsernameAndPassword(sessionUser.getUsername(), userDto.getPassword());
+
+        Response response =  new Response();
+        String message = "";
+        boolean isDelete;
+        if(user != null) {
+            isDelete = userService.delete(user.getUsername());
+
+            if(isDelete) {
+                session.removeAttribute("user");
+                message = "탈퇴되었습니다.";
+                response.setStatus(200);
+                response.setMessage(message);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }else {
+                message = "탈퇴에 실패하였습니다.";
+                response.setStatus(400);
+                response.setMessage(message);
+
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+        }else {
+            message = "비밀번호가 올바르지 않습니다.";
+            response.setStatus(404);
+            response.setMessage(message);
+
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
 }
