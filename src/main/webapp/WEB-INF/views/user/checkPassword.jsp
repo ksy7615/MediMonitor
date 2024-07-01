@@ -15,12 +15,8 @@
     </script>
 </c:if>
 <div id="login-main">
-    <div id="login-logo">
-        <img src="${pageContext.request.contextPath}/style/image/logo.png" alt="MEDIMONITOR">
-        <span id="login-logo-front">MEDI</span>
-        <span id="login-logo-back">MONITOR</span>
-    </div>
     <div id="login-container">
+        <h1>비밀번호 확인</h1>
         <form method="POST" action="${pageContext.request.contextPath}/login">
             <div>
                 <input type="password" id="password" placeholder="비밀번호">
