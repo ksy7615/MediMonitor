@@ -85,6 +85,11 @@ input:-webkit-autofill {
     color: #ccc;
 }
 
+select:disabled {
+    color: white;
+    background-color: #464646;
+}
+
 .signup-form select {
     color: #ccc;
     background-color: #464646;
