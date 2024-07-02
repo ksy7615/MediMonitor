@@ -7,28 +7,29 @@
     <c:import url="/header" />
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/user/menuButton.js"></script>
 <body>
-<%--<c:choose>--%>
-<%--    <c:when test="${empty user}">--%>
-<%--        <script type="text/javascript">--%>
-<%--            alert("로그인 후 이용가능합니다.");--%>
-<%--            location.href='/login';--%>
-<%--        </script>--%>
-<%--    </c:when>--%>
-<%--    <c:when test="${not empty user && user.userGroup ne 'admin'}">--%>
-<%--        <script type="text/javascript">--%>
-<%--            alert("관리자만 이용가능합니다.");--%>
-<%--            location.href='/main';--%>
-<%--        </script>--%>
-<%--    </c:when>--%>
-<%--</c:choose>--%>
+<c:choose>
+    <c:when test="${empty user}">
+        <script type="text/javascript">
+            alert("로그인 후 이용가능합니다.");
+            location.href='/login';
+        </script>
+    </c:when>
+    <c:when test="${not empty user && user.userGroup ne 'admin'}">
+        <script type="text/javascript">
+            alert("관리자만 이용가능합니다.");
+            location.href='/main';
+        </script>
+    </c:when>
+</c:choose>
 <div id="userList-container">
     <h1 id="userList-h1">계정 목록</h1>
     <div class="card-container">
         <c:forEach var="user" items="${users}">
             <div class="card">
                 <div class="card-header">
-                        <%--                <img src="${pageContext.request.contextPath}/images/default-avatar.png" alt="User Avatar">--%>
+                        <%--<img src="${pageContext.request.contextPath}/images/default-avatar.png" alt="User Avatar">--%>
                     <div>${user.name}</div>
                 </div>
                 <div class="card-body">
@@ -60,5 +61,4 @@
 </div>
 
 </body>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/user/menuButton.js"></script>
 </html>
