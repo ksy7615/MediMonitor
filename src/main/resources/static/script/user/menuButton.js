@@ -1,4 +1,29 @@
-// 모든 체크박스를 선택하거나 해제하는 기능
+document.addEventListener('DOMContentLoaded', function() {
+    var currentPage = parseInt(document.getElementById("currentPage").value);
+    var totalPages = parseInt(document.getElementById("totalPages").value);
+
+    function loadUsers(page) {
+        window.location.href = '/admin/authority?page=' + page;
+    }
+
+    document.getElementById("left").addEventListener("click", function() {
+        if (currentPage > 0) {
+            loadUsers(currentPage - 1);
+        }
+    });
+
+    document.getElementById("right").addEventListener("click", function() {
+        if (currentPage < totalPages - 1) {
+            loadUsers(currentPage + 1);
+        }
+    });
+
+    // 페이지 로드 시 초기 값 설정
+    document.getElementById("pageCnt").textContent = (currentPage + 1) + " / " + totalPages;
+});
+
+
+
 $("#selectAll").click(function() {
     $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
 });
