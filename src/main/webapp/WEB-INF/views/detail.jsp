@@ -62,7 +62,7 @@
             </div>
             <div class="analysis">
                 <label>판독 일시</label>
-                <input type="text"><br>
+                <input class="inputText" type="text" id="studyDate" disabled><br>
                 <label>예비판독의</label>
                 <input class="inputText" type="text" id="preDoctor" disabled><br>
                 <label>판독의1</label>

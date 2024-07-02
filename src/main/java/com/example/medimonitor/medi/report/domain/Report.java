@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -20,6 +21,7 @@ public class Report {
     private String preDoctor;
     private String firstDoctor;
     private String secondDoctor;
+    private Timestamp regDate;
     private String status;
     private long studykey;
 
@@ -32,6 +34,7 @@ public class Report {
         this.secondDoctor = dto.getSecondDoctor();
         this.status = dto.getStatus();
         this.studykey = dto.getStudykey();
+        this.regDate = dto.getRegDate();
     }
 
     public Report() {

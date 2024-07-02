@@ -1,6 +1,7 @@
+
 const paths = window.location.pathname;
 const pathParts = paths.split('/');
-let currentStudyKey = pathParts[1];
+let currentStudyKey = pathParts[2];
 
 
 // 토글박스
@@ -21,6 +22,7 @@ function toggleBox() {
 // 모달창 띄우기
 function showModal() {
     document.getElementById('modal').style.display = 'block';
+    console.log("key: " + currentStudyKey);
     fetchReportByStudykey(currentStudyKey);
 }
 
@@ -41,6 +43,7 @@ function fetchReportByStudykey(studykey) {
     fetch(`/mainReport/${studykey}`)
         .then(response => response.ok ? response.json() : Promise.reject(response))
         .then(data => {
+            console.log(data);
             displayReport(data);
         })
         .catch(error => {
@@ -49,20 +52,39 @@ function fetchReportByStudykey(studykey) {
         });
 }
 
+// timestamp 포맷팅
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+
 function displayReport(data) {
     const commentBox = document.getElementById('comment');
     const questBox = document.getElementById('quest');
+    const studyDateBox = document.getElementById('studyDate');
     const preDoctorBox = document.getElementById('preDoctor');
     const firstDoctorBox = document.getElementById('firstDoctor');
     const secondDoctorBox = document.getElementById('secondDoctor');
+
+
     if (data.length >= 1) {
         const comment = data[0].comment;
         const exploration = data[0].exploration;
+        const studyDate = formatTimestamp(data[0].regDate);
         const preDoctor = data[0].preDoctor;
         const firstDoctor = data[0].firstDoctor;
         const secondDoctor = data[0].secondDoctor;
         commentBox.value = comment !== null ? comment : '';
         questBox.value = exploration !== null ? exploration : '';
+        studyDateBox.value = studyDate !== null ? studyDate : '';
         preDoctorBox.value = preDoctor !== null ? preDoctor : '';
         firstDoctorBox.value = firstDoctor !== null ? firstDoctor : '';
         secondDoctorBox.value = secondDoctor !== null ? secondDoctor : '';
@@ -72,5 +94,6 @@ function displayReport(data) {
         preDoctorBox.value = '';
         firstDoctorBox.value = '';
         secondDoctorBox.value = '';
+        studyDateBox.value='';
     }
 }

@@ -113,7 +113,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             console.log('studydate: ' + studyDate);
 
-            const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}`;
+            // ▼ 실제 사용할 url
+            // const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}`;
+            // ▼ 재현님이랑 겹치니까 임시로 설정해둔 url
+            const url = `/detail/${encodeURIComponent(studyKey)}`;
             window.location.href = url;
         }
     });
@@ -569,7 +572,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (targetRow) {
             const studyKey = targetRow.querySelector('.studykey').value;
             const studyDate = targetRow.querySelector('.studydate').textContent;
-            const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}/1`;
+            const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}`;
             window.location.href = url;
         }
     });
