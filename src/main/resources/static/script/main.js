@@ -2,10 +2,12 @@ let currentPage = 0;
 const pageSize = 5;
 let totalPages = 0;
 let currentStudyKey = null; // 전역 변수 추가
+
 document.getElementById('getAllStudiesBtn').addEventListener('click', function () {
     currentPage = 0;
     fetchStudies(currentPage, pageSize);
 });
+
 document.getElementById('left').addEventListener('click', function () {
     if (currentPage > 0) {
         currentPage--;
@@ -14,6 +16,7 @@ document.getElementById('left').addEventListener('click', function () {
         alert("첫 페이지입니다.");
     }
 });
+
 document.getElementById('right').addEventListener('click', function () {
     if (currentPage < totalPages - 1) {
         currentPage++;
@@ -22,22 +25,33 @@ document.getElementById('right').addEventListener('click', function () {
         alert("다음 페이지가 없습니다.");
     }
 });
+
 function fetchStudies(page, size) {
-    fetch(`/mainAllSearch?page=${page}&size=${size}`)
-        .then(response => response.ok ? response.json() : Promise.reject(response))
+    const url = `/mainAllSearch?page=${page}&size=${size}`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`서버에서 오류 발생 (${response.status})`);
+            }
+            return response.json();
+        })
         .then(data => {
             updateTable(data);
             totalPages = data.totalPages;
             updatePageInfo(data.pageable.pageNumber, totalPages);
         })
         .catch(error => {
-            console.error('오류 발생:', error);
+            console.error('데이터를 불러오는 중 오류 발생:', error);
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
+
 function updatePageInfo(currentPage, totalPages) {
     document.getElementById('pageCnt').textContent = `${currentPage + 1}/${totalPages}ㅤ`;
 }
+
+// 테이블 업데이트 함수
 function updateTable(data) {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
@@ -60,6 +74,7 @@ function updateTable(data) {
         `;
     });
 }
+
 function getReportStatusText(status) {
     switch (status) {
         case 'decipher':
@@ -74,6 +89,7 @@ function getReportStatusText(status) {
             return '읽지않음';
     }
 }
+
 document.addEventListener('DOMContentLoaded', function () {
     fetchStudies(currentPage, pageSize);
     const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
@@ -96,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
 document.getElementById("btn-pre-reading").addEventListener('click', () => {
     const comment = document.getElementById('comment').value;
     const quest = document.getElementById('quest').value;
@@ -141,6 +158,7 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
             alert('저장 중 오류가 발생했습니다.');
         });
 });
+
 document.getElementById("btn-reading").addEventListener('click', () => {
     const comment = document.getElementById('comment').value;
     const quest = document.getElementById('quest').value;
@@ -227,6 +245,7 @@ document.getElementById("btn-reading").addEventListener('click', () => {
             alert('저장 중 오류가 발생했습니다.');
         });
 });
+
 function checkStudyKeyExistence(studykey) {
     return fetch(`/checkStudyKeyExistence?studykey=${studykey}`)
         .then(response => {
@@ -241,6 +260,7 @@ function checkStudyKeyExistence(studykey) {
             throw error;
         });
 }
+
 function checkSecondDoctorValue(studykey) {
     return fetch(`/checkSecondDoctorValue?studykey=${studykey}`)
         .then(response => {
@@ -255,6 +275,7 @@ function checkSecondDoctorValue(studykey) {
             throw error;
         });
 }
+
 function checkFirstDoctorValue(studykey) {
     return fetch(`/checkFirstDoctorValue?studykey=${studykey}`)
         .then(response => {
@@ -269,6 +290,7 @@ function checkFirstDoctorValue(studykey) {
             throw error;
         });
 }
+
 function checkPreDoctor(username) {
     return fetch(`/checkPreDoctor?studykey=${currentStudyKey}&username=${username}`)
         .then(response => {
@@ -283,6 +305,7 @@ function checkPreDoctor(username) {
             throw error;
         });
 }
+
 function checkFirstDoctor(username) {
     return fetch(`/checkFirstDoctor?username=${username}`)
         .then(response => {
@@ -297,6 +320,7 @@ function checkFirstDoctor(username) {
             throw error;
         });
 }
+
 function checkSecondDoctor(username) {
     return fetch(`/checkSecondDoctor?username=${username}`)
         .then(response => {
@@ -311,6 +335,7 @@ function checkSecondDoctor(username) {
             throw error;
         });
 }
+
 function updateReport(reportData) {
     fetch('/updateReport', {
         method: 'PUT',
@@ -388,10 +413,12 @@ function saveReport(reportData) {
             alert('저장 중 오류가 발생했습니다.');
         });
 }
+
 function enableReportInputs() {
     document.getElementById('comment').disabled = false;
     document.getElementById('quest').disabled = false;
 }
+
 function fetchStudiesByPid(pId) {
     fetch(`/mainPrevious/${pId}`)
         .then(response => response.ok ? response.json() : Promise.reject(response))
@@ -403,6 +430,7 @@ function fetchStudiesByPid(pId) {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
+
 function fetchReportByStudykey(studykey) {
     fetch(`/mainReport/${studykey}`)
         .then(response => response.ok ? response.json() : Promise.reject(response))
@@ -414,6 +442,7 @@ function fetchReportByStudykey(studykey) {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
+
 function displayReport(data) {
     const commentBox = document.getElementById('comment');
     const questBox = document.getElementById('quest');
@@ -439,6 +468,7 @@ function displayReport(data) {
         secondDoctorBox.value = '';
     }
 }
+
 function displayPrevious(data) {
     const dataTable = document.getElementById('previous-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
@@ -462,6 +492,7 @@ function displayPrevious(data) {
         document.querySelector('.previous-name').textContent = `환자 이름: ${study.pname}`;
     });
 }
+
 // 달력 PART
 let date = new Date();
 let currYear = date.getFullYear(),
@@ -570,6 +601,7 @@ const renderCalendar = () => {
     });
 };
 renderCalendar();
+
 // 검색 파트
 function searchStudies() {
     const pid = document.getElementById('pid').value || '';
@@ -580,6 +612,7 @@ function searchStudies() {
     const endDateElem = document.getElementById('endDate');
     const startDate = startDateElem ? startDateElem.value : '';
     const endDate = endDateElem ? endDateElem.value : '';
+
     const requestData = {
         pid: pid,
         pname: pname,
@@ -588,7 +621,11 @@ function searchStudies() {
         startDate: startDate,
         endDate: endDate
     };
-    fetch('/main/search', {
+
+    const url = pid || pname || reportstatus !== -1 || modality || startDate || endDate ?
+        '/main/search' : '/mainAllSearch';
+
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -603,21 +640,28 @@ function searchStudies() {
         })
         .then(data => {
             console.log('검색 결과:', data);
-            displayResults(data); // displayResults 함수로 결과를 보여줍니다.
+            displayResults(data);
         })
         .catch(error => {
             console.error('데이터를 불러오는 중 오류 발생:', error);
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
-document.getElementById('searchButton').addEventListener('click', function (event) {
+
+// 검색 버튼 클릭 시 이벤트 핸들러
+document.getElementById('searchButton').addEventListener('click', function(event) {
     event.preventDefault(); // 기본 동작 막기
-    searchStudies();
+    searchStudies(0, 5); // 페이지네이션을 위해 첫 번째 페이지(0)와 페이지당 항목 개수(5) 전달
 });
+
 function displayResults(data) {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
-    data.forEach(study => {
+
+    // 만약 data가 객체인 경우, 배열에 담아줍니다.
+    const studies = Array.isArray(data) ? data : [data];
+
+    studies.forEach(study => {
         const row = dataTable.insertRow();
         let reportStatusText = '';
         switch (study.reportstatus) {
