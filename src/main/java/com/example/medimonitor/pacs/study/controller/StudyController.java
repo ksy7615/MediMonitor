@@ -22,7 +22,7 @@ public class StudyController {
     @GetMapping("/mainAllSearch")
     @ResponseBody
     public Page<InfoResponseDto> getAllStudies(@RequestParam(defaultValue="0") int page, @RequestParam(defaultValue = "5") int size) {
-        return studyService.findStudiesWithPagination(page, size);
+        return studyService.findStudiesWithPagination(page, size, "all", "");
     }
 
     @GetMapping("/mainPrevious/{pId}")
@@ -36,9 +36,14 @@ public class StudyController {
         return "main";
     }
 
+    @CrossOrigin
     @PostMapping("/main/search")
     @ResponseBody
-    public List<Study> findStudies(@RequestBody StudyRequestDto studyRequestDto){
+    public Page<InfoResponseDto> findStudies(
+            @RequestBody StudyRequestDto studyRequestDto,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
         String pid = studyRequestDto.getPid();
         String pname = studyRequestDto.getPname();
         Long reportstatus = studyRequestDto.getReportstatus();
@@ -46,27 +51,18 @@ public class StudyController {
         String startDate = studyRequestDto.getStartDate();
         String endDate = studyRequestDto.getEndDate();
 
-        System.out.println("pid : " + pid);
-        System.out.println("pname : " + pname);
-        System.out.println("reportstatus : " + reportstatus);
-        System.out.println("modality : " + modality);
-        System.out.println("startDate : " + startDate);
-        System.out.println("endDate : " + endDate);
-
-        List<Study> result = new ArrayList<>();
-
         if (pid != null && !pid.isEmpty()) {
-            result.addAll(studyService.findByPidLike(pid));
+            return studyService.findStudiesWithPagination(page, size, "pid", pid);
         } else if (pname != null && !pname.isEmpty()) {
-            result.addAll(studyService.findByPnameLike(pname));
+            return studyService.findStudiesWithPagination(page, size, "pname", pname);
         } else if (reportstatus != null) {
-            result.addAll(studyService.findByReportstatus(reportstatus));
+            return studyService.findStudiesWithPagination(page, size, "reportstatus", reportstatus.toString());
         } else if (modality != null && !modality.isEmpty()) {
-            result.addAll(studyService.findByModality(modality));
+            return studyService.findStudiesWithPagination(page, size, "modality", modality);
         } else if (startDate != null && endDate != null) {
-            result.retainAll(studyService.findByStudydateBetween(startDate, endDate));
+            return studyService.findStudiesWithPagination(page, size, "studydate", startDate + "," + endDate);
+        } else {
+            return studyService.findStudiesWithPagination(page, size, "all", "");
         }
-
-        return result;
     }
 }
