@@ -8,54 +8,48 @@
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <body>
-<c:choose>
-    <c:when test="${empty user}">
-        <script type="text/javascript">
-            alert("로그인 후 이용가능합니다.");
-            location.href='/login';
-        </script>
-    </c:when>
-    <c:when test="${not empty user && user.userGroup ne 'admin'}">
-        <script type="text/javascript">
-            alert("관리자만 이용가능합니다.");
-            location.href='/main';
-        </script>
-    </c:when>
-</c:choose>
-<div class="container">
-    <div class="table-container">
-        <table>
-            <thead>
-            <tr>
-                <th class="checkbox-cell"><input type="checkbox" id="selectAll"></th>
-                <th>아이디</th>
-                <th>이름</th>
-                <th>그룹</th>
-                <th>부서</th>
-                <th>직책</th>
-                <th>휴대폰번호</th>
-                <th>주소</th>
-                <th>신청일시</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="user" items="${users}">
-                <tr>
-                    <td class="checkbox-cell"><input type="checkbox" class="userCheckbox" data-username="${user.username}"></td>
-                    <td>${user.username}</td>
-                    <td>${user.name}</td>
-                    <td>${user.userGroup}</td>
-                    <td>${user.department}</td>
-                    <td>${user.position}</td>
-                    <td>${user.phone}</td>
-                    <td>${user.address}</td>
-                    <td>${user.formattedRegDate}</td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+<%--<c:choose>--%>
+<%--    <c:when test="${empty user}">--%>
+<%--        <script type="text/javascript">--%>
+<%--            alert("로그인 후 이용가능합니다.");--%>
+<%--            location.href='/login';--%>
+<%--        </script>--%>
+<%--    </c:when>--%>
+<%--    <c:when test="${not empty user && user.userGroup ne 'admin'}">--%>
+<%--        <script type="text/javascript">--%>
+<%--            alert("관리자만 이용가능합니다.");--%>
+<%--            location.href='/main';--%>
+<%--        </script>--%>
+<%--    </c:when>--%>
+<%--</c:choose>--%>
+<div id="userList-container">
+    <h1 id="userList-h1">계정 목록</h1>
+    <div class="card-container">
+        <c:forEach var="user" items="${users}">
+            <div class="card">
+                <div class="card-header">
+                        <%--                <img src="${pageContext.request.contextPath}/images/default-avatar.png" alt="User Avatar">--%>
+                    <div>${user.name}</div>
+                </div>
+                <div class="card-body">
+                    <p><strong>아이디:</strong> ${user.username}</p>
+                    <p><strong>그룹:</strong> ${user.userGroup}</p>
+                    <p><strong>부서:</strong> ${user.department}</p>
+                    <p><strong>직책:</strong> ${user.position}</p>
+                    <p><strong>휴대폰번호:</strong> ${user.phone}</p>
+                    <p><strong>주소:</strong> ${user.address}</p>
+                    <p><strong>가입일시:</strong> ${user.formattedRegDate}</p>
+                </div>
+                <div class="card-footer">
+                    <c:if test="${user.position ne 'admin'}">
+                        <div class="checkbox-cell"><input type="checkbox" class="userCheckbox" data-username="${user.username}"></div>
+                    </c:if>
+                </div>
+            </div>
+        </c:forEach>
     </div>
 </div>
+
 
 <div class="hamburger-menu">
     <div class="hamburger-button" onclick="toggleDropdownMenu()">☰</div>

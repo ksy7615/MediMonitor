@@ -33,7 +33,13 @@ body {
     color: white;
     text-align: center;
     margin-bottom: 30px;
-    margin-top: 40px;
+}
+
+/* Autofill 스타일 재정의 */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #464646 inset;
+    box-shadow: 0 0 0 1000px #464646 inset;
+    -webkit-text-fill-color: white; /* 텍스트 색상 */
 }
 
 .signup-form {
@@ -49,7 +55,17 @@ body {
     top: 0;
     bottom: 60px;
     width: 6px;
-    height: calc(100% - 100px);
+    height: 445px;
+    background-color: #5C88C4;
+}
+
+.join-blue-line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 60px;
+    width: 6px;
+    height: 495px;
     background-color: #5C88C4;
 }
 
@@ -67,6 +83,11 @@ body {
 
 .signup-form input::placeholder {
     color: #ccc;
+}
+
+select:disabled {
+    color: white;
+    background-color: #464646;
 }
 
 .signup-form select {
@@ -99,71 +120,130 @@ body {
     display: none;
 }
 
-.table-container {
-    margin-top: 20px;
+#userList-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#userList-h1 {
+    padding-top: 80px;
+}
+
+.card-container {
+    margin: 30px auto 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
     padding: 20px;
 }
 
-table {
+.card {
+    width: 300px;
+    background-color: #464646;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px 15px 0 15px;
+    text-align: start;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-body p {
+    margin: 5px 0;
+    line-height: 20px;
+}
+
+.card-footer {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 10px 20px 10px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.card-footer input[type="checkbox"] {
+    width: 30px;
+    height: 30px;
+    accent-color: #5c88c4;
+}
+
+.checkbox-cell {
+    display: flex;
+    align-items: center;
+}
+
+.apply-now-btn {
+    background-color: #5c88c4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.apply-now-btn:hover {
+    background-color: #4a74a3;
+}
+
+
+.checkbox-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hamburger-menu {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
+
+.hamburger-button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.dropdown-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dropdown-menu button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
     width: 100%;
-    border-collapse: collapse;
-    background-color: #444;
-}
-
-table, th, td {
-    border: 1px solid #555;
-}
-
-th, td {
-    padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #555;
 }
 
-th.checkbox-cell, td.checkbox-cell {
-    width: 2%;
-    text-align: center;
+.dropdown-menu button:hover {
+    background-color: #f0f0f0;
 }
 
-th:nth-child(2), td:nth-child(2) { /* 아이디 */
-    width: 10%;
-}
-
-th:nth-child(3), td:nth-child(3) { /* 이름 */
-    width: 6%;
-}
-
-th:nth-child(4), td:nth-child(4) { /* 그룹 */
-    width: 9%;
-}
-
-th:nth-child(5), td:nth-child(5) { /* 부서 */
-    width: 14%;
-}
-
-th:nth-child(6), td:nth-child(6) { /* 직책 */
-    width: 12%;
-}
-
-th:nth-child(7), td:nth-child(7) { /* 휴대폰번호 */
-    width: 16%;
-}
-
-th:nth-child(8), td:nth-child(8) { /* 주소 */
-    width: 16%;
-}
-
-th:nth-child(9), td:nth-child(9) { /* 신청일시 */
-    width: 20%;
-}
-
-th {
-    background-color: #555;
-}
-
-tr:nth-child(even) {
-    background-color: #3a3a3a;
-}
 
 .checkbox-cell {
     width: 40px;

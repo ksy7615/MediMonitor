@@ -109,6 +109,7 @@ $(document).ready(() => {
                 if(phone.length === 11) {
                     const update = `${phone.substr(0,3)}-${phone.substr(3,4)}-${phone.substr(7,4)}`;
                     $('#phone').val(update);
+                    $('#error-msg-phone-pattern').hide();
                 }
             }
         }
@@ -126,7 +127,7 @@ $(document).ready(() => {
     });
 
     $('#department').focusout(e => {
-        if($('#department').val() === ""){
+        if($('#department').val() === null){
             $('#error-msg-department').show();
             $('#department').css('border', 'solid 1px #ff3f3f');
         } else {
@@ -209,7 +210,7 @@ $(document).ready(() => {
             $('#error-msg-address').show();
             $('#address').css('border', 'solid 1px #ff3f3f');
         }
-        if(department === ""){
+        if(department === null){
             isValid = false;
             $('#error-msg-department').show();
             $('#department').css('border', 'solid 1px #ff3f3f');
