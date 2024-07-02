@@ -23,6 +23,7 @@ body {
     bottom: 0;
     margin-top: -40px;
     margin-left: 20px;
+    text-align: center;
 }
 
 .thumbnail-btn {
@@ -93,4 +94,187 @@ body {
 .main-panel.shifted {
     width: 75%; /* shift 시 width 감소 */
     left: 25%;
+}
+
+.thumbnail-btn,
+.report-btn
+{
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+img{
+    width: 45px;
+}
+
+label {
+    color: white;
+    margin-bottom: 30px;
+    display: block;
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    position: relative; /* Close 버튼의 절대 위치를 위한 상대 위치 */
+    background-color: #333;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    font-size: 16px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #555;
+    padding-bottom: 10px;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px; /* search와 analysis 사이에 간격 추가 */
+}
+
+::placeholder {
+    color: #959595;
+    opacity: 1;
+}
+
+.write-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.comment,
+.quest,
+.search {
+    resize: none;
+    flex: 1;
+    margin-right: 20px;
+    background-color: #555;
+    padding: 20px;
+    border-radius: 5px;
+
+    width: 100%;
+    height: 100%;
+}
+
+.comment {
+    margin-bottom: 10px;
+}
+.search {
+    flex: 1;
+    background-color: #555;
+    padding: 20px;
+    border-radius: 5px;
+    margin-right: 20px; /* search와 analysis 사이에 간격 추가 */
+}
+
+.analysis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    background-color: #555;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.analysis label {
+    display: block;
+    margin-top: 10px;
+}
+
+.analysis input {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    background-color: #444;
+    border: 1px solid #888;
+    color: #fff;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.confirm-btn,
+.preliminary-btn {
+    margin-bottom: 20px;
+    margin-right: 8px;
+    background-color: #555;
+    padding: 10px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.confirm-btn {
+    background-color: #5C88C4;
+    border-radius: 5px;
+    border: none;
+}
+
+.preliminary-btn {
+    background-color: #6c757d;
+    color: #fff;
+    margin-right: 0;
+}
+
+.button.blue-button {
+    background-color: #5C88C4;
+    border-radius: 5px;
+    border: none;
+}
+
+.buttons button {
+    margin-bottom: 20px;
+    margin-right: 8px;
+    background-color: #242424;
+    padding: 10px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
 }

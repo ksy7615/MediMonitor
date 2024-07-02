@@ -2,10 +2,12 @@ let currentPage = 0;
 const pageSize = 5;
 let totalPages = 0;
 let currentStudyKey = null; // 전역 변수 추가
+
 document.getElementById('getAllStudiesBtn').addEventListener('click', function () {
     currentPage = 0;
     fetchStudies(currentPage, pageSize);
 });
+
 document.getElementById('left').addEventListener('click', function () {
     if (currentPage > 0) {
         currentPage--;
@@ -14,6 +16,7 @@ document.getElementById('left').addEventListener('click', function () {
         alert("첫 페이지입니다.");
     }
 });
+
 document.getElementById('right').addEventListener('click', function () {
     if (currentPage < totalPages - 1) {
         currentPage++;
@@ -22,6 +25,7 @@ document.getElementById('right').addEventListener('click', function () {
         alert("다음 페이지가 없습니다.");
     }
 });
+
 function fetchStudies(page, size) {
     const url = `/mainAllSearch?page=${page}&size=${size}`;
 
@@ -42,9 +46,11 @@ function fetchStudies(page, size) {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
+
 function updatePageInfo(currentPage, totalPages) {
     document.getElementById('pageCnt').textContent = `${currentPage + 1}/${totalPages}ㅤ`;
 }
+
 function updateTable(data) {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
@@ -67,6 +73,7 @@ function updateTable(data) {
         `;
     });
 }
+
 function getReportStatusText(status) {
     switch (status) {
         case 'decipher':
@@ -81,6 +88,7 @@ function getReportStatusText(status) {
             return '읽지않음';
     }
 }
+
 document.addEventListener('DOMContentLoaded', function () {
     fetchStudies(currentPage, pageSize);
     const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
@@ -98,12 +106,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
             const studyKey = targetRow.querySelector('.studykey').value;
-            const studyDate = targetRow.querySelector('.studydate').value;
-            const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}/1`;
+            const studyDate = targetRow.querySelector('.studydate').textContent;
+
+            console.log('studydate: ' + studyDate);
+
+            const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}`;
             window.location.href = url;
         }
     });
 });
+
 document.getElementById("btn-pre-reading").addEventListener('click', () => {
     const comment = document.getElementById('comment').value;
     const quest = document.getElementById('quest').value;
@@ -134,9 +146,9 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
                                     if (exists) {
                                         alert('담당자만 관리 가능합니다.');
                                     } else {
-                                        alert('이미 판독이 완료되었습니다.')
+                                        alert('이미 판독이 완료되었습니다.');
                                     }
-                                })
+                                });
                         }
                     });
             } else {
@@ -149,6 +161,7 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
             alert('저장 중 오류가 발생했습니다.');
         });
 });
+
 document.getElementById("btn-reading").addEventListener('click', () => {
     const comment = document.getElementById('comment').value;
     const quest = document.getElementById('quest').value;
@@ -157,6 +170,23 @@ document.getElementById("btn-reading").addEventListener('click', () => {
         alert("먼저 항목을 선택하세요.");
         return;
     }
+
+    const reportFirstData = {
+        studykey: currentStudyKey,
+        comment: comment,
+        exploration: quest,
+        status: 'decipher',
+        firstDoctor: username
+    };
+
+    const reportSecondData = {
+        studykey: currentStudyKey,
+        comment: comment,
+        exploration: quest,
+        status: 'decipher',
+        secondDoctor: username
+    };
+
     // studykey가 존재하는지 확인
     checkStudyKeyExistence(currentStudyKey)
         .then(exists => {
@@ -165,75 +195,56 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                 // 판독의2에 값이 존재하는지 확인
                 checkSecondDoctorValue(currentStudyKey)
                     .then(isEmpty => {
-
                         // 예비판독을 한 의사여부 확인
                         checkPreDoctor(username)
                             .then(equals => {
                                 if (equals) {
-                                    alert('예비판독의는 판독이 불가합니다.')
+                                    alert('예비판독의는 판독이 불가합니다.');
                                     return null;
                                 } else {
-
-
-                                    // 만약 비어있으면 판독의2에 값 넣기
+                                    // 만약 판독의2가 비어있으면
                                     if (isEmpty) {
-                                        checkFirstDoctor(username)
-                                            .then(equals => {
-                                                if (equals) {
-                                                    const reportData = {
-                                                        studykey: currentStudyKey,
-                                                        comment: comment,
-                                                        exploration: quest,
-                                                        status: 'decipher',
-                                                        firstDoctor: username
-                                                    };
+                                        // 판독의1 값이 있는지 없는지 확인
+                                        checkFirstDoctorValue(currentStudyKey)
+                                            .then(isEmpty => {
+                                                // 판독의1 값이 존재하면 -> 이미 판독의에 들어간 값인지 확인 후 -> 판독의 2에 기록
+                                                if (!isEmpty) {
+                                                    // 판독의1과 동일한가?
+                                                    checkFirstDoctor(currentStudyKey)
+                                                        .then(value => {
+                                                            console.log(typeof value === 'string');
 
-                                                    updateReport(reportData);
+                                                            // 동일하면 내용만 update
+                                                            if (value === username) {
+                                                                console.log('판독의 1 값과 동일 -> 업데이트')
+                                                                updateReport(reportFirstData);
+                                                            } else {
+                                                                // 다르면 판독의 2 추가
+                                                                console.log('판독의 1 값과 다름 -> 판독의 2에 기록');
+                                                                updateSecondReport(reportSecondData);
+                                                            }
+                                                        });
                                                 } else {
-                                                    // firstDoctor 인지, secondDoctor인지 다르기 때문에 각각 써줌
-                                                    const reportData = {
-                                                        studykey: currentStudyKey,
-                                                        comment: comment,
-                                                        exploration: quest,
-                                                        status: 'decipher',
-                                                        secondDoctor: username
-                                                    };
-
-                                                    console.log('판독의2에 값 넣기');
-                                                    updateSecondReport(reportData);
+                                                    // 판독의1 값이 존재하지 않으면
+                                                    console.log('판독의1에 값 넣기');
+                                                    updateFirstReport(reportFirstData);
                                                 }
                                             });
-
                                     } else {
                                         // 비어있지 않으면 판독의1,2의 내용 수정만 가능
                                         // 판독의1 확인
-                                        checkFirstDoctor(username)
-                                            .then(equals => {
-                                                if (equals) {
-                                                    const reportData = {
-                                                        studykey: currentStudyKey,
-                                                        comment: comment,
-                                                        exploration: quest,
-                                                        status: 'decipher',
-                                                        firstDoctor: username
-                                                    };
-
-                                                    console.log('판독의1의 값 수정')
-                                                    updateReport(reportData);
+                                        checkFirstDoctor(currentStudyKey)
+                                            .then(value => {
+                                                if (value === username) {
+                                                    console.log('판독의1의 값 수정');
+                                                    updateReport(reportFirstData);
                                                 } else {
                                                     // 판독의1이 아니면 판독의2인지 확인
-                                                    checkSecondDoctor(username)
-                                                        .then(equals => {
-                                                            if (equals) {
-                                                                const reportData = {
-                                                                    studykey: currentStudyKey,
-                                                                    comment: comment,
-                                                                    exploration: quest,
-                                                                    status: 'decipher',
-                                                                    secondDoctor: username
-                                                                };
-                                                                console.log('판독의2의 값 수정')
-                                                                updateReport(reportData);
+                                                    checkSecondDoctor(currentStudyKey)
+                                                        .then(value => {
+                                                            if (value === username) {
+                                                                console.log('판독의2의 값 수정');
+                                                                updateSecondReport(reportSecondData);
                                                             } else {
                                                                 alert('담당자만 관리 가능합니다.');
                                                             }
@@ -242,19 +253,12 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                                             });
                                     }
                                 }
-                            })
+                            });
                     });
             } else {
                 // firstDoctor 인지, secondDoctor인지 다르기 때문에 각각 써줌
-                const reportData = {
-                    studykey: currentStudyKey,
-                    comment: comment,
-                    exploration: quest,
-                    status: 'decipher',
-                    firstDoctor: username
-                };
                 console.log('여기2');
-                saveReport(reportData);
+                saveReport(reportFirstData);
             }
         })
         .catch(error => {
@@ -323,33 +327,72 @@ function checkPreDoctor(username) {
         });
 }
 
-function checkFirstDoctor(username) {
-    return fetch(`/checkFirstDoctor?username=${username}`)
+function checkFirstDoctor(studykey) {
+    return fetch(`/checkFirstDoctor?studykey=${studykey}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
             }
-            return response.json();
+            return response.text();  // JSON 대신 텍스트로 응답을 받음
         })
-        .then(data => data)
+        .then(text => {
+            try {
+                return JSON.parse(text);  // JSON 파싱 시도
+            } catch (error) {
+                return text;  // 파싱에 실패하면 텍스트 반환
+            }
+        })
         .catch(error => {
             console.error('오류 발생: ', error);
             throw error;
         });
 }
 
-function checkSecondDoctor(username) {
-    return fetch(`/checkSecondDoctor?username=${username}`)
+function checkSecondDoctor(studykey) {
+    return fetch(`/checkSecondDoctor?studykey=${studykey}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
             }
-            return response.json();
+            return response.text();  // JSON 대신 텍스트로 응답을 받음
         })
-        .then(data => data)
+        .then(text => {
+            try {
+                return JSON.parse(text);  // JSON 파싱 시도
+            } catch (error) {
+                return text;  // 파싱에 실패하면 텍스트 반환
+            }
+        })
         .catch(error => {
             console.error('오류 발생: ', error);
             throw error;
+        });
+}
+
+
+function updateFirstReport(reportData) {
+    fetch('/updateFirstReport', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reportData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error('네트워크 응답이 올바르지 않습니다: ' + text);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('업데이트 성공:', data);
+            alert('성공적으로 저장 되었습니다.');
+        })
+        .catch(error => {
+            console.error('업데이트 중 오류 발생:', error);
+            alert('업데이트 중 오류가 발생했습니다.');
         });
 }
 
@@ -378,7 +421,6 @@ function updateSecondReport(reportData) {
             alert('업데이트 중 오류가 발생했습니다.');
         });
 }
-
 
 function updateReport(reportData) {
     fetch('/updateReport', {
@@ -431,10 +473,12 @@ function saveReport(reportData) {
             alert('저장 중 오류가 발생했습니다.');
         });
 }
+
 function enableReportInputs() {
     document.getElementById('comment').disabled = false;
     document.getElementById('quest').disabled = false;
 }
+
 function fetchStudiesByPid(pId) {
     fetch(`/mainPrevious/${pId}`)
         .then(response => response.ok ? response.json() : Promise.reject(response))
@@ -446,6 +490,7 @@ function fetchStudiesByPid(pId) {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
+
 function fetchReportByStudykey(studykey) {
     fetch(`/mainReport/${studykey}`)
         .then(response => response.ok ? response.json() : Promise.reject(response))
@@ -457,6 +502,7 @@ function fetchReportByStudykey(studykey) {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
+
 function displayReport(data) {
     const commentBox = document.getElementById('comment');
     const questBox = document.getElementById('quest');
@@ -482,6 +528,7 @@ function displayReport(data) {
         secondDoctorBox.value = '';
     }
 }
+
 function displayPrevious(data) {
     const dataTable = document.getElementById('previous-table').getElementsByTagName('tbody')[0];
     dataTable.innerHTML = '';
@@ -508,22 +555,34 @@ function displayPrevious(data) {
 }
 
 const previousTable = document.getElementById('previous-table').getElementsByTagName('tbody')[0];
-previousTable.addEventListener('click', function(event) {
+previousTable.addEventListener('click', function (event) {
     const targetRow = event.target.closest('tr');
-    if(targetRow){
+    if (targetRow) {
         currentStudyKey = targetRow.querySelector('.studykey').value;
         fetchReportByStudykey(currentStudyKey);
     }
 });
 
-previousTable.addEventListener('dblclick', function(event){
+previousTable.addEventListener('dblclick', function (event) {
     const targetRow = event.target.closest('tr');
-    if(targetRow){
+    if (targetRow) {
         const studyKey = targetRow.querySelector('.studykey').value;
-        const studyDate = targetRow.querySelector('.studydate').value;
+        const studyDate = targetRow.querySelector('.studydate').textContent;
         const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}/1`;
         window.location.href = url;
     }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const removeReportBtn = document.getElementById('removeReport');
+    const commentBox = document.getElementById('comment');
+    const questBox = document.getElementById('quest');
+
+    removeReportBtn.addEventListener('click', function() {
+        // comment와 quest 내용을 비웁니다.
+        commentBox.value = '';
+        questBox.value = '';
+    });
 });
 
 // 달력 PART
@@ -594,7 +653,7 @@ const renderCalendar = () => {
     let lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay();
     let lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate();
     for (let i = firstDayofMonth; i > 0; i--) {
-        liTag += `<li class = "inactive" data-date="${currYear}-${String(currMonth).padStart(2, '0')}-${String(lastDateofLastMonth - i + 1).padStart(2, '0')}">${lastDateofLastMonth - i + 1}</li>`;
+        liTag += `<li class="inactive" data-date="${currYear}-${String(currMonth).padStart(2, '0')}-${String(lastDateofLastMonth - i + 1).padStart(2, '0')}">${lastDateofLastMonth - i + 1}</li>`;
     }
     // 오늘의 날짜를 표시하며 날짜 출력
     for (let i = 1; i <= lastDateofMonth; i++) {
@@ -608,7 +667,7 @@ const renderCalendar = () => {
     }
     // 이후 달 날짜
     for (let i = lastDayofMonth; i < 6; i++) {
-        liTag += `<li class = "inactive" data-date="${currYear}-${String(currMonth + 2).padStart(2, '0')}-${String(i - lastDayofMonth + 1).padStart(2, '0')}">${i - lastDayofMonth + 1}</li>`;
+        liTag += `<li class="inactive" data-date="${currYear}-${String(currMonth + 2).padStart(2, '0')}-${String(i - lastDayofMonth + 1).padStart(2, '0')}">${i - lastDayofMonth + 1}</li>`;
     }
     daysTag.innerHTML = liTag;
     // 기간 설정
@@ -634,6 +693,7 @@ const renderCalendar = () => {
     });
 };
 renderCalendar();
+
 // 검색 파트
 function searchStudies() {
     const pid = document.getElementById('pid').value || '';
@@ -680,7 +740,7 @@ function searchStudies() {
 }
 
 // 검색 버튼 클릭 시 이벤트 핸들러
-document.getElementById('searchButton').addEventListener('click', function(event) {
+document.getElementById('searchButton').addEventListener('click', function (event) {
     event.preventDefault(); // 기본 동작 막기
     searchStudies(0, 5); // 페이지네이션을 위해 첫 번째 페이지(0)와 페이지당 항목 개수(5) 전달
 });

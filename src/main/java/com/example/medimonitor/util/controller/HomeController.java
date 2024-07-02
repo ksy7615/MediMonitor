@@ -2,7 +2,9 @@ package com.example.medimonitor.util.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RequiredArgsConstructor
 @Controller
@@ -17,6 +19,9 @@ public class HomeController {
         return "main";
     }
 
-    @GetMapping("/detail")
-    public String getDetailView() {return "detail";}
+    @GetMapping("/detail/{studyKey}")
+    public String getDetailView(@PathVariable(name = "studyKey") long studyKey, Model model) {
+        model.addAttribute("studyKey", studyKey);
+        return "detail";
+    }
 }
