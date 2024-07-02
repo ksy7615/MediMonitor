@@ -570,6 +570,18 @@ previousTable.addEventListener('dblclick', function (event) {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const removeReportBtn = document.getElementById('removeReport');
+    const commentBox = document.getElementById('comment');
+    const questBox = document.getElementById('quest');
+
+    removeReportBtn.addEventListener('click', function() {
+        commentBox.value = '';
+        questBox.value = '';
+    });
+});
+
+
 // 달력 PART
 let date = new Date();
 let currYear = date.getFullYear(),
