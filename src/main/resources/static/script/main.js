@@ -207,7 +207,7 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                                                 // 판독의1 값이 존재하면 -> 이미 판독의에 들어간 값인지 확인 후 -> 판독의 2에 기록
                                                 if (!isEmpty) {
                                                     // 판독의1과 동일한가?
-                                                    checkFirstDoctorValues(currentStudyKey)
+                                                    checkFirstDoctor(currentStudyKey)
                                                         .then(value => {
                                                             console.log(typeof value === 'string');
 
@@ -230,14 +230,14 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                                     } else {
                                         // 비어있지 않으면 판독의1,2의 내용 수정만 가능
                                         // 판독의1 확인
-                                        checkFirstDoctorValues(currentStudyKey)
+                                        checkFirstDoctor(currentStudyKey)
                                             .then(value => {
                                                 if (value === username) {
                                                     console.log('판독의1의 값 수정');
                                                     updateReport(reportFirstData);
                                                 } else {
                                                     // 판독의1이 아니면 판독의2인지 확인
-                                                    checkSecondDoctorValues(currentStudyKey)
+                                                    checkSecondDoctor(currentStudyKey)
                                                         .then(value => {
                                                             if (value === username) {
                                                                 console.log('판독의2의 값 수정');
@@ -324,8 +324,8 @@ function checkPreDoctor(username) {
         });
 }
 
-function checkFirstDoctorValues(studykey) {
-    return fetch(`/checkFirstDoctorValues?studykey=${studykey}`)
+function checkFirstDoctor(studykey) {
+    return fetch(`/checkFirstDoctor?studykey=${studykey}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
@@ -345,8 +345,8 @@ function checkFirstDoctorValues(studykey) {
         });
 }
 
-function checkSecondDoctorValues(studykey) {
-    return fetch(`/checkSecondDoctorValues?studykey=${studykey}`)
+function checkSecondDoctor(studykey) {
+    return fetch(`/checkSecondDoctor?studykey=${studykey}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
@@ -366,35 +366,6 @@ function checkSecondDoctorValues(studykey) {
         });
 }
 
-function checkFirstDoctor(username) {
-    return fetch(`/checkFirstDoctor?username=${username}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => data)
-        .catch(error => {
-            console.error('오류 발생: ', error);
-            throw error;
-        });
-}
-
-function checkSecondDoctor(username) {
-    return fetch(`/checkSecondDoctor?username=${username}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => data)
-        .catch(error => {
-            console.error('오류 발생: ', error);
-            throw error;
-        });
-}
 
 function updateFirstReport(reportData) {
     fetch('/updateFirstReport', {
