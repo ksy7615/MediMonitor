@@ -15,4 +15,5 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Page<Study> findByModality(String modality, Pageable pageable);
     Page<Study> findByPnameLike(String pname, Pageable pageable);
     Page<Study> findByStudydateBetween(String startDate, String endDate, Pageable pageable);
+    List<Study> findByStudykey(long studykey);
 }

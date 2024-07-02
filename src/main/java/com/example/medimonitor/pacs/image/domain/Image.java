@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "V_IMAGETAB" , schema = "PACSPLUS")
+@Table(name = "IMAGETAB" , schema = "PACSPLUS")
 public class Image {
 
     @EmbeddedId
@@ -14,4 +14,10 @@ public class Image {
 
     private String path;
     private String fname;
+    private String contenttime;
+    private String window;
+    private String lev;
+    private String pixelrows;
+    private String pixelcolumns;
+
 }

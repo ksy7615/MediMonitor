@@ -7,7 +7,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Getter
-@Table(name = "V_SERIESTAB" , schema = "PACSPLUS")
+@Table(name = "SERIESTAB" , schema = "PACSPLUS")
 @Entity
 @IdClass(SeriesId.class)
 public class Series {
@@ -16,8 +16,13 @@ public class Series {
     private long studykey;
     @Id
     private long serieskey;
-    private String seriesdesc;
+    private String modality;
+    private String seriesdesc;      // A-4
+    private String protocolname;
     private long imagecnt;
-    private String path;
-    private String fname;
+    private String seriestime;
+    private String operatorsname;
+    private String manufacturer;
+    private String institutionname;
+    private String manumodelname;
 }
