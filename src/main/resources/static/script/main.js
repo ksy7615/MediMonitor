@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             console.log('studydate: ' + studyDate);
 
-            const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}/1`;
+            const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}`;
             window.location.href = url;
         }
     });
