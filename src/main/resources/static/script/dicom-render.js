@@ -1,8 +1,7 @@
 import * as cornerstone from '@cornerstonejs/core';
 import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader';
 import * as dicomParser from 'dicom-parser';
-import * as tools from './setTools.js'
-
+import * as tools from './setTools.js';
 
 const content = document.getElementById('content');
 const element = document.createElement('div');
@@ -13,11 +12,10 @@ element.style.width = '500px';
 element.style.height = '500px';
 content.appendChild(element);
 
-// URL에서 studyKey와 seriesKey 추출
+// URL에서 studyKey 추출
 const paths = window.location.pathname;
 const pathParts = paths.split('/');
 const studyKey = pathParts[2];
-const seriesKey = pathParts[3];
 
 // Cornerstone 초기화
 const init = async () => {
@@ -42,59 +40,69 @@ const init = async () => {
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
 };
 
-// 이미지 불러오기 및 렌더링 함수
-const fetchDataAndRender = async () => {
-    // 예제에서는 API를 통해 이미지 URL을 가져옴
-
-    // 1) studykey와 serieskey를 통해 api 호출
-    // 2) 이미지데이터(시리즈에대한 전체 이미지)를 응답으로 받아
-    // 3) 각 이미지데이터(buffer)를 가지고 imageId를 생성
-    // 4) viewpoer에 랜더링 하기위한 imageIds 배열 완성
-
-    const endpoint = `/api/image/${studyKey}/${seriesKey}`;
-
-    const imageIds = [];
+// 시리즈 키 가져오기 함수
+const fetchSeriesKeys = async () => {
+    const endpoint = `/api/detail/${studyKey}`;
 
     try {
         const response = await fetch(endpoint, {
-            method: "POST"
+            method: "GET"
         });
-        const list = await response.json();
+        const data = await response.json();
 
-        list.forEach((base64, index) => {
-            // api가 응답한 base64 인코딩 데이터를 -> 바이너리 스트링으로 디코딩
-            const binaryString = atob(base64);
-            // 디코딩된 문자열로 이미지아이디를 만들기위한 버퍼 생성
-            const arrayBuffer = Uint8Array.from(binaryString, c => c.charCodeAt(0));
-            // 이미지 아이디 만들기
-            const imageId = `dicomweb:${URL.createObjectURL(new Blob([arrayBuffer], {type: 'application/dicom'}))}`;
-            imageIds.push(imageId);
-
-
-            // *번외
-            if(index === 0) {
-                try
-                {
-                    const options = { TransferSyntaxUID: '1.2.840.10008.1.2' };
-                    var dataSet = dicomParser.parseDicom(arrayBuffer, options);
-
-                    var studyInstanceUid = dataSet.string('x0020000d');
-                    console.log('studyInstanceUid : ', studyInstanceUid);
-
-                    var pname = dataSet.string('x00100010');
-                    console.log('studyInstanceUid : ', pname);
-                }
-                catch(ex)
-                {
-                    console.log('Error parsing byte stream', ex);
-                }
-            }
-        });
-
-        render(imageIds);
+        // 첫 번째 4개의 시리즈의 seriesKey를 가져옴
+        const seriesKeys = data.series.slice(0, 4).map(series => series.seriesKey);
+        return seriesKeys;
     } catch (error) {
         console.error('에러 : ', error);
     }
+};
+
+// 이미지 불러오기 및 렌더링 함수
+const fetchDataAndRender = async (seriesKeys) => {
+    const imageIds = [];
+
+    for (const seriesKey of seriesKeys) {
+        const endpoint = `/api/image/${studyKey}/${seriesKey}`;
+
+        try {
+            const response = await fetch(endpoint, {
+                method: "POST"
+            });
+            const list = await response.json();
+
+            list.forEach((base64, index) => {
+                // api가 응답한 base64 인코딩 데이터를 -> 바이너리 스트링으로 디코딩
+                const binaryString = atob(base64);
+                // 디코딩된 문자열로 이미지아이디를 만들기위한 버퍼 생성
+                const arrayBuffer = Uint8Array.from(binaryString, c => c.charCodeAt(0));
+                // 이미지 아이디 만들기
+                const imageId = `dicomweb:${URL.createObjectURL(new Blob([arrayBuffer], {type: 'application/dicom'}))}`;
+                imageIds.push(imageId);
+
+                // *번외
+                if(index === 0) {
+                    try {
+                        const options = { TransferSyntaxUID: '1.2.840.10008.1.2' };
+                        var dataSet = dicomParser.parseDicom(arrayBuffer, options);
+
+                        var studyInstanceUid = dataSet.string('x0020000d');
+                        console.log('studyInstanceUid : ', studyInstanceUid);
+
+                        var pname = dataSet.string('x00100010');
+                        console.log('pname : ', pname);
+                    } catch(ex) {
+                        console.log('Error parsing byte stream', ex);
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error('에러 : ', error);
+        }
+    }
+
+    render(imageIds);
 };
 
 // 렌더링 함수
@@ -125,4 +133,9 @@ const render = (imageIds) => {
 };
 
 // 초기화 함수 호출 후 데이터 불러오기 및 렌더링
-init().then(fetchDataAndRender).catch(console.error);
+init()
+    .then(async () => {
+        const seriesKeys = await fetchSeriesKeys();
+        fetchDataAndRender(seriesKeys);
+    })
+    .catch(console.error);
