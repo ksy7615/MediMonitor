@@ -13,9 +13,9 @@
 <body id="header-body">
 <header class="header">
     <div id="header-logo">
-        <img src="${pageContext.request.contextPath}/style/image/logo.png" width="40px" height="35px" alt="MEDIMONITOR">
-        <span id="header-logo-front">MEDI</span>
-        <span id="header-logo-back">MONITOR</span>
+        <a class="header-logo-img" href="${pageContext.request.contextPath}/main"><img src="${pageContext.request.contextPath}/style/image/logo.png" width="40px" height="35px" alt="MEDIMONITOR"></a>
+        <a class="header-logo-front" href="${pageContext.request.contextPath}/main">MEDI</a>
+        <a class="header-logo-back" href="${pageContext.request.contextPath}/main">MONITOR</a>
     </div>
     <c:if test="${not empty user}">
         <div class="header-right">
