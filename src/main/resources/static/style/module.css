@@ -95,7 +95,7 @@
     margin-right: 10px;
 }
 
-#header-logo-front {
+.header-logo-front {
     font-family: "Bebas Neue", sans-serif;
     font-weight: 100;
     font-size: 30px;
@@ -104,10 +104,22 @@
     color: #5c88c4;
 }
 
-#header-logo-back {
+.header-logo-back {
     font-family: "Bebas Neue", sans-serif;
     font-weight: 100;
     font-size: 30px;
     font-style: normal;
     text-align: center;
+}
+
+#header-logo a {
+    text-decoration-line: none;
+}
+
+.header-logo-front:visited {
+    color: #5c88c4;
+}
+
+.header-logo-back:visited{
+    color: white;
 }
