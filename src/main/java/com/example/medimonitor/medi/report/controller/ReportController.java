@@ -70,9 +70,9 @@ public class ReportController {
     }
 
     @GetMapping("/checkFirstDoctor")
-    public ResponseEntity<Boolean> checkFirstDoctor(@RequestParam String username) {
-        boolean equals = reportService.checkIfFirstDoctorExists(username);
-        return ResponseEntity.ok(equals);
+    public ResponseEntity<String> checkFirstDoctor(@RequestParam Long studykey) {
+        String value = reportService.getFirstDoctorByStudykey(studykey);
+        return ResponseEntity.ok(value);
     }
 
     @GetMapping("/checkSecondDoctor")
@@ -95,6 +95,16 @@ public class ReportController {
     public ResponseEntity<?> updateSecondReport(@RequestBody ReportRequestDto reportRequestDto) {
         try {
             reportService.updateSecondReport(reportRequestDto);
+            return ResponseEntity.ok().body("{\"message\":\"업데이트 성공\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("{\"error\":\"업데이트 중 오류 발생: " + e.getMessage() + "\"}");
+        }
+    }
+
+    @PutMapping("/updateFirstReport")
+    public ResponseEntity<?> updateFirstReport(@RequestBody ReportRequestDto reportRequestDto) {
+        try {
+            reportService.updateFirstReport(reportRequestDto);
             return ResponseEntity.ok().body("{\"message\":\"업데이트 성공\"}");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("{\"error\":\"업데이트 중 오류 발생: " + e.getMessage() + "\"}");

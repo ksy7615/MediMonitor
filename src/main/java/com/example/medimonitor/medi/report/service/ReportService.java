@@ -72,7 +72,20 @@ public class ReportService {
             report.setExploration(dto.getExploration());
             report.setStatus(dto.getStatus());
             report.setSecondDoctor(dto.getSecondDoctor());
-            // 필요한 경우 다른 필드들도 업데이트
+
+            reportRepository.save(report);
+        }
+    }
+
+    public void updateFirstReport(ReportRequestDto dto) {
+        Optional<Report> optionalReport = reportRepository.findFirstByStudykey(dto.getStudykey());
+        if (optionalReport.isPresent()) {
+            Report report = optionalReport.get();
+            report.setComment(dto.getComment());
+            report.setExploration(dto.getExploration());
+            report.setStatus(dto.getStatus());
+            report.setFirstDoctor(dto.getFirstDoctor());
+
             reportRepository.save(report);
         }
     }
@@ -85,7 +98,6 @@ public class ReportService {
             report.setExploration(dto.getExploration());
             report.setStatus(dto.getStatus());
 
-            // 필요한 경우 다른 필드들도 업데이트
             reportRepository.save(report);
         }
     }
