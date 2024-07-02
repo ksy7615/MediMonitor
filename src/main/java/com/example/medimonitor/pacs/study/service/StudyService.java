@@ -55,6 +55,9 @@ public class StudyService {
                 break;
             case "studydate":
                 String[] dates = value.split(",");
+                if (dates.length != 2) {
+                    throw new IllegalArgumentException("Invalid date range format. Expected format: 'startDate,endDate'");
+                }
                 String startDate = dates[0];
                 String endDate = dates[1];
                 studies = studyRepository.findByStudydateBetween(startDate, endDate, pageable);
@@ -65,6 +68,18 @@ public class StudyService {
                 break;
         }
 
+        return studies.map(study -> {
+            Optional<Report> reportOpt = reportRepository.findFirstByStudykey(study.getStudykey());
+            String reportStatus = reportOpt.map(Report::getStatus).orElse("읽지않음");
+            ReportResponseDto reportResponseDto = new ReportResponseDto(study.getStudykey(), reportStatus);
+
+            return new InfoResponseDto(reportResponseDto, study);
+        });
+    }
+
+    // 검색 서비스 메서드
+    public Page<InfoResponseDto> searchStudies(String pid, String pname, Long reportstatus, String modality, String startDate, String endDate, Pageable pageable) {
+        Page<Study> studies = studyRepository.search(pid, pname, reportstatus, modality, startDate, endDate, pageable);
         return studies.map(study -> {
             Optional<Report> reportOpt = reportRepository.findFirstByStudykey(study.getStudykey());
             String reportStatus = reportOpt.map(Report::getStatus).orElse("읽지않음");
