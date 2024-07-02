@@ -69,10 +69,22 @@ public class ReportController {
         return ResponseEntity.ok(isEmpty);
     }
 
-    @GetMapping("/checkFirstDoctor")
-    public ResponseEntity<String> checkFirstDoctor(@RequestParam Long studykey) {
+    @GetMapping("/checkFirstDoctorValues")
+    public ResponseEntity<String> checkFirstDoctorValues(@RequestParam Long studykey) {
         String value = reportService.getFirstDoctorByStudykey(studykey);
         return ResponseEntity.ok(value);
+    }
+
+    @GetMapping("/checkSecondDoctorValues")
+    public ResponseEntity<String> checkSecondDoctorValues(@RequestParam Long studykey) {
+        String value = reportService.getSecondDoctorByStudykey(studykey);
+        return ResponseEntity.ok(value);
+    }
+
+    @GetMapping("/checkFirstDoctor")
+    public ResponseEntity<Boolean> checkFirstDoctor(@RequestParam String username) {
+        boolean equals = reportService.checkIfFirstDoctorExists(username);
+        return ResponseEntity.ok(equals);
     }
 
     @GetMapping("/checkSecondDoctor")

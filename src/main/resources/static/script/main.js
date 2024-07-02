@@ -207,7 +207,7 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                                                 // 판독의1 값이 존재하면 -> 이미 판독의에 들어간 값인지 확인 후 -> 판독의 2에 기록
                                                 if (!isEmpty) {
                                                     // 판독의1과 동일한가?
-                                                    checkFirstDoctor(currentStudyKey)
+                                                    checkFirstDoctorValues(currentStudyKey)
                                                         .then(value => {
                                                             console.log(typeof value === 'string');
 
@@ -230,16 +230,16 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                                     } else {
                                         // 비어있지 않으면 판독의1,2의 내용 수정만 가능
                                         // 판독의1 확인
-                                        checkFirstDoctor(username)
-                                            .then(equals => {
-                                                if (equals) {
+                                        checkFirstDoctorValues(currentStudyKey)
+                                            .then(value => {
+                                                if (value === username) {
                                                     console.log('판독의1의 값 수정');
                                                     updateReport(reportFirstData);
                                                 } else {
                                                     // 판독의1이 아니면 판독의2인지 확인
-                                                    checkSecondDoctor(username)
-                                                        .then(equals => {
-                                                            if (equals) {
+                                                    checkSecondDoctorValues(currentStudyKey)
+                                                        .then(value => {
+                                                            if (value === username) {
                                                                 console.log('판독의2의 값 수정');
                                                                 updateSecondReport(reportSecondData);
                                                             } else {
@@ -324,8 +324,8 @@ function checkPreDoctor(username) {
         });
 }
 
-function checkFirstDoctor(studykey) {
-    return fetch(`/checkFirstDoctor?studykey=${studykey}`)
+function checkFirstDoctorValues(studykey) {
+    return fetch(`/checkFirstDoctorValues?studykey=${studykey}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
@@ -339,6 +339,42 @@ function checkFirstDoctor(studykey) {
                 return text;  // 파싱에 실패하면 텍스트 반환
             }
         })
+        .catch(error => {
+            console.error('오류 발생: ', error);
+            throw error;
+        });
+}
+
+function checkSecondDoctorValues(studykey) {
+    return fetch(`/checkSecondDoctorValues?studykey=${studykey}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
+            }
+            return response.text();  // JSON 대신 텍스트로 응답을 받음
+        })
+        .then(text => {
+            try {
+                return JSON.parse(text);  // JSON 파싱 시도
+            } catch (error) {
+                return text;  // 파싱에 실패하면 텍스트 반환
+            }
+        })
+        .catch(error => {
+            console.error('오류 발생: ', error);
+            throw error;
+        });
+}
+
+function checkFirstDoctor(username) {
+    return fetch(`/checkFirstDoctor?username=${username}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => data)
         .catch(error => {
             console.error('오류 발생: ', error);
             throw error;

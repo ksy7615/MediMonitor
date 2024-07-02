@@ -37,6 +37,10 @@ public class ReportService {
         return reportRepository.existsBySecondDoctor(username);
     }
 
+    public String getFirstDoctorByStudykey(Long studykey) {
+        return reportRepository.findFirstDoctorByStudykey(studykey);
+    }
+
     public String getSecondDoctorByStudykey(Long studykey) {
         return reportRepository.findSecondDoctorByStudykey(studykey);
     }
@@ -44,10 +48,6 @@ public class ReportService {
     public boolean isSecondDoctorValueEmpty(Long studykey) {
         String secondDoctor = getSecondDoctorByStudykey(studykey);
         return secondDoctor == null || secondDoctor.isEmpty();
-    }
-
-    public String getFirstDoctorByStudykey(Long studykey) {
-        return reportRepository.findFirstDoctorByStudykey(studykey);
     }
 
     public boolean isFirstDoctorValueEmpty(Long studykey) {
