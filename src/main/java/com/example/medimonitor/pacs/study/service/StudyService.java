@@ -109,4 +109,8 @@ public class StudyService {
 //        }
 //        return result;
 //    }
+
+    public List<Study> findByStudykey(long studykey) {
+        return studyRepository.findByStudykey(studykey);
+    }
 }
