@@ -1,3 +1,8 @@
+const paths = window.location.pathname;
+const pathParts = paths.split('/');
+let currentStudyKey = pathParts[1];
+
+
 // 토글박스
 function toggleBox() {
     var toggleBox = document.getElementById('toggle-box');

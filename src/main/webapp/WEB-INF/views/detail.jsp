@@ -28,19 +28,8 @@
         <!-- 오른쪽에 나타날 네모칸 -->
     </div>
 
-    <div class="main-panel" id="main-panel">
-        <%--        <div class="top-left">--%>
-        <%--            <!-- 상단 왼쪽 -->--%>
-        <%--        </div>--%>
-        <%--        <div class="top-right">--%>
-        <%--            <!-- 상단 오른쪽 -->--%>
-        <%--        </div>--%>
-        <%--        <div class="bottom-left">--%>
-        <%--            <!-- 하단 왼쪽 -->--%>
-        <%--        </div>--%>
-        <%--        <div class="bottom-right">--%>
-        <%--            <!-- 하단 오른쪽 -->--%>
-        <%--        </div>--%>
+    <div class="content" id="content">
+
     </div>
 </div>
 
@@ -90,7 +79,7 @@
     </div>
 </div>
 
-
+<script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/detail.js"></script>
 
 </body>

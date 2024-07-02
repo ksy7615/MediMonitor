@@ -106,7 +106,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
             const studyKey = targetRow.querySelector('.studykey').value;
-            const studyDate = targetRow.querySelector('.studydate').value;
+            const studyDate = targetRow.querySelector('.studydate').textContent;
+
+            console.log('studydate: ' + studyDate);
+
             const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}/1`;
             window.location.href = url;
         }
@@ -576,11 +579,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const questBox = document.getElementById('quest');
 
     removeReportBtn.addEventListener('click', function() {
+        // comment와 quest 내용을 비웁니다.
         commentBox.value = '';
         questBox.value = '';
     });
 });
-
 
 // 달력 PART
 let date = new Date();
