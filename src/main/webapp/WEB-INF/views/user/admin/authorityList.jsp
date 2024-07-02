@@ -7,6 +7,7 @@
     <c:import url="/header" />
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/user/menuButton.js"></script>
 <body>
 <c:choose>
     <c:when test="${empty user}">
@@ -23,12 +24,13 @@
     </c:when>
 </c:choose>
 <div id="userList-container">
+    <input type="hidden" id="currentPage" value="${currentPage}" />
+    <input type="hidden" id="totalPages" value="${userPage.totalPages}" />
     <h1 id="userList-h1">회원 관리</h1>
     <div class="card-container">
-        <c:forEach var="user" items="${users}">
+        <c:forEach var="user" items="${userPage.content}">
             <div class="card">
                 <div class="card-header">
-                        <%--                <img src="${pageContext.request.contextPath}/images/default-avatar.png" alt="User Avatar">--%>
                     <div>${user.name}</div>
                 </div>
                 <div class="card-body">
@@ -46,13 +48,15 @@
             </div>
         </c:forEach>
     </div>
-
+    <div class="button-set">
+        <button class="button blue-button" id="left">◀</button>
+        <label id="pageCnt">${currentPage + 1} / ${userPage.totalPages}</label>
+        <button class="button blue-button" id="right">▶</button>
+    </div>
     <div class="action-buttons">
         <button id="approveBtn">승인</button>
         <button id="rejectBtn">거절</button>
     </div>
 </div>
-
 </body>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/user/menuButton.js"></script>
 </html>
