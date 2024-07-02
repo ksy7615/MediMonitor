@@ -1,65 +1,66 @@
-let currentPage = 0;
-const pageSize = 5;
-let totalPages = 0;
-let currentStudyKey = null; // 전역 변수 추가
+document.addEventListener('DOMContentLoaded', function () {
+    let currentPage = 0;
+    const pageSize = 5;
+    let totalPages = 0;
+    let currentStudyKey = null; // 전역 변수 추가
 
-document.getElementById('getAllStudiesBtn').addEventListener('click', function () {
-    currentPage = 0;
-    fetchStudies(currentPage, pageSize);
-});
-
-document.getElementById('left').addEventListener('click', function () {
-    if (currentPage > 0) {
-        currentPage--;
+    document.getElementById('getAllStudiesBtn').addEventListener('click', function () {
+        currentPage = 0;
         fetchStudies(currentPage, pageSize);
-    } else {
-        alert("첫 페이지입니다.");
+    });
+
+    document.getElementById('left').addEventListener('click', function () {
+        if (currentPage > 0) {
+            currentPage--;
+            fetchStudies(currentPage, pageSize);
+        } else {
+            alert("첫 페이지입니다.");
+        }
+    });
+
+    document.getElementById('right').addEventListener('click', function () {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            fetchStudies(currentPage, pageSize);
+        } else {
+            alert("다음 페이지가 없습니다.");
+        }
+    });
+
+    function fetchStudies(page, size) {
+        const url = `/mainAllSearch?page=${page}&size=${size}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`서버에서 오류 발생 (${response.status})`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                updateTable(data);
+                totalPages = data.totalPages;
+                updatePageInfo(data.pageable.pageNumber, totalPages);
+            })
+            .catch(error => {
+                console.error('데이터를 불러오는 중 오류 발생:', error);
+                alert('데이터를 불러오는 중 오류가 발생했습니다.');
+            });
     }
-});
 
-document.getElementById('right').addEventListener('click', function () {
-    if (currentPage < totalPages - 1) {
-        currentPage++;
-        fetchStudies(currentPage, pageSize);
-    } else {
-        alert("다음 페이지가 없습니다.");
+    function updatePageInfo(currentPage, totalPages) {
+        document.getElementById('pageCnt').textContent = `${currentPage + 1}/${totalPages}ㅤ`;
     }
-});
 
-function fetchStudies(page, size) {
-    const url = `/mainAllSearch?page=${page}&size=${size}`;
-
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`서버에서 오류 발생 (${response.status})`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            updateTable(data);
-            totalPages = data.totalPages;
-            updatePageInfo(data.pageable.pageNumber, totalPages);
-        })
-        .catch(error => {
-            console.error('데이터를 불러오는 중 오류 발생:', error);
-            alert('데이터를 불러오는 중 오류가 발생했습니다.');
-        });
-}
-
-function updatePageInfo(currentPage, totalPages) {
-    document.getElementById('pageCnt').textContent = `${currentPage + 1}/${totalPages}ㅤ`;
-}
-
-function updateTable(data) {
-    const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-    dataTable.innerHTML = '';
-    data.content.forEach(item => {
-        const row = dataTable.insertRow();
-        const study = item.study;
-        const reportStatus = item.report.status;
-        const reportStatusText = getReportStatusText(reportStatus);
-        row.innerHTML = `
+    function updateTable(data) {
+        const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+        dataTable.innerHTML = '';
+        data.content.forEach(item => {
+            const row = dataTable.insertRow();
+            const study = item.study;
+            const reportStatus = item.report.status;
+            const reportStatusText = getReportStatusText(reportStatus);
+            row.innerHTML = `
             <td>${study.pid}</td>
             <td>${study.pname}</td>
             <td>${study.modality}</td>
@@ -71,26 +72,27 @@ function updateTable(data) {
             <td>${study.examstatus}</td>
             <input type="hidden" class="studykey" value="${study.studykey}">
         `;
-    });
-}
-
-function getReportStatusText(status) {
-    switch (status) {
-        case 'decipher':
-            return '판독';
-        case 'predecipher':
-            return '예비판독';
-        case 'reading':
-            return '열람중';
-        case 'notread':
-            return '읽지않음';
-        default:
-            return '읽지않음';
+        });
+        console.log("Updated table with data:", data); // 디버깅용 로그 추가
     }
-}
 
-document.addEventListener('DOMContentLoaded', function () {
+    function getReportStatusText(status) {
+        switch (status) {
+            case 'decipher':
+                return '판독';
+            case 'predecipher':
+                return '예비판독';
+            case 'reading':
+                return '열람중';
+            case 'notread':
+                return '읽지않음';
+            default:
+                return '읽지않음';
+        }
+    }
+
     fetchStudies(currentPage, pageSize);
+
     const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     table.addEventListener('click', function (event) {
         const targetRow = event.target.closest('tr');
@@ -102,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
             fetchReportByStudykey(currentStudyKey);
         }
     });
+
     table.addEventListener('dblclick', function (event) {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
@@ -368,7 +371,6 @@ function checkSecondDoctor(studykey) {
             throw error;
         });
 }
-
 
 function updateFirstReport(reportData) {
     fetch('/updateFirstReport', {
@@ -653,7 +655,7 @@ const renderCalendar = () => {
     let lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay();
     let lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate();
     for (let i = firstDayofMonth; i > 0; i--) {
-        liTag += `<li class="inactive" data-date="${currYear}-${String(currMonth).padStart(2, '0')}-${String(lastDateofLastMonth - i + 1).padStart(2, '0')}">${lastDateofLastMonth - i + 1}</li>`;
+        liTag += `<li class = "inactive" data-date="${currYear}-${String(currMonth).padStart(2, '0')}-${String(lastDateofLastMonth - i + 1).padStart(2, '0')}">${lastDateofLastMonth - i + 1}</li>`;
     }
     // 오늘의 날짜를 표시하며 날짜 출력
     for (let i = 1; i <= lastDateofMonth; i++) {
@@ -667,7 +669,7 @@ const renderCalendar = () => {
     }
     // 이후 달 날짜
     for (let i = lastDayofMonth; i < 6; i++) {
-        liTag += `<li class="inactive" data-date="${currYear}-${String(currMonth + 2).padStart(2, '0')}-${String(i - lastDayofMonth + 1).padStart(2, '0')}">${i - lastDayofMonth + 1}</li>`;
+        liTag += `<li class = "inactive" data-date="${currYear}-${String(currMonth + 2).padStart(2, '0')}-${String(i - lastDayofMonth + 1).padStart(2, '0')}">${i - lastDayofMonth + 1}</li>`;
     }
     daysTag.innerHTML = liTag;
     // 기간 설정
@@ -693,85 +695,49 @@ const renderCalendar = () => {
     });
 };
 renderCalendar();
-
 // 검색 파트
-function searchStudies() {
-    const pid = document.getElementById('pid').value || '';
-    const pname = document.getElementById('pname').value || '';
-    const reportstatus = document.getElementById('reportstatus').value || -1;
-    const modality = document.getElementById('modality').value || '';
-    const startDateElem = document.getElementById('startDate');
-    const endDateElem = document.getElementById('endDate');
-    const startDate = startDateElem ? startDateElem.value : '';
-    const endDate = endDateElem ? endDateElem.value : '';
-    const requestData = {
-        pid: pid,
-        pname: pname,
-        reportstatus: reportstatus,
-        modality: modality,
-        startDate: startDate,
-        endDate: endDate
-    };
-
-    const url = pid || pname || reportstatus !== -1 || modality || startDate || endDate ?
-        '/main/search' : '/mainAllSearch';
-
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('서버 응답 오류: ' + response.status);
-            }
-            return response.json();
+    function searchStudies() {
+        const pid = document.getElementById('pid').value || '';
+        const pname = document.getElementById('pname').value || '';
+        const reportstatus = document.getElementById('reportstatus').value || -1;
+        const modality = document.getElementById('modality').value || '';
+        const startDateElem = document.getElementById('startDate');
+        const endDateElem = document.getElementById('endDate');
+        const startDate = startDateElem ? startDateElem.value : '';
+        const endDate = endDateElem ? endDateElem.value : '';
+        const requestData = {pid, pname, reportstatus, modality, startDate, endDate};
+        const url = '/main/search';
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
         })
-        .then(data => {
-            console.log('검색 결과:', data);
-            displayResults(data);
-        })
-        .catch(error => {
-            console.error('데이터를 불러오는 중 오류 발생:', error);
-            alert('데이터를 불러오는 중 오류가 발생했습니다.');
-        });
-}
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('서버 응답 오류: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayResults(data);
+            })
+            .catch(error => {
+                console.error('데이터를 불러오는 중 오류 발생:', error);
+                alert('데이터를 불러오는 중 오류가 발생했습니다.');
+            });
+    }
 
-// 검색 버튼 클릭 시 이벤트 핸들러
-document.getElementById('searchButton').addEventListener('click', function (event) {
-    event.preventDefault(); // 기본 동작 막기
-    searchStudies(0, 5); // 페이지네이션을 위해 첫 번째 페이지(0)와 페이지당 항목 개수(5) 전달
-});
+    function displayResults(data) {
+        const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+        dataTable.innerHTML = '';
 
-function displayResults(data) {
-    const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-    dataTable.innerHTML = '';
-
-    // 만약 data가 객체인 경우, 배열에 담아줍니다.
-    const studies = Array.isArray(data) ? data : [data];
-
-    studies.forEach(study => {
-        const row = dataTable.insertRow();
-        let reportStatusText = '';
-        switch (study.reportstatus) {
-            case 6:
-                reportStatusText = '판독';
-                break;
-            case 5:
-                reportStatusText = '예비판독';
-                break;
-            case 4:
-                reportStatusText = '열람중';
-                break;
-            case 3:
-                reportStatusText = '읽지않음';
-                break;
-            default:
-                reportStatusText = '알 수 없음';
-        }
-        row.innerHTML = `
+        data.content.forEach(item => {
+            const row = dataTable.insertRow();
+            const study = item.study;
+            const reportStatusText = getReportStatus(item.report.status);
+            row.innerHTML = `
             <td>${study.pid}</td>
             <td>${study.pname}</td>
             <td>${study.modality}</td>
@@ -782,5 +748,21 @@ function displayResults(data) {
             <td>${study.imagecnt}</td>
             <td>${study.examstatus}</td>
         `;
-    });
-}
+        });
+    }
+
+    function getReportStatus(status) {
+        switch (status) {
+            case 6:
+                return '판독';
+            case 5:
+                return '예비판독';
+            case 4:
+                return '열람중';
+            case 3:
+                return '읽지않음';
+            default:
+                return '알 수 없음';
+        }
+    }
+});
