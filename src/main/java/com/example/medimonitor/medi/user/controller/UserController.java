@@ -1,13 +1,18 @@
 package com.example.medimonitor.medi.user.controller;
 
+import com.example.medimonitor.medi.user.domain.User;
 import com.example.medimonitor.medi.user.dto.UserRequestDto;
 import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import com.example.medimonitor.medi.user.domain.UserService;
 import com.example.medimonitor.util.Response;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -77,13 +82,40 @@ public class UserController {
         return mv;
     }
 
+//    @GetMapping("/admin/authority")
+//    public ModelAndView adminUserAuthorityList() {
+//        ModelAndView mv = new ModelAndView("user/admin/authorityList");
+//
+//        List<UserResponseDto> userList = userService.findByAuthorityFalse();
+//        mv.addObject("users", userList);
+//
+//        return mv;
+//    }
+
+//    @GetMapping("/admin/authority")
+//    public ModelAndView adminUserAuthorityList(@RequestParam(defaultValue = "1") int page) {
+//        int offset = (page - 1) * 8;
+//        ModelAndView mv = new ModelAndView("user/admin/authorityList");
+//
+//        List<UserResponseDto> userList = userService.findByAuthorityFalse(offset);
+//        mv.addObject("users", userList);
+//
+//        int totalUsers = userService.countUsersByAuthorityFalse();
+//        int totalPages = (int) Math.ceil((double) totalUsers / 8);
+//        mv.addObject("currentPage", page);
+//        mv.addObject("totalPages", totalPages);
+//
+//        return mv;
+//    }
+
     @GetMapping("/admin/authority")
-    public ModelAndView adminUserAuthorityList() {
+    public ModelAndView adminUserAuthorityList(@RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 8); // 8 users per page
+        Page<UserResponseDto> userPage = userService.getUsersWithAuthorityFalse(pageable);
+
         ModelAndView mv = new ModelAndView("user/admin/authorityList");
-
-        List<UserResponseDto> userList = userService.findByAuthority();
-        mv.addObject("users", userList);
-
+        mv.addObject("userPage", userPage);
+        mv.addObject("currentPage", page);
         return mv;
     }
 
