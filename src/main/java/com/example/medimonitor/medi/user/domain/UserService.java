@@ -3,7 +3,11 @@ package com.example.medimonitor.medi.user.domain;
 import com.example.medimonitor.medi.user.dto.UserRequestDto;
 import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -21,17 +25,33 @@ public class UserService {
         return userResponseDto;
     }
 
-    public List<UserResponseDto> findByAuthority() {
-        List<User> list = userRepository.findByAuthorityFalse();
-        List<UserResponseDto> result = new ArrayList<>();
+    public Page<UserResponseDto> getUsersWithAuthorityFalse(Pageable pageable) {
+        Page<User> usersPage = userRepository.findByAuthorityFalse(pageable);
 
-        for(User user : list) {
+        List<UserResponseDto> userResponseDtos = new ArrayList<>();
+        for (User user : usersPage) {
             UserResponseDto userDto = new UserResponseDto(user);
-            result.add(userDto);
+            userResponseDtos.add(userDto);
         }
 
-        return result;
+        return new PageImpl<>(userResponseDtos, pageable, usersPage.getTotalElements());
     }
+
+//    public List<UserResponseDto> findByAuthorityFalse(int offset) {
+//        List<User> list = userRepository.findUserListByAuthorityFalse(offset);
+//        List<UserResponseDto> result = new ArrayList<>();
+//
+//        for(User user : list) {
+//            UserResponseDto userDto = new UserResponseDto(user);
+//            result.add(userDto);
+//        }
+//
+//        return result;
+//    }
+
+//    public int countUsersByAuthorityFalse() {
+//        return userRepository.countByAuthorityFalse();
+//    }
 
     public List<UserResponseDto> findByAuthorityTrue() {
         List<User> list = userRepository.findByAuthorityTrue();
