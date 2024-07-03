@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('getAllStudiesBtn').addEventListener('click', function () {
         currentPage = 0;
         searchParams = null;
-        fetchStudies(currentPage, pageSize);
+        fetchStudies(currentPage, pageSize, false);
     });
 
     document.getElementById('left').addEventListener('click', function () {
         if (currentPage > 0) {
             currentPage--;
-            fetchStudies(currentPage, pageSize);
+            fetchStudies(currentPage, pageSize, !!searchParams);
         } else {
             alert("첫 페이지입니다.");
         }
@@ -23,18 +23,17 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('right').addEventListener('click', function () {
         if (currentPage < totalPages - 1) {
             currentPage++;
-            fetchStudies(currentPage, pageSize);
-            searchStudies(currentPage, pageSize);
+            fetchStudies(currentPage, pageSize, !!searchParams);
         } else {
             alert("다음 페이지가 없습니다.");
         }
     });
 
-    function fetchStudies(page, size) {
+    function fetchStudies(page, size, isSearch) {
         let url;
         let fetchOptions = {};
 
-        if (searchParams) {
+        if (isSearch && searchParams) {
             url = `/main/search?page=${page}&size=${size}`;
             fetchOptions = {
                 method: 'POST',
@@ -86,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.log('Request Data:', searchParams); // 요청 데이터 로그
 
-        fetchStudies(page, size);
+        fetchStudies(page, size, true);
     }
 
     function updatePageInfo(currentPage, totalPages) {
@@ -137,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
         searchStudies(currentPage, pageSize);
     });
 
-    fetchStudies(currentPage, pageSize);
+    fetchStudies(currentPage, pageSize, false);
 
     const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     table.addEventListener('click', function (event) {
