@@ -37,7 +37,7 @@
                     <a href="${pageContext.request.contextPath}/logout">로그아웃</a>
                 </div>
             </div>
-            <span class="admin-text">${user.name}</span>
+            <span class="admin-text"  id="user-text">${user.name}</span>
         </div>
     </c:if>
 </header>
