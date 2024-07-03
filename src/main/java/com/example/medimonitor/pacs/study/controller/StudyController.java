@@ -28,6 +28,12 @@ public class StudyController {
         return studyService.findStudiesWithPagination(page, size, "all", "");
     }
 
+    @GetMapping("/allInfo/{studykey}")
+    @ResponseBody
+    public List<Study> getAllStudies(@PathVariable long studykey){
+        return studyService.findAllStudiesByKey(studykey);
+    }
+
     @GetMapping("/mainPrevious/{pId}")
     @ResponseBody
     public List<InfoResponseDto> getStudiesByPid(@PathVariable String pId) {

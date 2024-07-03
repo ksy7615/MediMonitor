@@ -22,6 +22,10 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final ReportRepository reportRepository;
 
+    public List<Study> findAllStudiesByKey(long studykey) {
+        return studyRepository.findByStudykey(studykey);
+    }
+
     public List<InfoResponseDto> getStudiesByPid(String pId) {
         List<Study> studies = studyRepository.findByPid(pId);
 
