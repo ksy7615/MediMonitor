@@ -694,6 +694,10 @@ document.addEventListener('DOMContentLoaded', function () {
     renderCalendar();
 
 // 검색 파트
+    document.getElementById('searchButton').addEventListener('click', function () {
+        searchStudies();
+    });
+
     function searchStudies() {
         const pid = document.getElementById('pid').value || '';
         const pname = document.getElementById('pname').value || '';
@@ -703,7 +707,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const endDateElem = document.getElementById('endDate');
         const startDate = startDateElem ? startDateElem.value : '';
         const endDate = endDateElem ? endDateElem.value : '';
-        const requestData = {pid, pname, reportstatus, modality, startDate, endDate};
+
+        const requestData = {
+            pid: pid,
+            pname: pname,
+            reportstatus: reportstatus,
+            modality: modality,
+            startDate: startDate,
+            endDate: endDate
+        };
+
+        console.log('Request Data:', requestData); // 요청 데이터 로그
+
         const url = '/main/search';
         fetch(url, {
             method: 'POST',
@@ -719,6 +734,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
+                console.log('Response Data:', data); // 응답 데이터 로그
                 displayResults(data);
             })
             .catch(error => {
