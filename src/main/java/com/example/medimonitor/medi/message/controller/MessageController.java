@@ -11,7 +11,7 @@ public class MessageController {
 
     private final MessageService messageService;
 
-    @GetMapping("/")
+    @GetMapping("/inbox")
     public String inbox() {return "message/inbox";}
 
 }
