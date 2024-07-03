@@ -14,4 +14,7 @@ public class MessageController {
     @GetMapping("/inbox")
     public String inbox() {return "message/inbox";}
 
+    @GetMapping("/write")
+    public String write() {return "message/write";}
+
 }
