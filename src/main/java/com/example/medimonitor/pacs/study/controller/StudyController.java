@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +50,9 @@ public class StudyController {
     @CrossOrigin
     @PostMapping("/main/search")
     @ResponseBody
-    public Page<InfoResponseDto> searchStudies(@RequestBody StudyRequestDto studyRequestDto, Pageable pageable) {
+    public Page<InfoResponseDto> searchStudies(@RequestBody StudyRequestDto studyRequestDto,
+                                               @RequestParam("page") int page,
+                                               @RequestParam("size") int size) {
         return studyService.searchStudies(
                 studyRequestDto.getPid(),
                 studyRequestDto.getPname(),
@@ -57,7 +60,7 @@ public class StudyController {
                 studyRequestDto.getModality(),
                 studyRequestDto.getStartDate(),
                 studyRequestDto.getEndDate(),
-                pageable
+                PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "studydate"))
         );
     }
 
