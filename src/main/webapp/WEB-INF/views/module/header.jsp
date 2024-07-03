@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="${pageContext.request.contextPath}/style/image/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/module.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/message.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>Medimonitor</title>
 </head>
@@ -22,7 +24,7 @@
             <div class="dropdown">
                 <span class="icon" id="message-icon"><i class="fas fa-comment-dots"></i></span>
                 <div class="dropdown-content" id="message-dropdown">
-                    <a href="#">받은 쪽지함</a>
+                    <a onclick="openMiniInbox()">받은 쪽지함</a>
                     <a href="#">보낸 쪽지함</a>
                     <a href="#">쪽지 보내기</a>
                 </div>
@@ -40,8 +42,61 @@
             <span class="admin-text"  id="user-text">${user.name}</span>
         </div>
     </c:if>
+
+    <!-- 모달 HTML 추가 -->
+    <div id="mini-inbox-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMiniInbox()"><i class="fas fa-times"></i></span>
+            <div id="modal-body">
+                <h2>Message | 받은 메일함</h2>
+                <div class="mail-list-container">
+                    <ul class="mail-list">
+                        <li>
+                            <span class="mail-sender">허채은</span>
+                            <span class="mail-subject">[네이버플러스 멤버십] 결제 내역 안내</span>
+                            <span class="mail-time">5시간 전</span>
+                        </li>
+                        <li>
+                            <span class="mail-sender">윤소원</span>
+                            <span class="mail-subject">[Wavve] 개인정보 삭제 안내</span>
+                            <span class="mail-time">오전 8시 10분</span>
+                        </li>
+                        <li>
+                            <span class="mail-sender">허채은</span>
+                            <span class="mail-subject">(광고) 제17회 G마켓 상생페스티벌 오픈! 10% 쿠폰...</span>
+                            <span class="mail-time">7월 2일</span>
+                        </li>
+                        <li>
+                            <span class="mail-sender">윤소원</span>
+                            <span class="mail-subject">(광고) Apple이 내디딘 새로운 큰 도약. 우리의 최신 ...</span>
+                            <span class="mail-time">7월 2일</span>
+                        </li>
+                        <li>
+                            <span class="mail-sender">김선영</span>
+                            <span class="mail-subject">...</span>
+                            <span class="mail-time">7월 1일</span>
+                        </li>
+                        <li>
+                            <span class="mail-sender">김재현</span>
+                            <span class="mail-subject">...</span>
+                            <span class="mail-time">7월 1일</span>
+                        </li>
+                        <li>
+                            <span class="mail-sender">김선영</span>
+                            <span class="mail-subject">...</span>
+                            <span class="mail-time">7월 1일</span>
+                        </li>
+                    </ul>
+                </div>
+                <button id="mail-button"><a href="${pageContext.request.contextPath}/inbox">📮쪽지</a></button>
+                <button id="mail-write"><a href="${pageContext.request.contextPath}/inbox">✏️쪽지쓰기</a></button>
+            </div>
+        </div>
+    </div>
 </header>
-<script src="${pageContext.request.contextPath}/script/header.js"></script>
+
 </body>
+<script src="${pageContext.request.contextPath}/script/header.js"></script>
+<script src="${pageContext.request.contextPath}/script/messageModal.js"></script>
 
 </html>
