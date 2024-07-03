@@ -5,6 +5,7 @@ import com.example.medimonitor.medi.log.domain.LogService;
 import com.example.medimonitor.medi.log.dto.LogRequestDto;
 import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import com.example.medimonitor.pacs.series.domain.Series;
+import com.example.medimonitor.pacs.series.domain.SeriesRepository;
 import com.example.medimonitor.pacs.series.service.SeriesService;
 import com.example.medimonitor.pacs.study.domain.Study;
 import com.example.medimonitor.pacs.study.domain.StudyRepository;
@@ -26,6 +27,8 @@ import java.util.Map;
 public class SeriesController {
 
     private final LogService logService;
+    private final SeriesRepository seriesRepository;
+    private final SeriesService seriesService;
 
     @PostMapping("/detail/{studykey}")
     @ResponseBody
@@ -61,4 +64,11 @@ public class SeriesController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/thumbnail/{studykey}")
+    @ResponseBody
+    public List<Series> findAllByStudykey(@PathVariable(name = "studykey") long studykey) {
+        return seriesService.findAllByStudykey(studykey);
+    }
+
 }
