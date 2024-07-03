@@ -22,8 +22,14 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     @Query("SELECT s FROM Study s WHERE " +
             "(:pid IS NULL OR s.pid LIKE %:pid%) AND " +
             "(:pname IS NULL OR s.pname LIKE %:pname%) AND " +
-            "(:reportstatus IS NULL OR s.reportstatus = :reportstatus) AND " +
-            "(:modality IS NULL OR s.modality = :modality) AND " +
+            "(:reportstatus IS NULL OR :reportstatus = -1 OR s.reportstatus = :reportstatus) AND " +
+            "(:modality IS NULL OR s.modality LIKE %:modality%) AND " +
             "(:startDate IS NULL OR :endDate IS NULL OR s.studydate BETWEEN :startDate AND :endDate)")
-    Page<Study> search(@Param("pid") String pid, @Param("pname") String pname, @Param("reportstatus") Long reportstatus, @Param("modality") String modality, @Param("startDate") String startDate, @Param("endDate") String endDate, Pageable pageable);
+    Page<Study> search(@Param("pid") String pid,
+                       @Param("pname") String pname,
+                       @Param("reportstatus") Long reportstatus,
+                       @Param("modality") String modality,
+                       @Param("startDate") String startDate,
+                       @Param("endDate") String endDate,
+                       Pageable pageable);
 }
