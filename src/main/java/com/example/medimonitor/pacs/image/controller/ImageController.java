@@ -24,12 +24,10 @@ public class ImageController {
         return "dicomInfo";
     }
 
+    // 이거 지우지 마세요 저 써야 돼요 지우지 마세요 제발요 제발 지우지 마세요
     @GetMapping("/test/{studyKey}/{seriesKey}")
     @ResponseBody
     public List<Image> show(@PathVariable(name = "studyKey") long studyKey, @PathVariable(name = "seriesKey")long seriesKey){
-        System.out.println("studyKey: " + studyKey);
-        System.out.println("seriesKey: " + seriesKey);
         return imageService.findAllImage(studyKey,seriesKey);
     }
-
 }
