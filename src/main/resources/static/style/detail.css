@@ -76,7 +76,7 @@ body {
     width: 0;
     height: 80%;
     margin-top: 55px;
-    background-color: palevioletred;
+    background-color: #2d2d2d;
     position: absolute;
     left: 9%; /* left-panel의 오른쪽에 위치하도록 설정 */
     top: 100px; /* left-panel과 동일한 높이로 설정 */

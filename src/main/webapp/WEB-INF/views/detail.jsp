@@ -55,11 +55,7 @@
 [Finding]
 
 
-
-
 [Conclusion]
-
-
 
 
 [Recommend]
@@ -86,7 +82,7 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/detail.js"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/detail_report.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/script/detail/detail_thumbnail.js"></script>
 </body>
 </html>
