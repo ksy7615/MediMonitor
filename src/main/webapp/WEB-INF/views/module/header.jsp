@@ -89,7 +89,7 @@
                     </ul>
                 </div>
                 <button id="mail-button"><a href="${pageContext.request.contextPath}/inbox">📮쪽지</a></button>
-                <button id="mail-write"><a href="${pageContext.request.contextPath}/inbox">✏️쪽지쓰기</a></button>
+                <button id="mail-write"><a href="${pageContext.request.contextPath}/write">✏️쪽지쓰기</a></button>
             </div>
         </div>
     </div>
