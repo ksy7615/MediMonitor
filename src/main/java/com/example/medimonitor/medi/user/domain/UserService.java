@@ -25,29 +25,29 @@ public class UserService {
         return userResponseDto;
     }
 
-    public Page<UserResponseDto> getUsersWithAuthorityFalse(Pageable pageable) {
-        Page<User> usersPage = userRepository.findByAuthorityFalse(pageable);
-
-        List<UserResponseDto> userResponseDtos = new ArrayList<>();
-        for (User user : usersPage) {
-            UserResponseDto userDto = new UserResponseDto(user);
-            userResponseDtos.add(userDto);
-        }
-
-        return new PageImpl<>(userResponseDtos, pageable, usersPage.getTotalElements());
-    }
-
-//    public List<UserResponseDto> findByAuthorityFalse(int offset) {
-//        List<User> list = userRepository.findUserListByAuthorityFalse(offset);
-//        List<UserResponseDto> result = new ArrayList<>();
+//    public Page<UserResponseDto> getUsersWithAuthorityFalse(Pageable pageable) {
+//        Page<User> usersPage = userRepository.findByAuthorityFalse(pageable);
 //
-//        for(User user : list) {
+//        List<UserResponseDto> userResponseDtos = new ArrayList<>();
+//        for (User user : usersPage) {
 //            UserResponseDto userDto = new UserResponseDto(user);
-//            result.add(userDto);
+//            userResponseDtos.add(userDto);
 //        }
 //
-//        return result;
+//        return new PageImpl<>(userResponseDtos, pageable, usersPage.getTotalElements());
 //    }
+
+    public List<UserResponseDto> findByAuthorityFalse() {
+        List<User> list = userRepository.findByAuthorityFalse();
+        List<UserResponseDto> result = new ArrayList<>();
+
+        for(User user : list) {
+            UserResponseDto userDto = new UserResponseDto(user);
+            result.add(userDto);
+        }
+
+        return result;
+    }
 
 //    public int countUsersByAuthorityFalse() {
 //        return userRepository.countByAuthorityFalse();

@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     public List<User> findByAuthorityFalse();
 
-    public Page<User> findByAuthorityFalse(Pageable pageable);
+//    public Page<User> findByAuthorityFalse(Pageable pageable);
 
     public List<User> findByAuthorityTrue();
 

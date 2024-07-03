@@ -82,15 +82,15 @@ public class UserController {
         return mv;
     }
 
-//    @GetMapping("/admin/authority")
-//    public ModelAndView adminUserAuthorityList() {
-//        ModelAndView mv = new ModelAndView("user/admin/authorityList");
-//
-//        List<UserResponseDto> userList = userService.findByAuthorityFalse();
-//        mv.addObject("users", userList);
-//
-//        return mv;
-//    }
+    @GetMapping("/admin/authority")
+    public ModelAndView adminUserAuthorityList() {
+        ModelAndView mv = new ModelAndView("user/admin/authorityList");
+
+        List<UserResponseDto> userList = userService.findByAuthorityFalse();
+        mv.addObject("users", userList);
+
+        return mv;
+    }
 
 //    @GetMapping("/admin/authority")
 //    public ModelAndView adminUserAuthorityList(@RequestParam(defaultValue = "1") int page) {
@@ -108,16 +108,16 @@ public class UserController {
 //        return mv;
 //    }
 
-    @GetMapping("/admin/authority")
-    public ModelAndView adminUserAuthorityList(@RequestParam(defaultValue = "0") int page) {
-        Pageable pageable = PageRequest.of(page, 8); // 8 users per page
-        Page<UserResponseDto> userPage = userService.getUsersWithAuthorityFalse(pageable);
-
-        ModelAndView mv = new ModelAndView("user/admin/authorityList");
-        mv.addObject("userPage", userPage);
-        mv.addObject("currentPage", page);
-        return mv;
-    }
+//    @GetMapping("/admin/authority")
+//    public ModelAndView adminUserAuthorityList(@RequestParam(defaultValue = "0") int page) {
+//        Pageable pageable = PageRequest.of(page, 8); // 8 users per page
+//        Page<UserResponseDto> userPage = userService.getUsersWithAuthorityFalse(pageable);
+//
+//        ModelAndView mv = new ModelAndView("user/admin/authorityList");
+//        mv.addObject("userPage", userPage);
+//        mv.addObject("currentPage", page);
+//        return mv;
+//    }
 
     @GetMapping("/login")
     public String userLogin() { return "user/login"; }

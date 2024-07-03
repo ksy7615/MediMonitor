@@ -28,7 +28,7 @@
     <input type="hidden" id="totalPages" value="${userPage.totalPages}" />
     <h1 id="userList-h1">회원 관리</h1>
     <div class="card-container">
-        <c:forEach var="user" items="${userPage.content}">
+        <c:forEach var="user" items="${users}">
             <div class="card">
                 <div class="card-header">
                     <div>${user.name}</div>
@@ -48,11 +48,11 @@
             </div>
         </c:forEach>
     </div>
-    <div class="button-set">
-        <button class="button blue-button" id="left">◀</button>
-        <label id="pageCnt">${currentPage + 1} / ${userPage.totalPages}</label>
-        <button class="button blue-button" id="right">▶</button>
-    </div>
+<%--    <div class="button-set">--%>
+<%--        <button class="button blue-button" id="left">◀</button>--%>
+<%--        <label id="pageCnt">${currentPage + 1} / ${userPage.totalPages}</label>--%>
+<%--        <button class="button blue-button" id="right">▶</button>--%>
+<%--    </div>--%>
     <div class="action-buttons">
         <button id="approveBtn">승인</button>
         <button id="rejectBtn">거절</button>

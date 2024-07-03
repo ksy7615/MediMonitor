@@ -1,26 +1,26 @@
-document.addEventListener('DOMContentLoaded', function() {
-    var currentPage = parseInt(document.getElementById("currentPage").value);
-    var totalPages = parseInt(document.getElementById("totalPages").value);
-
-    function loadUsers(page) {
-        window.location.href = '/admin/authority?page=' + page;
-    }
-
-    document.getElementById("left").addEventListener("click", function() {
-        if (currentPage > 0) {
-            loadUsers(currentPage - 1);
-        }
-    });
-
-    document.getElementById("right").addEventListener("click", function() {
-        if (currentPage < totalPages - 1) {
-            loadUsers(currentPage + 1);
-        }
-    });
-
-    // 페이지 로드 시 초기 값 설정
-    document.getElementById("pageCnt").textContent = (currentPage + 1) + " / " + totalPages;
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//     var currentPage = parseInt(document.getElementById("currentPage").value);
+//     var totalPages = parseInt(document.getElementById("totalPages").value);
+//
+//     function loadUsers(page) {
+//         window.location.href = '/admin/authority?page=' + page;
+//     }
+//
+//     document.getElementById("left").addEventListener("click", function() {
+//         if (currentPage > 0) {
+//             loadUsers(currentPage - 1);
+//         }
+//     });
+//
+//     document.getElementById("right").addEventListener("click", function() {
+//         if (currentPage < totalPages - 1) {
+//             loadUsers(currentPage + 1);
+//         }
+//     });
+//
+//     // 페이지 로드 시 초기 값 설정
+//     document.getElementById("pageCnt").textContent = (currentPage + 1) + " / " + totalPages;
+// });
 
 
 
