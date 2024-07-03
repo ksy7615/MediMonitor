@@ -1,0 +1,138 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    right: 10px;
+    top: 50px;
+    width: 600px;
+    height: 600px;
+    background-color: #464646;
+    border: 1px solid #888;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content {
+    padding: 20px;
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#modal-body h2 {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.mail-list-container {
+    max-height: 430px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+
+/* 스크롤바 디자인 */
+.mail-list-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.mail-list-container::-webkit-scrollbar-track {
+    background: #ccc;
+}
+
+.mail-list-container::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.mail-list-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.mail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mail-list li {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.mail-list li:last-child {
+    border-bottom: none;
+}
+
+.mail-sender {
+    padding-left: 10px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.mail-subject {
+    padding-left: 15px;
+    font-size: 18px;
+    color: white;
+}
+
+.mail-time {
+    align-self: flex-end;
+    font-size: 12px;
+    color: white;
+}
+
+/* 추가된 버튼 스타일 */
+#mail-button,
+#mail-write {
+    position: absolute;
+    bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    color: white;
+    text-decoration: none;
+}
+
+#mail-button {
+    left: 20px;
+    background-color: #464646;
+}
+
+#mail-write {
+    right: 20px;
+    background-color: #464646;
+}
+
+/* 앵커 태그 내부 스타일을 위한 추가 */
+#mail-button a,
+#mail-write a {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+}
+
+#mail-button:hover,
+#mail-write:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
