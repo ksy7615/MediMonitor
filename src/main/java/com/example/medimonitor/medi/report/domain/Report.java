@@ -1,6 +1,7 @@
 package com.example.medimonitor.medi.report.domain;
 
 import com.example.medimonitor.medi.report.dto.ReportRequestDto;
+import com.example.medimonitor.util.Timestamped;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ import java.sql.Timestamp;
 @Setter
 @Table(name = "report")
 @Entity
-public class Report {
+public class Report extends Timestamped {
     @Id
     private int code;
     private String comment;
@@ -21,7 +22,6 @@ public class Report {
     private String preDoctor;
     private String firstDoctor;
     private String secondDoctor;
-    private Timestamp regDate;
     private String status;
     private long studykey;
 
@@ -34,7 +34,6 @@ public class Report {
         this.secondDoctor = dto.getSecondDoctor();
         this.status = dto.getStatus();
         this.studykey = dto.getStudykey();
-        this.regDate = dto.getRegDate();
     }
 
     public Report() {

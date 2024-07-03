@@ -40,6 +40,8 @@ public class ReportResponseDto {
         this.secondDoctor = report.getSecondDoctor();
         this.status = report.getStatus();
         this.studykey = report.getStudykey();
+        this.regDate = report.getRegDate();
+        this.modDate = report.getModDate();
     }
 }
 
