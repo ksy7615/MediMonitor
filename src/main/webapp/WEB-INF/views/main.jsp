@@ -21,7 +21,7 @@
     <div class="content">
         <aside class="sidebar">
             <button class="button" id="getAllStudiesBtn">전체</button>
-            <button class="button">재설정</button>
+            <button class="button" id="reset">재설정</button>
             <div class="search">
                 <form id="searchForm">
                     <input type="text" id="pid" name="pid" placeholder="환자 아이디">
