@@ -93,42 +93,6 @@ public class StudyService {
         });
     }
 
-//    public List<Study> findByPidLike(String pid){
-//        return studyRepository.findByPidLike("%" + pid + "%");
-//    }
-//
-//    public List<Study> findByReportstatus(long reportStatus){
-//        return studyRepository.findByReportstatus(reportStatus);
-//    }
-//
-//    public List<Study> findByModality(String modality){
-//        return studyRepository.findByModality(modality);
-//    }
-//
-//    public List<Study> findByPnameLike(String pname){
-//        return studyRepository.findByPnameLike("%" + pname + "%");
-//    }
-//
-//    public List<Study> findByStudydateBetween(String startDate, String endDate) {
-//        List<Study> studies = studyRepository.findAll();
-//        List<Study> result = new ArrayList<>();
-//
-//        // 숫자만 나오도록 변환
-//        int start = Integer.parseInt(startDate.replace("-", ""));
-//        int end = Integer.parseInt(endDate.replace("-", ""));
-//
-//        for(int i=0; i<studies.size(); i++) {
-//            Study study = studies.get(i);
-//
-//            int studyDate = Integer.parseInt(study.getStudydate());
-//
-//            if(studyDate >= start && studyDate <= end) {
-//                result.add(study);
-//            }
-//        }
-//        return result;
-//    }
-
     public List<Study> findByStudykey(long studykey) {
         return studyRepository.findByStudykey(studykey);
     }
