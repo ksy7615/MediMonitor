@@ -8,6 +8,14 @@
     <c:import url="/header"/>
 </head>
 <body>
+
+<c:if test="${empty user}">
+    <script type="text/javascript">
+        alert("로그인 후 이용가능합니다.");
+        location.href='/login';
+    </script>
+</c:if>
+
 <div class="container">
     <div class="left-panel">
         <!-- 왼쪽 패널 -->
@@ -38,13 +46,11 @@
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <div class="modal-header">
-            환자정보 : 강감찬 / 17192 / 19400210<br>
-            검사 날짜 : 2023-03-10 17:06:23<br>
-            검사명 : CT BRAIN
+
         </div>
         <div class="modal-body">
             <div class="write-box">
-                <textarea class="comment" id='comment' placeholder="코멘트" disabled></textarea>
+                <textarea class="comment" id='comment' placeholder="코멘트" ></textarea>
                 <textarea class="quest" id='quest' placeholder="
 [Finding]
 
@@ -58,7 +64,7 @@
 
 [Recommend]
 
-" disabled></textarea>
+" ></textarea>
             </div>
             <div class="analysis">
                 <label>판독 일시</label>
