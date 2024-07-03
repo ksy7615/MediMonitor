@@ -51,11 +51,11 @@
 }
 
 .mail-list-container::-webkit-scrollbar-track {
-    background: #ccc;
+    background: #888;
 }
 
 .mail-list-container::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #ccc;
 }
 
 .mail-list-container::-webkit-scrollbar-thumb:hover {
