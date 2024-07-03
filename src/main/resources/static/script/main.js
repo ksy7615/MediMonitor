@@ -3,9 +3,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const pageSize = 5;
     let totalPages = 0;
     let currentStudyKey = null; // 전역 변수 추가
+    let searchParams = null;
 
     document.getElementById('getAllStudiesBtn').addEventListener('click', function () {
         currentPage = 0;
+        searchParams = null;
         fetchStudies(currentPage, pageSize);
     });
 
@@ -22,15 +24,30 @@ document.addEventListener('DOMContentLoaded', function () {
         if (currentPage < totalPages - 1) {
             currentPage++;
             fetchStudies(currentPage, pageSize);
+            searchStudies(currentPage, pageSize);
         } else {
             alert("다음 페이지가 없습니다.");
         }
     });
 
     function fetchStudies(page, size) {
-        const url = `/mainAllSearch?page=${page}&size=${size}`;
+        let url;
+        let fetchOptions = {};
 
-        fetch(url)
+        if (searchParams) {
+            url = `/main/search?page=${page}&size=${size}`;
+            fetchOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(searchParams)
+            };
+        } else {
+            url = `/mainAllSearch?page=${page}&size=${size}`;
+        }
+
+        fetch(url, fetchOptions)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`서버에서 오류 발생 (${response.status})`);
@@ -46,6 +63,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('데이터를 불러오는 중 오류 발생:', error);
                 alert('데이터를 불러오는 중 오류가 발생했습니다.');
             });
+    }
+
+    function searchStudies(page, size) {
+        const pid = document.getElementById('pid').value || '';
+        const pname = document.getElementById('pname').value || '';
+        const reportstatus = document.getElementById('reportstatus').value || -1;
+        const modality = document.getElementById('modality').value || '';
+        const startDateElem = document.getElementById('startDate');
+        const endDateElem = document.getElementById('endDate');
+        const startDate = startDateElem ? startDateElem.value : '';
+        const endDate = endDateElem ? endDateElem.value : '';
+
+        searchParams = {
+            pid: pid,
+            pname: pname,
+            reportstatus: reportstatus,
+            modality: modality,
+            startDate: startDate,
+            endDate: endDate
+        };
+
+        console.log('Request Data:', searchParams); // 요청 데이터 로그
+
+        fetchStudies(page, size);
     }
 
     function updatePageInfo(currentPage, totalPages) {
@@ -90,6 +131,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 return '읽지않음';
         }
     }
+
+    document.getElementById('searchButton').addEventListener('click', function () {
+        currentPage = 0;
+        searchStudies(currentPage, pageSize);
+    });
 
     fetchStudies(currentPage, pageSize);
 
@@ -692,91 +738,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
     renderCalendar();
-
-// 검색 파트
-    document.getElementById('searchButton').addEventListener('click', function () {
-        searchStudies();
-    });
-
-    function searchStudies() {
-        const pid = document.getElementById('pid').value || '';
-        const pname = document.getElementById('pname').value || '';
-        const reportstatus = document.getElementById('reportstatus').value || -1;
-        const modality = document.getElementById('modality').value || '';
-        const startDateElem = document.getElementById('startDate');
-        const endDateElem = document.getElementById('endDate');
-        const startDate = startDateElem ? startDateElem.value : '';
-        const endDate = endDateElem ? endDateElem.value : '';
-
-        const requestData = {
-            pid: pid,
-            pname: pname,
-            reportstatus: reportstatus,
-            modality: modality,
-            startDate: startDate,
-            endDate: endDate
-        };
-
-        console.log('Request Data:', requestData); // 요청 데이터 로그
-
-        const url = '/main/search';
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('서버 응답 오류: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Response Data:', data); // 응답 데이터 로그
-                displayResults(data);
-            })
-            .catch(error => {
-                console.error('데이터를 불러오는 중 오류 발생:', error);
-                alert('데이터를 불러오는 중 오류가 발생했습니다.');
-            });
-    }
-
-    function displayResults(data) {
-        const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-        dataTable.innerHTML = '';
-
-        data.content.forEach(item => {
-            const row = dataTable.insertRow();
-            const study = item.study;
-            const reportStatusText = getReportStatus(item.report.status);
-            row.innerHTML = `
-                <td>${study.pid}</td>
-                <td>${study.pname}</td>
-                <td>${study.modality}</td>
-                <td>${study.studydesc}</td>
-                <td class="studydate">${study.studydate}</td>
-                <td>${reportStatusText}</td>
-                <td>${study.seriescnt}</td>
-                <td>${study.imagecnt}</td>
-                <td>${study.examstatus}</td>
-            `;
-        });
-    }
-
-    function getReportStatus(status) {
-        switch (status) {
-            case 6:
-                return '판독';
-            case 5:
-                return '예비판독';
-            case 4:
-                return '열람중';
-            case 3:
-                return '읽지않음';
-            default:
-                return '알 수 없음';
-        }
-    }
 });
