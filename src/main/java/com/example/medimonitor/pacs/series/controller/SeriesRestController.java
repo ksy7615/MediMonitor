@@ -23,7 +23,7 @@ public class SeriesRestController {
     @ResponseBody
     public Map<String, Object> findAllSeriesByStudykey(@PathVariable("studykey") long studykey) {
         Study study = studyService.findByStudykey(studykey).stream().findFirst().orElse(null);
-        List<Series> seriesList = seriesService.findAllByStudyKey(studykey);
+        List<Series> seriesList = seriesService.findAllByStudykey(studykey);
 
         Map<String, Object> response = new HashMap<>();
         response.put("study", study);
