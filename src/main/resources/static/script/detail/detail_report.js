@@ -499,8 +499,3 @@ function saveReport(reportData) {
             alert('저장 중 오류가 발생했습니다.');
         });
 }
-
-function enableReportInputs() {
-    document.getElementById('comment').disabled = false;
-    document.getElementById('quest').disabled = false;
-}
