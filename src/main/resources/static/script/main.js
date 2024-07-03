@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('데이터를 불러오는 중 오류 발생:', error);
+                console.error('Request Data:', searchParams);
                 alert('데이터를 불러오는 중 오류가 발생했습니다.');
             });
     }
@@ -67,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function searchStudies(page, size) {
         const pid = document.getElementById('pid').value || '';
         const pname = document.getElementById('pname').value || '';
-        const reportstatus = document.getElementById('reportstatus').value || -1;
+        const reportstatus = document.getElementById('reportstatus').value || '';
         const modality = document.getElementById('modality').value || '';
         const startDateElem = document.getElementById('startDate');
         const endDateElem = document.getElementById('endDate');
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
         searchParams = {
             pid: pid,
             pname: pname,
-            reportstatus: reportstatus,
+            reportstatus: reportstatus !== '' ? reportstatus : '',
             modality: modality,
             startDate: startDate,
             endDate: endDate
