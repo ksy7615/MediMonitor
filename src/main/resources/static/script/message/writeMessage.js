@@ -106,7 +106,7 @@ $(document).ready(() => {
             $('#error-msg-title').show();
             $('#title').css('border', 'solid 1px #ff3f3f');
         }
-        if(content.length === ""){
+        if(content === ""){
             isValid = false;
             $('#error-msg-content').show();
             $('#content').css('border', 'solid 1px #ff3f3f');
