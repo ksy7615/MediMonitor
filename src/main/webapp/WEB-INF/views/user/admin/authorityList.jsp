@@ -7,7 +7,6 @@
     <c:import url="/header" />
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/user/menuButton.js"></script>
 <body>
 <c:choose>
     <c:when test="${empty user}">
@@ -59,4 +58,5 @@
     </div>
 </div>
 </body>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/user/menuButton.js"></script>
 </html>
