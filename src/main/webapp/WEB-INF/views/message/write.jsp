@@ -23,14 +23,14 @@
         <div class="form-group">
             <label for="recipient">받는 사람</label>
             <input type="text" id="recipient" name="recipient" placeholder="아이디를 입력하세요.">
-<%--            <button type="button" class="friend-list">친구목록</button>--%>
+            <button type="button" class="user-list" onclick="findUserModal()">아이디 검색</button>
         </div>
         <div class="form-group">
             <label for="title">제목</label>
             <input type="text" id="title" name="title" placeholder="제목를 입력하세요.">
         </div>
         <div class="form-group-textarea">
-            <input type="text" id="content" name="content" placeholder="쪽지 내용을 입력하세요">
+            <textarea id="content" name="content" placeholder="쪽지 내용을 입력하세요"></textarea>
             <span class="char-count">0/300</span>
         </div>
         <div class="message-error-container">
@@ -47,5 +47,18 @@
         </div>
     </form>
 </div>
+
+<!-- 모달 -->
+<div id="userModal" class="find-user-modal">
+    <div class="find-user-modal-content">
+        <span class="find-user-close" onclick="closeModal()">&times;</span>
+        <h2>아이디 검색</h2>
+        <input type="text" id="searchName" placeholder="이름을 입력하세요">
+        <button type="button" id="find-user-button" onclick="searchUser()">검색</button>
+        <div id="searchResults"></div>
+    </div>
+</div>
+
 </body>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/message/findUsername.js"></script>
 </html>
