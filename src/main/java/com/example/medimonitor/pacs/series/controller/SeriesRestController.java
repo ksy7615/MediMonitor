@@ -23,11 +23,12 @@ public class SeriesRestController {
     @ResponseBody
     public Map<String, Object> findAllSeriesByStudykey(@PathVariable("studykey") long studykey) {
         Study study = studyService.findByStudykey(studykey).stream().findFirst().orElse(null);
-        List<Series> seriesList = seriesService.findAllByStudykey(studykey);
+        List<String> seriesKeyList = seriesService.findAllSerieskey(studykey);
 
+        // 정보 뽑아오기 ( Study 의 정보 + 시리즈키 값만 )
         Map<String, Object> response = new HashMap<>();
         response.put("study", study);
-        response.put("seriesList", seriesList);
+        response.put("seriesList", seriesKeyList);
 
         return response;
     }
