@@ -1,8 +1,11 @@
 package com.example.medimonitor.medi.message.dto;
 
+import com.example.medimonitor.medi.message.domain.Message;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
@@ -15,4 +18,17 @@ public class MessageResponseDto {
     private String recipient;
     private String sender;
     private boolean status;
+    private Timestamp regDate;
+    private Timestamp modDate;
+
+    public MessageResponseDto(Message message) {
+        this.code = message.getCode();
+        this.title = message.getTitle();
+        this.content = message.getContent();
+        this.recipient = message.getRecipient();
+        this.sender = message.getSender();
+        this.regDate = message.getRegDate();
+        this.modDate = message.getModDate();
+    }
+
 }
