@@ -44,10 +44,10 @@
     </c:if>
 
     <!-- 모달 HTML 추가 -->
-    <div id="mini-inbox-modal" class="modal">
-        <div class="modal-content">
+    <div id="mini-inbox-modal" class="message-modal">
+        <div class="message-modal-content">
             <span class="close" onclick="closeMiniInbox()"><i class="fas fa-times"></i></span>
-            <div id="modal-body">
+            <div id="message-modal-body">
                 <h2>Message | 받은 메일함</h2>
                 <div class="mail-list-container">
                     <ul class="mail-list">
