@@ -136,6 +136,7 @@
 }
 
 .write-container {
+    position: relative;
     width: 650px;
     height: 700px;
     margin: 80px auto;
@@ -228,25 +229,35 @@
 }
 
 .char-count {
+    /*position: relative;*/
+    /*width: 100%;*/
+    /*height: 50px;*/
     align-self: flex-end;
     color: #ccc;
 }
 
 .write-button-group {
+    position: relative;
     text-align: center;
 }
 
 button.cancel {
+    position: absolute;
+    bottom: -70px;
+    left: calc(50% - 110px);
     background-color: #686868;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 10px;
 }
 
 button.send {
+    position: absolute;
+    bottom: -70px;
+    width: 110px;
+    left: calc(50% + 10px);
     background-color: #5C88C4;
     color: white;
     border: none;
@@ -256,6 +267,9 @@ button.send {
 }
 
 .message-error-container {
+    position: absolute;
+    top: 640px;
+    left: 35px;
     margin: 10px 0 0 0;
     color: #ff3f3f;
     width: 100%;
