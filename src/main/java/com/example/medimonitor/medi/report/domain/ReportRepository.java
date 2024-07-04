@@ -22,4 +22,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     @Query("SELECT r.firstDoctor FROM Report r WHERE r.studykey = :studykey")
     String findFirstDoctorByStudykey(@Param("studykey") Long studykey);
+
+    @Query("SELECT r.studykey FROM Report r WHERE r.status = :status")
+    List<Long> findStudyKeysByStatus(@Param("status") String status);
 }
