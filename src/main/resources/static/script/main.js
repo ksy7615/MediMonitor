@@ -11,6 +11,22 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchStudies(currentPage, pageSize, false);
     });
 
+    document.getElementById('reset').addEventListener('click', function () {
+        document.getElementById('pid').value = '';
+        document.getElementById('pname').value = '';
+        document.getElementById('reportstatus').value = '';
+        document.getElementById('modality').value = '';
+        const startDateElem = document.getElementById('startDate');
+        const endDateElem = document.getElementById('endDate');
+        if (startDateElem) startDateElem.value = '1990-01-01';
+        if (endDateElem) endDateElem.value = todayString;
+
+        // 초기화 후 전체 데이터를 다시 불러오기
+        currentPage = 0;
+        searchParams = null;
+        fetchStudies(currentPage, pageSize, false);
+    })
+
     document.getElementById('left').addEventListener('click', function () {
         if (currentPage > 0) {
             currentPage--;
@@ -60,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('데이터를 불러오는 중 오류 발생:', error);
-                console.error('Request Data:', searchParams);
                 alert('데이터를 불러오는 중 오류가 발생했습니다.');
             });
     }
@@ -78,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         searchParams = {
             pid: pid,
             pname: pname,
-            reportstatus: reportstatus !== '' ? reportstatus : '',
+            reportstatus: reportstatus !== '' ? reportstatus : null,
             modality: modality,
             startDate: startDate,
             endDate: endDate
@@ -634,6 +649,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let date = new Date();
     let currYear = date.getFullYear(),
         currMonth = date.getMonth();
+
     // 달력 밑 input 요소 value에 today 설정
     let day = String(date.getDate()).padStart(2, '0');
     let month = String(date.getMonth() + 1).padStart(2, '0');
