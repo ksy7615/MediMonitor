@@ -17,4 +17,17 @@ public class MessageService {
         MessageResponseDto messageResponseDto = new MessageResponseDto(messageRepository.save(message));
         return messageResponseDto;
     }
+
+    public boolean delete(int messageCode) {
+        boolean isDelete = false;
+
+        try {
+            messageRepository.deleteById(messageCode);
+            isDelete = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return isDelete;
+    }
 }
