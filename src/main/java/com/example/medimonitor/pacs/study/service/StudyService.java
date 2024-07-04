@@ -78,7 +78,11 @@ public class StudyService {
     }
 
     // 검색 서비스 메서드
-    public Page<InfoResponseDto> searchStudies(String pid, String pname, Long reportstatus, String modality, String startDate, String endDate, Pageable pageable) {
+    public Page<InfoResponseDto> searchStudies(String pid, String pname, String reportstatus, String modality, String startDate, String endDate, Pageable pageable) {
+        if (reportstatus != null && reportstatus.isEmpty()) {
+            reportstatus = null;
+        }
+
         Page<Study> studies = studyRepository.search(pid, pname, reportstatus, modality, startDate, endDate, pageable);
         return studies.map(study -> {
             Optional<Report> reportOpt = reportRepository.findFirstByStudykey(study.getStudykey());
