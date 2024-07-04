@@ -8,6 +8,14 @@
     <c:import url="/header"/>
 </head>
 <body>
+
+<c:if test="${empty user}">
+    <script type="text/javascript">
+        alert("로그인 후 이용가능합니다.");
+        location.href='/login';
+    </script>
+</c:if>
+
 <div class="container">
     <div class="left-panel">
         <!-- 왼쪽 패널 -->
@@ -38,31 +46,25 @@
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <div class="modal-header">
-            환자정보 : 강감찬 / 17192 / 19400210<br>
-            검사 날짜 : 2023-03-10 17:06:23<br>
-            검사명 : CT BRAIN
+
         </div>
         <div class="modal-body">
             <div class="write-box">
-                <textarea class="comment" id='comment' placeholder="코멘트" disabled></textarea>
+                <textarea class="comment" id='comment' placeholder="코멘트" ></textarea>
                 <textarea class="quest" id='quest' placeholder="
 [Finding]
-
-
 
 
 [Conclusion]
 
 
-
-
 [Recommend]
 
-" disabled></textarea>
+" ></textarea>
             </div>
             <div class="analysis">
                 <label>판독 일시</label>
-                <input type="text"><br>
+                <input class="inputText" type="text" id="studyDate" disabled><br>
                 <label>예비판독의</label>
                 <input class="inputText" type="text" id="preDoctor" disabled><br>
                 <label>판독의1</label>
@@ -80,7 +82,7 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/detail.js"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/detail_report.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/script/detail/detail_thumbnail.js"></script>
 </body>
 </html>

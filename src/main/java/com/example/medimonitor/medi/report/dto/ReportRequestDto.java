@@ -22,6 +22,4 @@ public class ReportRequestDto {
     private String secondDoctor;
     private String status;
     private long studykey;
-    private Timestamp regDate;
-    private Timestamp modDate;
 }

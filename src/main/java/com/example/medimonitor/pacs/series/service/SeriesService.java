@@ -17,7 +17,7 @@ public class SeriesService {
         return seriesRepository.findAll();
     }
 
-    public List<Series> findAllByStudyKey(long studyKey) {
-        return seriesRepository.findByStudykey(studyKey);
+    public List<Series> findAllByStudykey(long studykey) {
+        return seriesRepository.findByStudykey(studykey);
     }
 }

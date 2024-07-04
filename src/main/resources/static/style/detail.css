@@ -21,7 +21,7 @@ body {
     position: absolute;
     top: 100px; /* 헤더 아래에 위치하도록 설정 */
     bottom: 0;
-    margin-top: -40px;
+    margin-top: -45px;
     margin-left: 20px;
     text-align: center;
 }
@@ -49,7 +49,7 @@ body {
     transition: width 0.3s, left 0.3s; /* 위치 변경 시 애니메이션 추가 */
 }
 
-.main-panel {
+.content {
     width: 90%; /* 기본 너비를 줄여서 여유 공간 만들기 */
     height: 80%;
     position: absolute;
@@ -65,7 +65,7 @@ body {
     transition: width 0.3s, left 0.3s; /* 위치 변경 시 애니메이션 추가 */
 }
 
-.main-panel > div {
+.content > div {
     background-color: #444;
     display: flex;
     align-items: center;
@@ -76,7 +76,7 @@ body {
     width: 0;
     height: 80%;
     margin-top: 55px;
-    background-color: palevioletred;
+    background-color: #2d2d2d;
     position: absolute;
     left: 9%; /* left-panel의 오른쪽에 위치하도록 설정 */
     top: 100px; /* left-panel과 동일한 높이로 설정 */
@@ -91,7 +91,7 @@ body {
     width: 15%; /* 기존 크기의 1.5배 */
 }
 
-.main-panel.shifted {
+.content.shifted {
     width: 75%; /* shift 시 width 감소 */
     left: 25%;
 }
@@ -140,6 +140,10 @@ label {
     color: #fff;
     display: flex;
     flex-direction: column;
+}
+
+.modal-header label {
+    display: inline;
 }
 
 .close {
@@ -193,12 +197,18 @@ label {
     padding: 20px;
     border-radius: 5px;
 
+    color: white;
     width: 100%;
     height: 100%;
 }
 
 .comment {
     margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.quest{
+    font-size: 20px;
 }
 .search {
     flex: 1;
