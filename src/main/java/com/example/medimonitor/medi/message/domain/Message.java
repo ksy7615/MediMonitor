@@ -23,7 +23,6 @@ public class Message extends Timestamped {
     private boolean status;
 
     public Message(MessageRequestDto messageDto) {
-        this.code = messageDto.getCode();
         this.title = messageDto.getTitle();
         this.content = messageDto.getContent();
         this.recipient = messageDto.getRecipient();
