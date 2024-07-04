@@ -21,17 +21,17 @@
     <div class="content">
         <aside class="sidebar">
             <button class="button" id="getAllStudiesBtn">전체</button>
-            <button class="button">재설정</button>
+            <button class="button" id="reset">재설정</button>
             <div class="search">
                 <form id="searchForm">
                     <input type="text" id="pid" name="pid" placeholder="환자 아이디">
                     <input type="text" id="pname" name="pname" placeholder="환자 이름">
                     <select id="reportstatus" name="reportstatus">
                         <option value="">판독상태</option>
-                        <option value="3">읽지않음</option>
-                        <option value="4">열람중</option>
-                        <option value="5">예비판독</option>
-                        <option value="6">판독</option>
+                        <option value="notread">읽지않음</option>
+                        <option value="reading">열람중</option>
+                        <option value="predecipher">예비판독</option>
+                        <option value="decipher">판독</option>
                     </select>
                     <div class="wrapper">
                         <header>
@@ -136,6 +136,7 @@
                     <label id="pageCnt"></label>
                     <button class="button blue-button" id="right">▶</button>
                 </div>
+                <div id="pageInfo"></div>
             </div>
 
             <div class="box">

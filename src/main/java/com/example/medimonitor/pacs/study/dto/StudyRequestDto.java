@@ -20,7 +20,7 @@ public class StudyRequestDto {
     private String startDate;
     private String endDate;
     private String studyinsuid;
-    private long reportstatus;
+    private String reportstatus;
     private long seriescnt;
     private long imagecnt;
     private long examstatus;
