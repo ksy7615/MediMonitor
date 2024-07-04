@@ -9,4 +9,5 @@ public interface SeriesRepository extends JpaRepository<Series, SeriesId> {
     @Query("SELECT serieskey FROM Series WHERE studykey = ?1")
     List<String> searchAllSeriesKey(long studykey);
     List<Series> findByStudykeyAndSerieskey(long studykey, long serieskey);
+    List<Series> findByStudykey(long studykey);
 }

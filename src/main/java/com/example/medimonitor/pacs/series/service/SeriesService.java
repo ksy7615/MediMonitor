@@ -24,4 +24,8 @@ public class SeriesService {
     public List<Series> findAllSeriesByStudyKey(long studyKey , long seriesKey){
         return seriesRepository.findByStudykeyAndSerieskey(studyKey,seriesKey);
     }
+
+    public List<Series> findAllByStudykey(long studykey) {
+        return seriesRepository.findByStudykey(studykey);
+    }
 }
