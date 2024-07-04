@@ -10,47 +10,53 @@ const setTools = (viewportId, renderingEngineId) => {
     csToolsInit();
 
     // 툴 그룹 uid생성
-    const toolGroupId = 'toolGroupId';
+    const toolGroupId = `toolGroupId-${viewportId}`;
+    console.log('toolId : ' + toolGroupId);
 
     // 툴그룹에 툴 추가
-    cornerstoneTools.addTool(MagnifyTool);
-    cornerstoneTools.addTool(TrackballRotateTool);
-    cornerstoneTools.addTool(ZoomTool);
-    cornerstoneTools.addTool(StackScrollMouseWheelTool);
-
+    // cornerstoneTools.addTool(MagnifyTool);
+    // cornerstoneTools.addTool(TrackballRotateTool);
+    // cornerstoneTools.addTool(ZoomTool);
+    // cornerstoneTools.addTool(StackScrollMouseWheelTool);
+    try {
+        cornerstoneTools.addTool(StackScrollMouseWheelTool);
+    }catch (e){
+        console.log(e);
+    }
     // 툴 그룹 생성
     const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
+    console.log(toolGroup)
 
     // 툴 적용
-    toolGroup.addTool(MagnifyTool.toolName, {cursor:'move'});
-    toolGroup.addTool(TrackballRotateTool.toolName, {cursor:'crosshair'});
-    toolGroup.addTool(ZoomTool.toolName, {cursor:'zoom-in'});
+    // toolGroup.addTool(MagnifyTool.toolName, {cursor:'move'});
+    // toolGroup.addTool(TrackballRotateTool.toolName, {cursor:'crosshair'});
+    // toolGroup.addTool(ZoomTool.toolName, {cursor:'zoom-in'});
     toolGroup.addTool(StackScrollMouseWheelTool.toolName);
 
     // 툴 활성화
-    toolGroup.setToolActive(MagnifyTool.toolName, {
-        bindings: [
-            {
-                mouseButton: MouseBindings.Primary,
-            }
-        ],
-    });
-
-    toolGroup.setToolActive(TrackballRotateTool.toolName, {
-        bindings: [
-            {
-                mouseButton: MouseBindings.Auxiliary,
-            }
-        ],
-    });
-
-    toolGroup.setToolActive(ZoomTool.toolName, {
-        bindings: [
-            {
-                mouseButton: MouseBindings.Secondary,
-            }
-        ],
-    });
+    // toolGroup.setToolActive(MagnifyTool.toolName, {
+    //     bindings: [
+    //         {
+    //             mouseButton: MouseBindings.Primary,
+    //         }
+    //     ],
+    // });
+    //
+    // toolGroup.setToolActive(TrackballRotateTool.toolName, {
+    //     bindings: [
+    //         {
+    //             mouseButton: MouseBindings.Auxiliary,
+    //         }
+    //     ],
+    // });
+    //
+    // toolGroup.setToolActive(ZoomTool.toolName, {
+    //     bindings: [
+    //         {
+    //             mouseButton: MouseBindings.Secondary,
+    //         }
+    //     ],
+    // });
 
     toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
 
