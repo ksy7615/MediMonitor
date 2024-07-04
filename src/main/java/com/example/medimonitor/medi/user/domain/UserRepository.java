@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
 //    @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM users WHERE authority=0")
 //    public int countByAuthorityFalse();
+
+
+    public List<User> findByName(String name);
 }
