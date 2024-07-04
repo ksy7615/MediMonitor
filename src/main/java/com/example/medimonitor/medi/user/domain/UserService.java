@@ -117,4 +117,16 @@ public class UserService {
 
         return result;
     }
+
+    public List<UserResponseDto> findUsernameByName(String name) {
+        List<User> list = userRepository.findByName(name);
+        List<UserResponseDto> result = new ArrayList<>();
+
+        for(User user : list) {
+            UserResponseDto userDto = new UserResponseDto(user);
+            result.add(userDto);
+        }
+
+        return result;
+    }
 }
