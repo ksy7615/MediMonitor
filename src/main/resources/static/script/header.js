@@ -1,8 +1,15 @@
-document.getElementById('message-icon').addEventListener('click', function() {
+document.getElementById('message-icon').addEventListener('click', function(event) {
+    event.stopPropagation();
     document.getElementById('message-dropdown').classList.toggle('show');
 });
 
-document.getElementById('user-icon').addEventListener('click', function() {
+document.getElementById('user-text').addEventListener('click', function(event) {
+    event.stopPropagation();
+    document.getElementById('user-dropdown').classList.toggle('show');
+});
+
+document.getElementById('user-icon').addEventListener('click', function(event) {
+    event.stopPropagation();
     document.getElementById('user-dropdown').classList.toggle('show');
 });
 

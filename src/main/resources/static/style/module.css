@@ -54,6 +54,10 @@
     margin-right: 30px;
 }
 
+.admin-text:hover {
+    cursor: pointer;
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
@@ -80,9 +84,13 @@
     background-color: #555555;
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown-content.show {
     display: block;
 }
+
+/*.dropdown:hover .dropdown-content {*/
+/*    display: block;*/
+/*}*/
 
 #header-logo {
     display: flex;
