@@ -13,10 +13,10 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 
     public List<Message> findBySender(String sender);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM message WHERE sender=?1 ORDER BY reg_date ASC LIMIT 30 OFFSET 0")
-    public List<Message> findByRecipientOrderByRegDateAsc(String recipient);
+    @Query(nativeQuery = true, value = "SELECT * FROM message WHERE sender=?1 ORDER BY reg_date DESC LIMIT 30 OFFSET 0")
+    public List<Message> findByRecipientOrderByRegDateDesc(String recipient);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM message WHERE sender=?1 ORDER BY reg_date ASC LIMIT 30 OFFSET 0")
-    public List<Message> findBySenderOrderByRegDateAsc(String sender);
+    @Query(nativeQuery = true, value = "SELECT * FROM message WHERE sender=?1 ORDER BY reg_date DESC LIMIT 30 OFFSET 0")
+    public List<Message> findBySenderOrderByRegDateDesc(String sender);
 
 }
