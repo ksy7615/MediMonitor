@@ -19,9 +19,4 @@ public class HomeController {
         return "main";
     }
 
-    @GetMapping("/detail/{studyKey}")
-    public String getDetailView(@PathVariable(name = "studyKey") long studyKey, Model model) {
-        model.addAttribute("studyKey", studyKey);
-        return "detail";
-    }
 }
