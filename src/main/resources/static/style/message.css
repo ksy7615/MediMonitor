@@ -97,6 +97,13 @@
     margin-bottom: 5px;
 }
 
+.mail-recipient {
+    padding-left: 10px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
 .mail-subject {
     padding-left: 15px;
     font-size: 18px;
