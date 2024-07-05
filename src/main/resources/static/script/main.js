@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // ▼ 실제 사용할 url
             // const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}`;
             // ▼ 재현님이랑 겹치니까 임시로 설정해둔 url
-            const url = `/detail/${encodeURIComponent(studyKey)}`;
+            const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}`;
             window.location.href = url;
         }
     });
