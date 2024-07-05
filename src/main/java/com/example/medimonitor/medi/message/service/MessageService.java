@@ -58,8 +58,8 @@ public class MessageService {
         return messageList;
     }
 
-    public List<MessageResponseDto> findBySenderOrderByRegDateAsc(String sender) {
-        List<Message> list = messageRepository.findBySenderOrderByRegDateAsc(sender);
+    public List<MessageResponseDto> findBySenderOrderByRegDateDesc(String sender) {
+        List<Message> list = messageRepository.findBySenderOrderByRegDateDesc(sender);
         List<MessageResponseDto> messageList = new ArrayList<>();
 
         for(Message message : list) {
@@ -70,8 +70,8 @@ public class MessageService {
         return messageList;
     }
 
-    public List<MessageResponseDto> findByRecipientOrderByRegDateAsc(String recipient) {
-        List<Message> list = messageRepository.findByRecipientOrderByRegDateAsc(recipient);
+    public List<MessageResponseDto> findByRecipientOrderByRegDateDesc(String recipient) {
+        List<Message> list = messageRepository.findByRecipientOrderByRegDateDesc(recipient);
         List<MessageResponseDto> messageList = new ArrayList<>();
 
         for(Message message : list) {
