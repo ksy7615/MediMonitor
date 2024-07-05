@@ -5,6 +5,7 @@ import com.example.medimonitor.medi.message.dto.MessageRequestDto;
 import com.example.medimonitor.medi.message.dto.MessageResponseDto;
 import com.example.medimonitor.medi.message.service.MessageService;
 import com.example.medimonitor.medi.user.domain.User;
+import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import com.example.medimonitor.util.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,7 @@ public class MessageController {
     @ResponseBody
     public ResponseEntity<Response> deleteSender(@RequestBody MessageRequestDto messageDto, HttpSession session) {
         Response response = new Response();
-        User user = (User) session.getAttribute("user");
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
 
         if(messageDto.getSender().equals(user.getUsername())){
             boolean isDelete = messageService.delete(messageDto.getCode());
@@ -79,7 +80,7 @@ public class MessageController {
     @ResponseBody
     public ResponseEntity<Response> deleteRecipient(@RequestBody MessageRequestDto messageDto, HttpSession session) {
         Response response = new Response();
-        User user = (User) session.getAttribute("user");
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
 
         if(messageDto.getRecipient().equals(user.getUsername())){
             boolean isDelete = messageService.delete(messageDto.getCode());
@@ -106,7 +107,7 @@ public class MessageController {
     @GetMapping("/find/miniInbox")
     @ResponseBody
     public List<MessageResponseDto> findMiniInboxByRecipient(HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
         String recipient = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
@@ -118,7 +119,7 @@ public class MessageController {
     @GetMapping("/find/miniSent")
     @ResponseBody
     public List<MessageResponseDto> findMiniSentBySender(HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
         String sender = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
@@ -130,7 +131,7 @@ public class MessageController {
     @GetMapping("/find/inbox")
     @ResponseBody
     public List<MessageResponseDto> findInboxByRecipient(HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
         String recipient = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
@@ -142,7 +143,7 @@ public class MessageController {
     @GetMapping("/find/sent")
     @ResponseBody
     public List<MessageResponseDto> findSentBySender(HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
         String sender = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
