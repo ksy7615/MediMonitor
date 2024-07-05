@@ -17,6 +17,13 @@
     padding: 20px;
 }
 
+#emptyMessage {
+    display: flex;
+    justify-content: center;
+    margin-top: 200px;
+    font-size: 20px;
+}
+
 .close {
     color: #aaa;
     position: absolute;
@@ -34,6 +41,11 @@
 }
 
 #message-modal-body h2 {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+#sent-message-modal-body h2 {
     font-size: 25px;
     margin-bottom: 20px;
 }
@@ -98,8 +110,8 @@
 }
 
 /* Added Button Styles */
-#mail-button,
-#mail-write {
+.mail-button,
+.mail-write {
     position: absolute;
     bottom: 20px;
     padding: 10px 20px;
@@ -111,26 +123,26 @@
     text-decoration: none;
 }
 
-#mail-button {
+.mail-button {
     left: 20px;
     background-color: #464646;
 }
 
-#mail-write {
+.mail-write {
     right: 20px;
     background-color: #464646;
 }
 
 /* Anchor tag styles */
-#mail-button a,
-#mail-write a {
+.mail-button a,
+.mail-write a {
     font-size: 20px;
     color: white;
     text-decoration: none;
 }
 
-#mail-button:hover,
-#mail-write:hover {
+.mail-button:hover,
+.mail-write:hover {
     cursor: pointer;
     text-decoration: underline;
 }

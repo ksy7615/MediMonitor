@@ -31,7 +31,7 @@
         </div>
         <div class="form-group-textarea">
             <textarea id="content" name="content" placeholder="쪽지 내용을 입력하세요"></textarea>
-            <span class="char-count">0/300</span>
+<%--            <span class="char-count">0/300</span>--%>
         </div>
         <div class="message-error-container">
             <p class="error=msg" id="error-msg-sender">보내는 사람: 필수 정보입니다.</p>
