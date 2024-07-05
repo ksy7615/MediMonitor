@@ -110,7 +110,7 @@ public class MessageController {
         String recipient = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
-        messageList = messageService.findByRecipientOrderByRegDateAsc(recipient);
+        messageList = messageService.findByRecipientOrderByRegDateDesc(recipient);
 
         return messageList;
     }
@@ -122,7 +122,7 @@ public class MessageController {
         String sender = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
-        messageList = messageService.findBySenderOrderByRegDateAsc(sender);
+        messageList = messageService.findBySenderOrderByRegDateDesc(sender);
 
         return messageList;
     }
