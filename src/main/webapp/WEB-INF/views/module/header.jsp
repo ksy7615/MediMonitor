@@ -26,7 +26,7 @@
                 <div class="dropdown-content" id="message-dropdown">
                     <a onclick="openMiniInbox()">받은 쪽지함</a>
                     <a href="#">보낸 쪽지함</a>
-                    <a href="#">쪽지 보내기</a>
+                    <a href="${pageContext.request.contextPath}/write">쪽지 보내기</a>
                 </div>
             </div>
             <div class="dropdown">
