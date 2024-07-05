@@ -31,7 +31,7 @@ public class StudyService {
 
         List<InfoResponseDto> result = studies.stream().map(study -> {
             Optional<Report> reportOpt = reportRepository.findFirstByStudykey(study.getStudykey());
-            String reportStatus = reportOpt.map(Report::getStatus).orElse("읽지않음");
+            String reportStatus = reportOpt.map(Report::getStatus).orElse("notread");
             ReportResponseDto reportResponseDto = new ReportResponseDto(study.getStudykey(), reportStatus);
 
             return new InfoResponseDto(reportResponseDto, study);
@@ -49,7 +49,9 @@ public class StudyService {
                 studies = studyRepository.findByPidLike("%" + value + "%", pageable);
                 break;
             case "reportstatus":
-                studies = studyRepository.findByReportstatus(Long.parseLong(value), pageable);
+                List<Long> studyKeys = reportRepository.findStudyKeysByStatus(value);
+                List<Study> studyList = studyRepository.findAllById(studyKeys);
+                studies = toPage(studyList, pageable);
                 break;
             case "modality":
                 studies = studyRepository.findByModality(value, pageable);
@@ -74,23 +76,39 @@ public class StudyService {
 
         return studies.map(study -> {
             Optional<Report> reportOpt = reportRepository.findFirstByStudykey(study.getStudykey());
-            String reportStatus = reportOpt.map(Report::getStatus).orElse("읽지않음");
+            String reportStatus = reportOpt.map(Report::getStatus).orElse("notread");
             ReportResponseDto reportResponseDto = new ReportResponseDto(study.getStudykey(), reportStatus);
 
             return new InfoResponseDto(reportResponseDto, study);
         });
     }
 
+    private Page<Study> toPage(List<Study> studies, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), studies.size());
+        return new PageImpl<>(studies.subList(start, end), pageable, studies.size());
+    }
+
     // 검색 서비스 메서드
     public Page<InfoResponseDto> searchStudies(String pid, String pname, String reportstatus, String modality, String startDate, String endDate, Pageable pageable) {
-        if (reportstatus != null && reportstatus.isEmpty()) {
-            reportstatus = null;
-        }
+        Page<Study> studies = studyRepository.search(pid, pname, modality, startDate, endDate, pageable);
 
-        Page<Study> studies = studyRepository.search(pid, pname, reportstatus, modality, startDate, endDate, pageable);
-        return studies.map(study -> {
+        // 필터링된 결과를 리스트로 변환
+        List<Study> filteredStudies = studies.getContent().stream().filter(study -> {
             Optional<Report> reportOpt = reportRepository.findFirstByStudykey(study.getStudykey());
-            String reportStatus = reportOpt.map(Report::getStatus).orElse("읽지않음");
+            if (reportstatus == null || reportstatus.isEmpty()) {
+                return true;
+            }
+            return reportOpt.map(report -> report.getStatus().equalsIgnoreCase(reportstatus))
+                    .orElse(reportstatus.equalsIgnoreCase("notread"));
+        }).collect(Collectors.toList());
+
+        // 필터링된 결과를 페이지로 변환
+        Page<Study> filteredPage = new PageImpl<>(filteredStudies, pageable, studies.getTotalElements());
+
+        return filteredPage.map(study -> {
+            Optional<Report> reportOpt = reportRepository.findFirstByStudykey(study.getStudykey());
+            String reportStatus = reportOpt.map(Report::getStatus).orElse("notread");
             ReportResponseDto reportResponseDto = new ReportResponseDto(study.getStudykey(), reportStatus);
 
             return new InfoResponseDto(reportResponseDto, study);
