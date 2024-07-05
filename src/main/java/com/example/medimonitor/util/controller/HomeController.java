@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 @Controller
 public class HomeController {
+    @GetMapping("/")
+    public String home() { return "user/login"; }
+
     @GetMapping("/header")
     public String join() {
         return "module/header";

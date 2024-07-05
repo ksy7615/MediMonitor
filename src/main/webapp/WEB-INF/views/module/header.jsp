@@ -25,8 +25,8 @@
                 <span class="icon" id="message-icon"><i class="fas fa-comment-dots"></i></span>
                 <div class="dropdown-content" id="message-dropdown">
                     <a onclick="openMiniInbox()">받은 쪽지함</a>
-                    <a href="#">보낸 쪽지함</a>
-                    <a href="#">쪽지 보내기</a>
+                    <a onclick="openMiniSent()">보낸 쪽지함</a>
+                    <a href="${pageContext.request.contextPath}/write">쪽지 보내기</a>
                 </div>
             </div>
             <div class="dropdown">
@@ -43,53 +43,35 @@
         </div>
     </c:if>
 
-    <!-- 모달 HTML 추가 -->
-    <div id="mini-inbox-modal" class="modal">
-        <div class="modal-content">
+    <!-- 보낸 메일함 -->
+    <div id="mini-inbox-modal" class="message-modal">
+        <div class="message-modal-content">
             <span class="close" onclick="closeMiniInbox()"><i class="fas fa-times"></i></span>
-            <div id="modal-body">
+            <div id="message-modal-body">
+                <h2>Message | 보낸 메일함</h2>
+                <div class="mail-list-container">
+                    <ul class="mail-list">
+                    </ul>
+                </div>
+                <button class="mail-button"><a href="${pageContext.request.contextPath}/sent">📮쪽지</a></button>
+                <button class="mail-write"><a href="${pageContext.request.contextPath}/write">✏️쪽지쓰기</a></button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 받은 메일함 -->
+    <div id="mini-sent-modal" class="message-modal">
+        <div class="message-modal-content">
+            <span class="close" onclick="closeMiniSent()"><i class="fas fa-times"></i></span>
+            <div id="sent-message-modal-body">
                 <h2>Message | 받은 메일함</h2>
                 <div class="mail-list-container">
                     <ul class="mail-list">
-                        <li>
-                            <span class="mail-sender">허채은</span>
-                            <span class="mail-subject">[네이버플러스 멤버십] 결제 내역 안내</span>
-                            <span class="mail-time">5시간 전</span>
-                        </li>
-                        <li>
-                            <span class="mail-sender">윤소원</span>
-                            <span class="mail-subject">[Wavve] 개인정보 삭제 안내</span>
-                            <span class="mail-time">오전 8시 10분</span>
-                        </li>
-                        <li>
-                            <span class="mail-sender">허채은</span>
-                            <span class="mail-subject">(광고) 제17회 G마켓 상생페스티벌 오픈! 10% 쿠폰...</span>
-                            <span class="mail-time">7월 2일</span>
-                        </li>
-                        <li>
-                            <span class="mail-sender">윤소원</span>
-                            <span class="mail-subject">(광고) Apple이 내디딘 새로운 큰 도약. 우리의 최신 ...</span>
-                            <span class="mail-time">7월 2일</span>
-                        </li>
-                        <li>
-                            <span class="mail-sender">김선영</span>
-                            <span class="mail-subject">...</span>
-                            <span class="mail-time">7월 1일</span>
-                        </li>
-                        <li>
-                            <span class="mail-sender">김재현</span>
-                            <span class="mail-subject">...</span>
-                            <span class="mail-time">7월 1일</span>
-                        </li>
-                        <li>
-                            <span class="mail-sender">김선영</span>
-                            <span class="mail-subject">...</span>
-                            <span class="mail-time">7월 1일</span>
-                        </li>
                     </ul>
                 </div>
-                <button id="mail-button"><a href="${pageContext.request.contextPath}/inbox">📮쪽지</a></button>
-                <button id="mail-write"><a href="${pageContext.request.contextPath}/write">✏️쪽지쓰기</a></button>
+                <button class="mail-button"><a href="${pageContext.request.contextPath}/inbox">📮쪽지</a></button>
+                <button class="mail-write"><a href="${pageContext.request.contextPath}/write">✏️쪽지쓰기</a></button>
             </div>
         </div>
     </div>

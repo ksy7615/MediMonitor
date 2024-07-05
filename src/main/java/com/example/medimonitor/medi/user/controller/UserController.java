@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -314,5 +315,15 @@ public class UserController {
 
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/find/username")
+    @ResponseBody
+    public List<UserResponseDto> findUserByName(@RequestParam String name) {
+        List<UserResponseDto> list = new ArrayList<UserResponseDto>();
+
+        list = userService.findUsernameByName(name);
+
+        return list;
     }
 }

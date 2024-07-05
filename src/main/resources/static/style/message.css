@@ -1,4 +1,4 @@
-.modal {
+.message-modal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -13,8 +13,15 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.modal-content {
+.message-modal-content {
     padding: 20px;
+}
+
+#emptyMessage {
+    display: flex;
+    justify-content: center;
+    margin-top: 200px;
+    font-size: 20px;
 }
 
 .close {
@@ -33,7 +40,12 @@
     cursor: pointer;
 }
 
-#modal-body h2 {
+#message-modal-body h2 {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+#sent-message-modal-body h2 {
     font-size: 25px;
     margin-bottom: 20px;
 }
@@ -85,6 +97,13 @@
     margin-bottom: 5px;
 }
 
+.mail-recipient {
+    padding-left: 10px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
 .mail-subject {
     padding-left: 15px;
     font-size: 18px;
@@ -98,8 +117,8 @@
 }
 
 /* Added Button Styles */
-#mail-button,
-#mail-write {
+.mail-button,
+.mail-write {
     position: absolute;
     bottom: 20px;
     padding: 10px 20px;
@@ -111,32 +130,34 @@
     text-decoration: none;
 }
 
-#mail-button {
+.mail-button {
     left: 20px;
     background-color: #464646;
 }
 
-#mail-write {
+.mail-write {
     right: 20px;
     background-color: #464646;
 }
 
 /* Anchor tag styles */
-#mail-button a,
-#mail-write a {
+.mail-button a,
+.mail-write a {
     font-size: 20px;
     color: white;
     text-decoration: none;
 }
 
-#mail-button:hover,
-#mail-write:hover {
+.mail-button:hover,
+.mail-write:hover {
     cursor: pointer;
     text-decoration: underline;
 }
 
 .write-container {
+    position: relative;
     width: 650px;
+    height: 700px;
     margin: 80px auto;
     padding: 30px;
     background-color: #464646;
@@ -151,6 +172,7 @@
 }
 
 .write-container h1 {
+    margin-bottom: 40px;
     text-align: center;
     color: white;
 }
@@ -164,15 +186,38 @@
 }
 
 .form-group label {
+    width: 20%;
     margin-right: 10px;
     color: white;
 }
 
 .form-group input[type="text"] {
-    width: 550px;
+    flex-grow: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+}
+
+#recipient {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+}
+
+.user-list {
+    width: 100px;
+    padding: 10px;
+    background-color: #5c88c4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 .form-group-textarea {
@@ -184,10 +229,13 @@
 
 .form-group-textarea textarea {
     width: 100%;
-    height: 200px;
+    height: 350px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+    resize: none;
 }
 
 .friend-list {
@@ -200,29 +248,143 @@
 }
 
 .char-count {
+    /*position: relative;*/
+    /*width: 100%;*/
+    /*height: 50px;*/
     align-self: flex-end;
     color: #ccc;
 }
 
 .write-button-group {
+    position: relative;
     text-align: center;
 }
 
 button.cancel {
+    position: absolute;
+    bottom: -70px;
+    left: calc(50% - 110px);
     background-color: #686868;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 10px;
 }
 
 button.send {
+    position: absolute;
+    bottom: -70px;
+    width: 110px;
+    left: calc(50% + 10px);
     background-color: #5C88C4;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.message-error-container {
+    position: absolute;
+    top: 640px;
+    left: 35px;
+    margin: 10px 0 0 0;
+    color: #ff3f3f;
+    width: 100%;
+    font-size: 0.8em;
+    line-height: 1.5em;
+    text-align: left;
+}
+
+.message-error-container > p {
+    display: none;
+}
+
+
+
+/* modal.css */
+.find-user-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.find-user-modal h2 {
+    color: white;
+}
+
+.find-user-modal input {
+    width: 350px;
+    height: 45px;
+    border-radius: 5px;
+}
+
+#find-user-button {
+    color: white;
+    background-color: #5c88c4;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.find-user-modal-content {
+    background-color: #464646;
+    border: 1px solid #888;
+    border-radius: 5px;
+    margin: 15% auto;
+    padding: 20px;
+    width: 50%;
+}
+
+.find-user-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.find-user-close:hover,
+.find-user-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.user-result {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.user-result:hover {
+    background-color: #f1f1f1;
+}
+
+.no-result {
+    color: white;
+    margin: 30px 0 30px 10px;
+}
+
+#searchResults {
+    margin-top: 30px;
+}
+
+.user-result {
+    background-color: #686868;
+    color: white;
+    border: 1px solid #888;
+    border-radius: 5px;
+    padding: 10px;
 }
