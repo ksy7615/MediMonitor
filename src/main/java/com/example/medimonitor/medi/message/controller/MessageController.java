@@ -1,5 +1,6 @@
 package com.example.medimonitor.medi.message.controller;
 
+import com.example.medimonitor.medi.message.domain.Message;
 import com.example.medimonitor.medi.message.dto.MessageRequestDto;
 import com.example.medimonitor.medi.message.dto.MessageResponseDto;
 import com.example.medimonitor.medi.message.service.MessageService;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -98,6 +101,54 @@ public class MessageController {
 
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/find/miniInbox")
+    @ResponseBody
+    public List<MessageResponseDto> findMiniInboxByRecipient(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        String recipient = user.getUsername();
+        List<MessageResponseDto> messageList = new ArrayList<>();
+
+        messageList = messageService.findByRecipientOrderByRegDateAsc(recipient);
+
+        return messageList;
+    }
+
+    @GetMapping("/find/miniSent")
+    @ResponseBody
+    public List<MessageResponseDto> findMiniSentBySender(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        String sender = user.getUsername();
+        List<MessageResponseDto> messageList = new ArrayList<>();
+
+        messageList = messageService.findBySenderOrderByRegDateAsc(sender);
+
+        return messageList;
+    }
+
+    @GetMapping("/find/inbox")
+    @ResponseBody
+    public List<MessageResponseDto> findInboxByRecipient(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        String recipient = user.getUsername();
+        List<MessageResponseDto> messageList = new ArrayList<>();
+
+        messageList = messageService.findByRecipient(recipient);
+
+        return messageList;
+    }
+
+    @GetMapping("/find/sent")
+    @ResponseBody
+    public List<MessageResponseDto> findSentBySender(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        String sender = user.getUsername();
+        List<MessageResponseDto> messageList = new ArrayList<>();
+
+        messageList = messageService.findBySender(sender);
+
+        return messageList;
     }
 
 }
