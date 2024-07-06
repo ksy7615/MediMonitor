@@ -20,7 +20,7 @@
                     <input type="checkbox" class="mailbox-checkbox" id="mailbox-checkbox-${status.count}">
                     <div class="mailbox-message-info">
                         <div class="mailbox-sender" id="mailbox-sender-${status.count}">${message.sender}</div>
-                        <div class="mailbox-title" id="mailbox-title-${status.count}">${message.title}</div>
+                        <div class="mailbox-title" id="mailbox-title-${status.count}"><a href="/detail/${message.code}">${message.title}</a></div>
                         <div class="mailbox-date" id="mailbox-date-${status.count}">${message.regDate}</div>
                     </div>
                 </div>
