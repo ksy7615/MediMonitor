@@ -81,4 +81,13 @@ public class MessageService {
 
         return messageList;
     }
+
+    public MessageResponseDto findMessageByCode(int code) {
+        Message message = messageRepository.findById(code).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 쪽지입니다.")
+        );
+
+        MessageResponseDto messageDto = new MessageResponseDto(message);
+        return messageDto;
+    }
 }
