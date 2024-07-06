@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -150,6 +151,16 @@ public class MessageController {
         messageList = messageService.findBySender(sender);
 
         return messageList;
+    }
+
+    @GetMapping("/message/{code}")
+    public ModelAndView messageDetail(@PathVariable int code) {
+        ModelAndView mv = new ModelAndView("message/detail");
+
+        MessageResponseDto message = messageService.findMessageByCode(code);
+        mv.addObject("message", message);
+
+        return mv;
     }
 
 }
