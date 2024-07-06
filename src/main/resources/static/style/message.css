@@ -526,3 +526,56 @@ button.send {
 .mailbox-checkbox {
     margin-right: 10px; /* space between checkbox and message content */
 }
+
+
+
+
+.detail-container {
+    width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.detail-header-left,
+.detail-header-right {
+    display: flex;
+}
+
+.detail-button {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.detail-title {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.detail-title span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.detail-date {
+    float: right;
+    color: #888;
+}
+
+.detail-content {
+    padding: 20px 0;
+}
+
+.detail-content p {
+    margin: 0;
+    padding: 5px 0;
+}
