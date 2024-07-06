@@ -43,13 +43,13 @@
     </c:if>
 
     <!-- 보낸 메일함 -->
-    <div id="mini-inbox-modal" class="message-modal">
+    <div id="mini-sent-modal" class="message-modal">
         <div class="message-modal-content">
-            <span class="close" onclick="closeMiniInbox()"><i class="fas fa-times"></i></span>
+            <span class="close" onclick="closeMiniSent()"><i class="fas fa-times"></i></span>
             <div id="message-modal-body">
-                <h2>Message | 보낸 메일함</h2>
+                <h2>Message | 보낸 쪽지함</h2>
                 <div class="mail-list-container">
-                    <ul class="mail-list">
+                    <ul class="sent-mail-list">
                     </ul>
                 </div>
                 <button class="mail-button"><a href="${pageContext.request.contextPath}/sent">📮쪽지</a></button>
@@ -60,13 +60,13 @@
 
 
     <!-- 받은 메일함 -->
-    <div id="mini-sent-modal" class="message-modal">
+    <div id="mini-inbox-modal" class="message-modal">
         <div class="message-modal-content">
-            <span class="close" onclick="closeMiniSent()"><i class="fas fa-times"></i></span>
-            <div id="sent-message-modal-body">
-                <h2>Message | 받은 메일함</h2>
+            <span class="close" onclick="closeMiniInbox()"><i class="fas fa-times"></i></span>
+            <div id="inbox-message-modal-body">
+                <h2>Message | 받은 쪽지함</h2>
                 <div class="mail-list-container">
-                    <ul class="mail-list">
+                    <ul class="inbox-mail-list">
                     </ul>
                 </div>
                 <button class="mail-button"><a href="${pageContext.request.contextPath}/inbox">📮쪽지</a></button>
