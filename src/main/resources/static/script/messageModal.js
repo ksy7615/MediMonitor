@@ -13,7 +13,7 @@ function openMiniInbox() {
 
     $.ajax(settings).done(function (response) {
         console.log(response)
-        const mailList = document.querySelector('.mail-list');
+        const mailList = document.querySelector('.inbox-mail-list');
         mailList.innerHTML = ''; // 기존 리스트 초기화
 
         if(response.length === 0) {
@@ -23,6 +23,7 @@ function openMiniInbox() {
             mailList.append(emptyMessage);
         }else {
             for(let message of response) {
+                console.log('진입')
                 const list = document.createElement('li');
 
                 const mailSender = document.createElement('span');
@@ -53,7 +54,7 @@ function closeMiniInbox() {
 }
 
 function openMiniSent() {
-    document.getElementById('mini-inbox-modal').style.display = 'block';
+    document.getElementById('mini-sent-modal').style.display = 'block';
 
     var settings = {
         "url": "/find/miniSent",
@@ -65,7 +66,7 @@ function openMiniSent() {
 
     $.ajax(settings).done(function (response) {
         console.log(response)
-        const mailList = document.querySelector('.mail-list');
+        const mailList = document.querySelector('.sent-mail-list');
         mailList.innerHTML = ''; // 기존 리스트 초기화
 
         if(response.length === 0) {
