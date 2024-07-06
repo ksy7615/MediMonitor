@@ -482,6 +482,14 @@ button.send {
     color: #cccccc; /* white text */
 }
 
+.mailbox-title a {
+    font-weight: bold;
+    color: #cccccc;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
 .mailbox-date {
     color: #cccccc; /* light gray text */
 }
