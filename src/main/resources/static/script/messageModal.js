@@ -23,7 +23,6 @@ function openMiniInbox() {
             mailList.append(emptyMessage);
         }else {
             for(let message of response) {
-                console.log('진입')
                 const list = document.createElement('li');
 
                 const mailSender = document.createElement('span');
@@ -31,7 +30,10 @@ function openMiniInbox() {
                 mailSender.innerText = message.sender;
                 const mailSubject = document.createElement('span');
                 mailSubject.className = 'mail-subject';
+                const link = document.createElement('a');
+                link.href = `/message/${message.code}`;
                 mailSubject.innerText = message.title;
+                mailSubject.append(link);
                 const mailTime = document.createElement('span');
                 mailTime.className = 'mail-time';
                 mailTime.innerText = message.regDate;
@@ -83,7 +85,10 @@ function openMiniSent() {
                 mailRecipient.innerText = message.recipient;
                 const mailSubject = document.createElement('span');
                 mailSubject.className = 'mail-subject';
+                const link = document.createElement('a');
+                link.href = `/message/${message.code}`;
                 mailSubject.innerText = message.title;
+                mailSubject.append(link);
                 const mailTime = document.createElement('span');
                 mailTime.className = 'mail-time';
                 mailTime.innerText = message.regDate;
