@@ -397,20 +397,27 @@ button {
 }
 
 /* 년도와 월 표시 및 이동 화살표 배치 */
+.wrapper header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .wrapper .nav {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
+    justify-content: center;
+    text-align: center;
+    position: relative; /* 필요한 경우 가운데 정렬을 보장 */
 }
 .wrapper .nav .current-date {
-    font-size: 10px;
-    font-weight: 200;
+    font-size: 13px;
+    font-weight: 180;
 }
 .wrapper .nav button {
     width: 20px;
     height: 20px;
-    font-size: 12px;
+    font-size: 19px;
     color: #878787;
 }
 
@@ -488,5 +495,5 @@ input[type="date"] {
 }
 
 input[type="date"]:focus {
-    border-color: #008aff;
+    border-color: #5C88C4;
 }
