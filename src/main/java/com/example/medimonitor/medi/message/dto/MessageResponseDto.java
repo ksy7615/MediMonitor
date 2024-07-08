@@ -27,6 +27,7 @@ public class MessageResponseDto {
         this.content = message.getContent();
         this.recipient = message.getRecipient();
         this.sender = message.getSender();
+        this.status = message.isStatus();
         this.regDate = message.getRegDate();
         this.modDate = message.getModDate();
     }
