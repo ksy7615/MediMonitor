@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "@cornerstonejs/core": "^1.80.0",
-    "@cornerstonejs/dicom-image-loader": "^1.80.0",
-    "@cornerstonejs/streaming-image-volume-loader": "^1.80.0",
-    "@cornerstonejs/tools": "^1.80.0",
+    "@cornerstonejs/core": "^1.81.3",
+    "@cornerstonejs/dicom-image-loader": "^1.81.3",
+    "@cornerstonejs/streaming-image-volume-loader": "^1.81.3",
+    "@cornerstonejs/tools": "^1.81.3",
     "a": "^3.0.1"
   },
   "devDependencies": {
