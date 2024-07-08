@@ -28,8 +28,21 @@
     </div>
 
 
+    <!-- 상단 패널: 툴바 -->
     <div class="top-panel" id="top-panel">
-        <!-- 상단 패널 -->
+
+        <!-- 그리드 -->
+        <button id="grid-btn">Show Grid</button>
+        <div class="grid-container" id="grid-container" style="display: none;">
+            <div class="grid">
+                <c:forEach var="row" begin="0" end="4">
+                    <c:forEach var="col" begin="0" end="4">
+                        <div class="grid-item" data-row="${row}" data-col="${col}"></div>
+                    </c:forEach>
+                </c:forEach>
+            </div>
+        </div>
+
     </div>
 
     <div class="toggle-box" id="toggle-box">
@@ -83,6 +96,5 @@
 
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/detail_report.js"></script>
-<script type="module" src="${pageContext.request.contextPath}/script/detail/detail_thumbnail.js"></script>
 </body>
 </html>
