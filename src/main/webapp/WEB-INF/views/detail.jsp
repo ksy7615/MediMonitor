@@ -9,12 +9,12 @@
 </head>
 <body>
 
-<%--<c:if test="${empty user}">--%>
-<%--    <script type="text/javascript">--%>
-<%--        alert("로그인 후 이용가능합니다.");--%>
-<%--        location.href='/login';--%>
-<%--    </script>--%>
-<%--</c:if>--%>
+<c:if test="${empty user}">
+    <script type="text/javascript">
+        alert("로그인 후 이용가능합니다.");
+        location.href='/login';
+    </script>
+</c:if>
 
 <div class="container">
     <div class="left-panel">
@@ -83,6 +83,6 @@
 
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/detail_report.js"></script>
-<script type="module" src="${pageContext.request.contextPath}/script/detail/detail_thumbnail.js"></script>
+<%--<script type="module" src="${pageContext.request.contextPath}/script/detail/detail_thumbnail.js"></script>--%>
 </body>
 </html>
