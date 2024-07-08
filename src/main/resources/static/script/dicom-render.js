@@ -27,9 +27,9 @@ let studyInfo = "";
 let seriesList = [];
 let seriesImages = {};
 let viewports = [];
+let renderingEngine;
 
 // 초기화
-let renderingEngine;
 const init = async () => {
     await cornerstone.init();
 
@@ -87,7 +87,7 @@ const createViewportElement = (size, id) => {
     return element;
 }
 
-const createThumbnailElement = (seriesKey) => {
+const createThumbnailElement = (seriesKey, imageId) => {
     const thumbnail = document.createElement('div');
     thumbnail.style.width = '100px';
     thumbnail.style.height = '100px';
@@ -95,7 +95,14 @@ const createThumbnailElement = (seriesKey) => {
     thumbnail.style.margin = '5px';
     thumbnail.draggable = true;
     thumbnail.ondragstart = (e) => onDragStart(e, seriesKey);
-    thumbnail.innerText = seriesKey;
+
+    const thumbnailCanvas = document.createElement('div');
+    thumbnailCanvas.style.width = '100px';
+    thumbnailCanvas.style.height = '100px';
+    thumbnail.appendChild(thumbnailCanvas);
+
+    render([imageId], thumbnailCanvas, renderingEngine, `thumbnail-${seriesKey}`);
+
     return thumbnail;
 }
 
@@ -160,6 +167,7 @@ const fetchSeriesImages = async (seriesKey) => {
 
         if (imageIds.length > 0) {
             seriesImages[seriesKey] = imageIds;
+            return imageIds[0]; // Return the first image ID for thumbnail
         }
     } catch (e) {
         console.log("에러 : ", e);
@@ -193,18 +201,39 @@ const render = (imageIds, element, renderingEngine, viewportId) => {
 };
 
 const renderThumbnailsInOrder = (seriesList) => {
-    seriesList.forEach(seriesKey => {
+    const thumbnailPromises = seriesList.map(async seriesKey => {
         if (seriesImages[seriesKey]) {
-            const thumbnail = createThumbnailElement(seriesKey);
-            thumbnailContainer.appendChild(thumbnail);
+            const firstImageId = await fetchSeriesImages(seriesKey);
+            if (firstImageId) {
+                const thumbnail = createThumbnailElement(seriesKey, firstImageId);
+                thumbnailContainer.appendChild(thumbnail);
+            }
         }
     });
+
+    Promise.all(thumbnailPromises).catch(console.error);
 };
+
+const toggleThumbnails = () => {
+    const thumbnails = thumbnailContainer.querySelectorAll('div');
+    if (toggleBox.classList.contains('active')) {
+        thumbnails.forEach(thumbnail => {
+            thumbnail.style.display = 'block';
+        });
+    } else {
+        thumbnails.forEach(thumbnail => {
+            thumbnail.style.display = 'none';
+        });
+    }
+};
+
+// Event listener to handle toggle-box state change
+toggleBox.addEventListener('transitionend', toggleThumbnails);
 
 init()
     .then(fetchSeriesKeys)
     .then(seriesList => {
-        fetchDataAndRender(seriesList)
+                fetchDataAndRender(seriesList)
             .then(() => renderThumbnailsInOrder(seriesList));
     })
     .catch(console.error);
