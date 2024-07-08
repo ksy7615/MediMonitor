@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +166,7 @@ public class MessageController {
     }
 
     @GetMapping("/message/{code}")
-    public ModelAndView messageDetail(@PathVariable int code, HttpSession session) {
+    public ModelAndView messageDetail(@PathVariable int code, HttpSession session, HttpServletRequest request) {
         if(session.getAttribute("user") == null) {
             ModelAndView mv = new ModelAndView("redirect:/");
             return mv;
@@ -173,8 +174,20 @@ public class MessageController {
         ModelAndView mv = new ModelAndView("message/detail");
 
         MessageResponseDto message = messageService.findMessageByCode(code);
-        mv.addObject("message", message);
 
+        if(!message.isStatus()) {
+            if(!messageService.updateStatus(message.getCode())){
+                String referer = request.getHeader("Referer");
+
+                if (referer != null)
+                    mv = new ModelAndView("redirect:" + referer);
+                else
+                    mv = new ModelAndView("redirect:/main");
+                return mv;
+            }
+        }
+
+        mv.addObject("message", message);
         return mv;
     }
 
