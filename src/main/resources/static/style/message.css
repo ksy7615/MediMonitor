@@ -573,6 +573,7 @@ button.send {
 .detail-title span {
     font-size: 16px;
     font-weight: bold;
+    color: white;
 }
 
 .detail-date {
@@ -587,4 +588,5 @@ button.send {
 .detail-content p {
     margin: 0;
     padding: 5px 0;
+    color: white;
 }
