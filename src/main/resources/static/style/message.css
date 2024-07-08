@@ -88,6 +88,15 @@
     padding: 10px 0;
 }
 
+.sent-mail-list a,
+.inbox-mail-list a {
+    font-weight: bold;
+    color: #cccccc;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
 .sent-mail-list li:last-child,
 .inbox-mail-list li:last-child {
     border-bottom: none;
