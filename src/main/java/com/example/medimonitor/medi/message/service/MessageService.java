@@ -90,4 +90,9 @@ public class MessageService {
         MessageResponseDto messageDto = new MessageResponseDto(message);
         return messageDto;
     }
+
+    public boolean updateStatus(int code) {
+        int updatedCount = messageRepository.updateStatus(code);
+        return updatedCount > 0; // 업데이트된 행의 수가 0보다 큰 경우 true 반환
+    }
 }

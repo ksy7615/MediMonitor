@@ -130,7 +130,7 @@ $(document).ready(() => {
             $.ajax(settings).done(function (response) {
                 if(response.status === 200) {
                     alert(response.message);
-                    location.href = "/inbox";
+                    location.href = "/sent";
                 }
             }).fail(function (response) {
                 if(response.status === 400) {

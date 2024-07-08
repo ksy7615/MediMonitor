@@ -18,7 +18,7 @@
     </div>
     <div class="detail-title">
         <span>${message.title}</span>
-        <span class="detail-date">${message.regDate}</span>
+        <span class="detail-date">${message.formattedRegDate}</span>
     </div>
     <div class="detail-content">
         <p>${message.content}</p>
