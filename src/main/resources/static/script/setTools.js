@@ -4,6 +4,7 @@ import * as cornerstoneTools from "@cornerstonejs/tools";
 const {ToolGroupManager, Enums: csToolsEnums} = cornerstoneTools;
 const {MouseBindings} = csToolsEnums;
 
+const toolGroups = new Map();
 
 const setTools = (viewportId, renderingEngineId) => {
     // 툴 초기화
@@ -13,55 +14,35 @@ const setTools = (viewportId, renderingEngineId) => {
     const toolGroupId = `toolGroupId-${viewportId}`;
     console.log('toolId : ' + toolGroupId);
 
-    // 툴그룹에 툴 추가
-    // cornerstoneTools.addTool(MagnifyTool);
-    // cornerstoneTools.addTool(TrackballRotateTool);
-    // cornerstoneTools.addTool(ZoomTool);
-    // cornerstoneTools.addTool(StackScrollMouseWheelTool);
+    // 툴을 항상 추가 시도하고, 이미 추가된 경우 예외를 무시
     try {
         cornerstoneTools.addTool(StackScrollMouseWheelTool);
-    }catch (e){
-        console.log(e);
+    } catch (e) {
+        if (e.message !== "StackScrollMouseWheel has already been added globally") {
+            console.log(e);
+        }
     }
-    // 툴 그룹 생성
-    const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
-    console.log(toolGroup)
 
-    // 툴 적용
-    // toolGroup.addTool(MagnifyTool.toolName, {cursor:'move'});
-    // toolGroup.addTool(TrackballRotateTool.toolName, {cursor:'crosshair'});
-    // toolGroup.addTool(ZoomTool.toolName, {cursor:'zoom-in'});
-    toolGroup.addTool(StackScrollMouseWheelTool.toolName);
+    // 툴 그룹이 이미 존재하는지 확인하고 가져오기
+    let toolGroup = toolGroups.get(toolGroupId);
+    if (!toolGroup) {
+        // 툴 그룹 생성
+        toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
 
-    // 툴 활성화
-    // toolGroup.setToolActive(MagnifyTool.toolName, {
-    //     bindings: [
-    //         {
-    //             mouseButton: MouseBindings.Primary,
-    //         }
-    //     ],
-    // });
-    //
-    // toolGroup.setToolActive(TrackballRotateTool.toolName, {
-    //     bindings: [
-    //         {
-    //             mouseButton: MouseBindings.Auxiliary,
-    //         }
-    //     ],
-    // });
-    //
-    // toolGroup.setToolActive(ZoomTool.toolName, {
-    //     bindings: [
-    //         {
-    //             mouseButton: MouseBindings.Secondary,
-    //         }
-    //     ],
-    // });
+        // 툴 추가
+        toolGroup.addTool(StackScrollMouseWheelTool.toolName);
 
-    toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
+        // 툴 활성화
+        toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
+
+        // 툴 그룹을 Map에 저장
+        toolGroups.set(toolGroupId, toolGroup);
+    }
 
     // 뷰포트에 툴 적용
     toolGroup.addViewport(viewportId, renderingEngineId);
+
+    console.log(toolGroup);
 }
 
 export { setTools };

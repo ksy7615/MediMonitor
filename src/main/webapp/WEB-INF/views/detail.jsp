@@ -9,12 +9,12 @@
 </head>
 <body>
 
-<%--<c:if test="${empty user}">--%>
-<%--    <script type="text/javascript">--%>
-<%--        alert("로그인 후 이용가능합니다.");--%>
-<%--        location.href='/login';--%>
-<%--    </script>--%>
-<%--</c:if>--%>
+<c:if test="${empty user}">
+    <script type="text/javascript">
+        alert("로그인 후 이용가능합니다.");
+        location.href='/login';
+    </script>
+</c:if>
 
 <div class="container">
     <div class="left-panel">
