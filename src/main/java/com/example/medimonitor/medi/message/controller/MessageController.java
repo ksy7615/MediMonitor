@@ -127,6 +127,11 @@ public class MessageController {
     @GetMapping("/inbox")
     @ResponseBody
     public ModelAndView findInboxByRecipient(HttpSession session) {
+        if(session.getAttribute("user") == null) {
+            ModelAndView mv = new ModelAndView("redirect:/");
+            return mv;
+        }
+
         ModelAndView mv = new ModelAndView("message/inbox");
 
         UserResponseDto user = (UserResponseDto) session.getAttribute("user");
@@ -142,6 +147,11 @@ public class MessageController {
     @GetMapping("/sent")
     @ResponseBody
     public ModelAndView findSentBySender(HttpSession session) {
+        if(session.getAttribute("user") == null) {
+            ModelAndView mv = new ModelAndView("redirect:/");
+            return mv;
+        }
+
         ModelAndView mv = new ModelAndView("message/sent");
 
         UserResponseDto user = (UserResponseDto) session.getAttribute("user");
@@ -155,7 +165,11 @@ public class MessageController {
     }
 
     @GetMapping("/message/{code}")
-    public ModelAndView messageDetail(@PathVariable int code) {
+    public ModelAndView messageDetail(@PathVariable int code, HttpSession session) {
+        if(session.getAttribute("user") == null) {
+            ModelAndView mv = new ModelAndView("redirect:/");
+            return mv;
+        }
         ModelAndView mv = new ModelAndView("message/detail");
 
         MessageResponseDto message = messageService.findMessageByCode(code);
