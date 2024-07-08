@@ -10,7 +10,7 @@
 <div class="mailbox-container">
     <div class="mailbox-main-content" id="mailbox-main-content">
         <div class="mailbox-header" id="mailbox-header">
-            <span id="mailbox-header-title">받은 쪽지함</span>
+            <span id="mailbox-header-title">보낸 쪽지함</span>
             <span class="mailbox-read-unread" id="mailbox-read-unread">읽지 않은 쪽지 [6] 통</span>
             <span class="mailbox-total" id="mailbox-total">전체 쪽지 [27] 통</span>
         </div>
@@ -19,7 +19,7 @@
                 <div class="mailbox-message mailbox-read" id="mailbox-message-${status.count}">
                     <input type="checkbox" class="mailbox-checkbox" id="mailbox-checkbox-${status.count}">
                     <div class="mailbox-message-info">
-                        <div class="mailbox-sender" id="mailbox-sender-${status.count}">${message.sender}</div>
+                        <div class="mailbox-recipient" id="mailbox-recipient-${status.count}">${message.recipient}</div>
                         <div class="mailbox-title" id="mailbox-title-${status.count}"><a href="/message/${message.code}">${message.title}</a></div>
                         <div class="mailbox-date" id="mailbox-date-${status.count}">${message.regDate}</div>
                     </div>

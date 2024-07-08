@@ -1,10 +1,8 @@
 package com.example.medimonitor.medi.message.controller;
 
-import com.example.medimonitor.medi.message.domain.Message;
 import com.example.medimonitor.medi.message.dto.MessageRequestDto;
 import com.example.medimonitor.medi.message.dto.MessageResponseDto;
 import com.example.medimonitor.medi.message.service.MessageService;
-import com.example.medimonitor.medi.user.domain.User;
 import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import com.example.medimonitor.util.Response;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -22,9 +21,6 @@ import java.util.List;
 public class MessageController {
 
     private final MessageService messageService;
-
-    @GetMapping("/inbox")
-    public String inbox() {return "message/inbox";}
 
     @GetMapping("/write")
     public String write() {return "message/write";}
@@ -111,7 +107,7 @@ public class MessageController {
         String recipient = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
-        messageList = messageService.findByRecipientOrderByRegDateDesc(recipient);
+        messageList = messageService.findByRecipientLimit(recipient);
 
         return messageList;
     }
@@ -123,33 +119,54 @@ public class MessageController {
         String sender = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
-        messageList = messageService.findBySenderOrderByRegDateDesc(sender);
+        messageList = messageService.findBySenderLimit(sender);
 
         return messageList;
     }
 
-    @GetMapping("/find/inbox")
+    @GetMapping("/inbox")
     @ResponseBody
-    public List<MessageResponseDto> findInboxByRecipient(HttpSession session) {
+    public ModelAndView findInboxByRecipient(HttpSession session) {
+        ModelAndView mv = new ModelAndView("message/inbox");
+
         UserResponseDto user = (UserResponseDto) session.getAttribute("user");
         String recipient = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
-        messageList = messageService.findByRecipient(recipient);
+        messageList = messageService.findByRecipientOrderByRegDateDesc(recipient);
+        mv.addObject("messageList", messageList);
 
-        return messageList;
+        return mv;
     }
 
-    @GetMapping("/find/sent")
+    @GetMapping("/sent")
     @ResponseBody
-    public List<MessageResponseDto> findSentBySender(HttpSession session) {
+    public ModelAndView findSentBySender(HttpSession session) {
+        ModelAndView mv = new ModelAndView("message/sent");
+
         UserResponseDto user = (UserResponseDto) session.getAttribute("user");
         String sender = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
-        messageList = messageService.findBySender(sender);
+        messageList = messageService.findBySenderOrderByRegDateDesc(sender);
+        mv.addObject("messageList", messageList);
 
-        return messageList;
+        return mv;
     }
+
+    @GetMapping("/message/{code}")
+    public ModelAndView messageDetail(@PathVariable int code) {
+        ModelAndView mv = new ModelAndView("message/detail");
+
+        MessageResponseDto message = messageService.findMessageByCode(code);
+        mv.addObject("message", message);
+
+        return mv;
+    }
+
+//    @GetMapping("/mailBox")
+//    public String messageBox() {
+//        return "sent";
+//    }
 
 }

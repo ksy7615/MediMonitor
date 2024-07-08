@@ -34,20 +34,8 @@ public class MessageService {
         return isDelete;
     }
 
-    public List<MessageResponseDto> findByRecipient(String recipient) {
-        List<Message> list = messageRepository.findByRecipient(recipient);
-        List<MessageResponseDto> messageList = new ArrayList<>();
-
-        for(Message message : list) {
-            MessageResponseDto messageDto = new MessageResponseDto(message);
-            messageList.add(messageDto);
-        }
-
-        return messageList;
-    }
-
-    public List<MessageResponseDto> findBySender(String sender) {
-        List<Message> list = messageRepository.findBySender(sender);
+    public List<MessageResponseDto> findByRecipientOrderByRegDateDesc(String recipient) {
+        List<Message> list = messageRepository.findByRecipientOrderByRegDateDesc(recipient);
         List<MessageResponseDto> messageList = new ArrayList<>();
 
         for(Message message : list) {
@@ -70,8 +58,8 @@ public class MessageService {
         return messageList;
     }
 
-    public List<MessageResponseDto> findByRecipientOrderByRegDateDesc(String recipient) {
-        List<Message> list = messageRepository.findByRecipientOrderByRegDateDesc(recipient);
+    public List<MessageResponseDto> findBySenderLimit(String sender) {
+        List<Message> list = messageRepository.findBySenderLimit(sender);
         List<MessageResponseDto> messageList = new ArrayList<>();
 
         for(Message message : list) {
@@ -80,5 +68,26 @@ public class MessageService {
         }
 
         return messageList;
+    }
+
+    public List<MessageResponseDto> findByRecipientLimit(String recipient) {
+        List<Message> list = messageRepository.findByRecipientLimit(recipient);
+        List<MessageResponseDto> messageList = new ArrayList<>();
+
+        for(Message message : list) {
+            MessageResponseDto messageDto = new MessageResponseDto(message);
+            messageList.add(messageDto);
+        }
+
+        return messageList;
+    }
+
+    public MessageResponseDto findMessageByCode(int code) {
+        Message message = messageRepository.findById(code).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 쪽지입니다.")
+        );
+
+        MessageResponseDto messageDto = new MessageResponseDto(message);
+        return messageDto;
     }
 }
