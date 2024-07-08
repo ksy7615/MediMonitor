@@ -87,7 +87,7 @@ body {
     top: 100px; /* left-panel과 동일한 높이로 설정 */
     transition: width 0.3s;
     border-radius: 5px;
-    overflow: hidden;
+    overflow: auto;
     display: none; /* 초기에는 숨김 */
 }
 
