@@ -728,7 +728,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 currYear === new Date().getFullYear()
                     ? 'active'
                     : '';
-            liTag += `<li class="${isToday}" data-date="${currYear}-${String(currMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}">${i}</li>`;
+            let isSelected = '';
+            if (startDate && endDate) {
+                let current = new Date(currYear, currMonth, i);
+                if (current >= startDate && current <= endDate) {
+                    isSelected = 'selected';
+                }
+            }
+            if (startDate && new Date(currYear, currMonth, i).getTime() === startDate.getTime()) {
+                isSelected += ' start';
+            }
+            if (endDate && new Date(currYear, currMonth, i).getTime() === endDate.getTime()) {
+                isSelected += ' end';
+            }
+            liTag += `<li class="${isToday} ${isSelected}" data-date="${currYear}-${String(currMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}">${i}</li>`;
         }
         // 이후 달 날짜
         for (let i = lastDayofMonth; i < 6; i++) {
