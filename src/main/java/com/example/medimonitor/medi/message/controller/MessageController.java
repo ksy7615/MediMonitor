@@ -45,6 +45,25 @@ public class MessageController {
         }
     }
 
+    @DeleteMapping("/message/delete")
+    @ResponseBody
+    public ResponseEntity<Response> deleteMessage(@RequestBody MessageRequestDto messageDto) {
+        Response response = new Response();
+        boolean isDelete = messageService.delete(messageDto.getCode());
+
+        if(isDelete) {
+            response.setStatus(200);
+            response.setMessage("삭제되었습니다.");
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }else {
+            response.setStatus(400);
+            response.setMessage("삭제에 실패하였습니다.");
+
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @DeleteMapping("/message/delete/send")
     @ResponseBody
     public ResponseEntity<Response> deleteSender(@RequestBody MessageRequestDto messageDto, HttpSession session) {
