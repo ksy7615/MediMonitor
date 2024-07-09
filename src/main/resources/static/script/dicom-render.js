@@ -1,13 +1,8 @@
-import * as cornerstone from '@cornerstonejs/core';
-import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader';
-import * as dicomParser from 'dicom-parser';
-import * as tools from './setTools.js';
+import * as cornerstone from '@cornerstonejs/core'; // cornerstone 모듈 임포트
+import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader'; // cornerstone DICOM 이미지 로더 모듈 임포트
+import * as dicomParser from 'dicom-parser'; // dicom 파서 모듈 임포트
+import * as tools from './setTools.js'; // 사용자 정의 도구 모듈 임포트
 
-const content = document.getElementById('content');
-const viewportGrid = document.createElement('div');
-viewportGrid.style.display = 'grid';
-viewportGrid.style.gridTemplateColumns = 'repeat(10, 1fr)';
-content.appendChild(viewportGrid);
 
 const toggleBox = document.getElementById('toggle-box');
 const thumbnailContainer = document.createElement('div');
@@ -16,20 +11,23 @@ thumbnailContainer.style.flexDirection = 'column';
 thumbnailContainer.style.marginRight = '10px';
 toggleBox.appendChild(thumbnailContainer);
 
-// 우클릭 방지
+const gridBtn = document.getElementById('grid-btn');
+const gridContainer = document.getElementById('grid-container');
+const gridItems = document.querySelectorAll('.grid-item');
+const content = document.getElementById('content');
+
 content.oncontextmenu = (e) => e.preventDefault();
 
 const paths = window.location.pathname;
 const pathParts = paths.split('/');
 const studyKey = pathParts[2];
 
+let viewports = [];
+const seriesImages = {};
 let studyInfo = "";
 let seriesList = [];
-let seriesImages = {};
-let viewports = [];
-let renderingEngine;
 
-// 초기화
+let renderingEngine;
 const init = async () => {
     await cornerstone.init();
 
@@ -50,11 +48,126 @@ const init = async () => {
     };
 
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
-    renderingEngine = new cornerstone.RenderingEngine('myRenderingEngine'); // 렌더링 엔진 생성
+    renderingEngine = new cornerstone.RenderingEngine('myRenderingEngine');
+
+    createGridInContent(1, 1);
+
+    try {
+        const seriesList = await fetchSeriesKeys();
+        await fetchDataAndRender(seriesList);
+        renderThumbnailsInOrder(seriesList);
+    } catch (error) {
+        console.error(error);
+    }
 };
 
-// 시리즈 키값 가져오기
-const fetchSeriesKeys = async () => {
+gridBtn.addEventListener('click', toggleGrid);
+
+gridItems.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+        const row = parseInt(item.getAttribute('data-row'));
+        const col = parseInt(item.getAttribute('data-col'));
+        highlightCells(row, col);
+    });
+
+    item.addEventListener('mouseleave', () => {
+        clearHighlights();
+    });
+
+    item.addEventListener('click', () => {
+        const row = parseInt(item.getAttribute('data-row'));
+        const col = parseInt(item.getAttribute('data-col'));
+        createGridInContent(row, col);
+
+        toggleGrid();
+        fetchSeriesKeys().then(seriesList => {
+            fetchDataAndRender(seriesList);
+        }).catch(console.error);
+    });
+});
+
+function toggleGrid() {
+    gridContainer.style.display = gridContainer.style.display === 'none' || gridContainer.style.display === '' ? 'flex' : 'none';
+}
+
+function highlightCells(row, col) {
+    gridItems.forEach(item => {
+        const itemRow = parseInt(item.getAttribute('data-row'));
+        const itemCol = parseInt(item.getAttribute('data-col'));
+
+        item.classList.toggle('highlight', itemRow <= row && itemCol <= col);
+    });
+}
+
+function clearHighlights() {
+    gridItems.forEach(item => {
+        item.classList.remove('highlight');
+    });
+}
+
+function createGridInContent(maxRow, maxCol) {
+    content.innerHTML = '';
+
+    const totalRows = maxRow + 1;
+    const totalCols = maxCol + 1;
+
+    content.style.display = 'grid';
+    content.style.gridTemplateColumns = `repeat(${totalCols}, 1fr)`;
+    content.style.gridTemplateRows = `repeat(${totalRows}, 1fr)`;
+    viewports = [];
+    let cellId = 1;
+    for (let row = 0; row <= maxRow; row++) {
+        for (let col = 0; col <= maxCol; col++) {
+            const cell = document.createElement('div');
+            cell.className = 'viewport';
+            cell.id = `viewport${cellId}`;
+            cell.style.border = '1px solid #ccc';
+            cell.style.width = '100%';
+            cell.style.height = '100%';
+            cell.oncontextmenu = (e) => e.preventDefault();
+            cell.ondrop = (e) => onDrop(e, cell);
+            cell.ondragover = (e) => e.preventDefault();
+            viewports.push(cell);
+            content.appendChild(cell);
+            cellId++;
+        }
+    }
+    // Apply tools to the first viewport
+    if (viewports.length > 0) {
+        tools.setTools(`CT_AXIAL_STACK-${viewports[0].id}`, renderingEngine.id);
+    }
+}
+
+const createThumbnailElement = (seriesKey) => {
+    const thumbnail = document.createElement('div');
+    thumbnail.style.width = '100px';
+    thumbnail.style.height = '100px';
+    thumbnail.style.border = '1px solid black';
+    thumbnail.style.margin = '5px';
+    thumbnail.draggable = true;
+    thumbnail.ondragstart = (e) => onDragStart(e, seriesKey);
+    thumbnail.innerText = seriesKey;
+    return thumbnail;
+}
+
+const onDragStart = (e, seriesKey) => {
+    e.dataTransfer.setData('text/plain', seriesKey);
+}
+
+const onDrop = (e, element) => {
+    e.preventDefault();
+    const seriesKey = e.dataTransfer.getData('text/plain');
+    const viewportId = `CT_AXIAL_STACK-${element.id}`;
+    const imageIds = seriesImages[seriesKey];
+    if (imageIds) {
+        displaySeries(seriesKey, element, renderingEngine.id, viewportId, imageIds);
+        tools.setTools(viewportId, renderingEngine.id);
+    } else {
+        console.error(`No images found for seriesKey: ${seriesKey}`);
+    }
+}
+
+async function fetchSeriesKeys() {
     const seriesEndpoint = `/api/detail/${studyKey}`;
 
     try {
@@ -68,71 +181,48 @@ const fetchSeriesKeys = async () => {
         return series.seriesList;
     } catch (e) {
         console.log("에러 출력:", e);
+        return [];
     }
 }
 
-// div 생성
-const createViewportElement = (size, id) => {
-    const element = document.createElement('div');
-    element.id = `viewport-${id}`;
-    element.style.width = size;
-    element.style.height = size;
-    element.style.border = '1px solid black';
-    element.style.margin = '5px';
-    element.className = 'parentDiv';
-    element.setAttribute('data-value', id);
-    element.oncontextmenu = (e) => e.preventDefault();
-    element.ondrop = (e) => onDrop(e, element);
-    element.ondragover = (e) => e.preventDefault();
-    return element;
+async function fetchSeriesImages(seriesKey) {
+    if (seriesImages[seriesKey]) {
+        return seriesImages[seriesKey];
+    }
+
+    const imageEndpoint = `/api/image/${studyKey}/${seriesKey}`;
+
+    let imageIds = [];
+    try {
+        const response = await fetch(imageEndpoint, { method: 'POST' });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const list = await response.json();
+        const files = list.fileList;
+
+        files.forEach((base64, index) => {
+            const binaryString = atob(base64);
+            const arrayBuffer = Uint8Array.from(binaryString, c => c.charCodeAt(0));
+            const blob = new Blob([arrayBuffer], { type: 'application/dicom' });
+            const imageId = cornerstoneDICOMImageLoader.wadouri.fileManager.add(blob, `image-${seriesKey}-${index}`);
+            imageIds.push(imageId);
+        });
+
+        seriesImages[seriesKey] = imageIds;
+        console.log(`Image IDs for series ${seriesKey}:`, imageIds);
+        return imageIds;
+
+    } catch (e) {
+        console.error("에러:", e);
+        return [];
+    }
 }
 
-const createThumbnailElement = (seriesKey, imageId) => {
-    const thumbnail = document.createElement('div');
-    thumbnail.style.width = '100px';
-    thumbnail.style.height = '100px';
-    thumbnail.style.border = '1px solid black';
-    thumbnail.style.margin = '5px';
-    thumbnail.draggable = true;
-    thumbnail.ondragstart = (e) => onDragStart(e, seriesKey);
-
-    const thumbnailCanvas = document.createElement('div');
-    thumbnailCanvas.style.width = '100px';
-    thumbnailCanvas.style.height = '100px';
-    thumbnail.appendChild(thumbnailCanvas);
-
-    render([imageId], thumbnailCanvas, renderingEngine, `thumbnail-${seriesKey}`);
-
-    return thumbnail;
-}
-
-// 드래그 앤 드롭
-const onDragStart = (e, seriesKey) => {
-    e.dataTransfer.setData('text/plain', seriesKey);
-}
-
-const onDrop = (e, element) => {
-    e.preventDefault();
-    const seriesKey = e.dataTransfer.getData('text/plain');
-    const viewportId = `CT_AXIAL_STACK-${element.id}`;
-    displaySeries(seriesKey, element, renderingEngine, viewportId);
-    tools.setTools(viewportId, renderingEngine.id);  // 툴 재설정
-}
-
-const fetchDataAndRender = async (seriesList) => {
+async function fetchDataAndRender(seriesList) {
     const seriesPromises = seriesList.map(seriesKey => fetchSeriesImages(seriesKey));
-
-    // 병렬로 모든 시리즈의 이미지를 가져오고 처리
     await Promise.all(seriesPromises);
 
-    // 일단 50개 뷰포트
-    for (let i = 0; i < 50; i++) {
-        const element = createViewportElement('150px', i);
-        viewportGrid.appendChild(element);
-        viewports.push(element);
-    }
-
-    // 유효한 시리즈를 순서대로 각 뷰포트에 할당
     let validSeriesIndex = 0;
     for (let i = 0; i < viewports.length; i++) {
         while (validSeriesIndex < seriesList.length && (!seriesImages[seriesList[validSeriesIndex]] || seriesImages[seriesList[validSeriesIndex]].length === 0)) {
@@ -141,99 +231,56 @@ const fetchDataAndRender = async (seriesList) => {
 
         if (validSeriesIndex < seriesList.length) {
             const seriesKey = seriesList[validSeriesIndex];
+            const renderingEngineId = `myRenderingEngine-${viewports[i].id}`;
             const viewportId = `CT_AXIAL_STACK-${viewports[i].id}`;
-            displaySeries(seriesKey, viewports[i], renderingEngine, viewportId);
-            tools.setTools(viewportId, renderingEngine.id);  // 툴 설정
+            const imageIds = seriesImages[seriesKey];
+            displaySeries(seriesKey, viewports[i], renderingEngineId, viewportId, imageIds);
+            tools.setTools(viewportId, renderingEngine.id);
             validSeriesIndex++;
         }
     }
-
-    content.appendChild(viewportGrid);
 }
 
-const fetchSeriesImages = async (seriesKey) => {
-    const imageEndpoint = `/api/image/${studyKey}/${seriesKey}`;
-
-    try {
-        const response = await fetch(imageEndpoint, { method: 'POST' });
-        const data = await response.json();
-
-        const fileList = data.fileList;
-        const imageIds = fileList.map(base64Data => {
-            const byteArray = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
-            const blob = new Blob([byteArray], { type: 'application/dicom' });
-            return `dicomweb:${URL.createObjectURL(blob)}`;
-        });
-
-        if (imageIds.length > 0) {
-            seriesImages[seriesKey] = imageIds;
-            return imageIds[0]; // Return the first image ID for thumbnail
-        }
-    } catch (e) {
-        console.log("에러 : ", e);
-    }
-}
-
-const displaySeries = (seriesKey, element, renderingEngine, viewportId) => {
-    const imageIds = seriesImages[seriesKey];
+const displaySeries = (seriesKey, element, renderingEngineId, viewportId, imageIds) => {
     element.className = 'parentDiv';
     if (imageIds && imageIds.length !== 0) {
         try {
-            render(imageIds, element, renderingEngine, viewportId);
+            render(imageIds, element, renderingEngineId, viewportId);
         } catch (e) {
             console.log(e);
         }
     }
 }
 
-const render = (imageIds, element, renderingEngine, viewportId) => {
-    const viewportInput = {
-        viewportId: viewportId,
-        element: element,
-        type: cornerstone.Enums.ViewportType.STACK,
-    };
+const render = async (imageIds, element, renderingEngineId, viewportId) => {
+    try {
+        const viewportInput = {
+            viewportId: viewportId,
+            element: element,
+            type: cornerstone.Enums.ViewportType.STACK,
+        };
 
-    renderingEngine.enableElement(viewportInput);
-    const viewport = renderingEngine.getViewport(viewportInput.viewportId);
+        renderingEngine.enableElement(viewportInput);
+        const viewport = renderingEngine.getViewport(viewportInput.viewportId);
 
-    viewport.setStack(imageIds, 0);
-    viewport.render();
-};
+        viewport.setStack(imageIds, 0);
 
-const renderThumbnailsInOrder = (seriesList) => {
-    const thumbnailPromises = seriesList.map(async seriesKey => {
-        if (seriesImages[seriesKey]) {
-            const firstImageId = await fetchSeriesImages(seriesKey);
-            if (firstImageId) {
-                const thumbnail = createThumbnailElement(seriesKey, firstImageId);
-                thumbnailContainer.appendChild(thumbnail);
-            }
-        }
-    });
+        viewport.render();
 
-    Promise.all(thumbnailPromises).catch(console.error);
-};
+        tools.setTools(viewportId, renderingEngine.id);
 
-const toggleThumbnails = () => {
-    const thumbnails = thumbnailContainer.querySelectorAll('div');
-    if (toggleBox.classList.contains('active')) {
-        thumbnails.forEach(thumbnail => {
-            thumbnail.style.display = 'block';
-        });
-    } else {
-        thumbnails.forEach(thumbnail => {
-            thumbnail.style.display = 'none';
-        });
+    } catch (error) {
+        console.error(`Rendering error for viewport ${viewportId}:`, error);
     }
 };
 
-// Event listener to handle toggle-box state change
-toggleBox.addEventListener('transitionend', toggleThumbnails);
+const renderThumbnailsInOrder = (seriesList) => {
+    seriesList.forEach(seriesKey => {
+        if (seriesImages[seriesKey] && seriesImages[seriesKey].length > 0) {
+            const thumbnail = createThumbnailElement(seriesKey);
+            thumbnailContainer.appendChild(thumbnail);
+        }
+    });
+};
 
-init()
-    .then(fetchSeriesKeys)
-    .then(seriesList => {
-                fetchDataAndRender(seriesList)
-            .then(() => renderThumbnailsInOrder(seriesList));
-    })
-    .catch(console.error);
+init();
