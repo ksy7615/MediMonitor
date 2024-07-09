@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://use.fontawesome.com/releases/v6.0.0/js/all.js"></script>
     <link rel="icon" href="${pageContext.request.contextPath}/style/image/logo.png">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/module.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/message.css">
