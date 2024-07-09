@@ -497,7 +497,6 @@ button {
 
 /* Date Input Styling */
 .date-select {
-    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     width: 210px;
