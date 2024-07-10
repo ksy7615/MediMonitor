@@ -37,7 +37,7 @@ public class UserController {
         UserResponseDto user = null;
         Response response =  new Response();
 
-        String message = "join is success";
+        String message = "회원가입이 완료되었습니다.";
 
         user = userService.save(userDto);
 
@@ -48,7 +48,7 @@ public class UserController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             response.setStatus(400);
-            response.setMessage("join is not success");
+            response.setMessage("회원가입에 실패했습니다.");
 
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
@@ -71,6 +71,22 @@ public class UserController {
         }
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/check/phone")
+    @ResponseBody
+    public ResponseEntity<Response> findUserByPhone(@RequestParam String phone) {
+        Response response =  new Response();
+        UserResponseDto user = null;
+
+        user = userService.findUserByPhone(phone);
+        if(user != null) {
+            response.setStatus(200);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            response.setStatus(400);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/admin")
@@ -129,7 +145,7 @@ public class UserController {
         UserResponseDto user = null;
         Response response =  new Response();
 
-        String message = "login is success";
+        String message = "로그인 성공";
 
         String username = userRequestDto.getUsername();
         String password = userRequestDto.getPassword();
@@ -139,7 +155,7 @@ public class UserController {
         if(user != null) {
             if(!user.isAuthority()){
                 response.setStatus(400);
-                response.setMessage("Processing authority request.");
+                response.setMessage("승인 요청 처리중입니다.");
 
                 return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
             }
@@ -150,7 +166,7 @@ public class UserController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             response.setStatus(404);
-            response.setMessage("login is not success");
+            response.setMessage("로그인에 실패하였습니다.");
 
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }

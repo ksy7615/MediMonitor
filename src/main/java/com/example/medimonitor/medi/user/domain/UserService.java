@@ -83,6 +83,15 @@ public class UserService {
         return userDto;
     }
 
+    public UserResponseDto findUserByPhone(String phone) {
+        User user = userRepository.findByPhone(phone);
+
+        if(user == null)
+            return null;
+        UserResponseDto userDto = new UserResponseDto(user);
+        return userDto;
+    }
+
     @Transactional
     public UserResponseDto update(String username) {
         User user = userRepository.findById(username).orElseThrow(

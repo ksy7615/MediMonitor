@@ -110,7 +110,29 @@ $(document).ready(() => {
                     const update = `${phone.substr(0,3)}-${phone.substr(3,4)}-${phone.substr(7,4)}`;
                     $('#phone').val(update);
                     $('#error-msg-phone-pattern').hide();
+                } else if(phone.match(/\d{3}-\d{4}-\d{4}|\d{11}/) !== null) {
+                    $('#error-msg-phone-pattern').hide();
                 }
+
+                var settings = {
+                    "url": "/check/phone?phone="+$('#phone').val(),
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                };
+
+                $.ajax(settings).done(function (response) {
+                    if(response.status === 200) {
+                        $('#error-msg-phone-dupl').show();
+                        $('#phone').css('border', 'solid 1px #ff3f3f');
+                    }
+                }).fail(function (response) {
+                    if(response.status === 400) {
+                        $('#error-msg-phone-dupl').hide();
+                        $('#phone').css('border', 'solid 1px lightgrey');
+                    }
+                });
             }
         }
     });
