@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (startDateElem) startDateElem.value = '1990-01-01';
         if (endDateElem) endDateElem.value = todayString;
 
+        // 달력 선택된 날짜 초기화
+        startDate = null;
+        endDate = null;
+        renderCalendar();
+        updateInputDates();
+
         // 초기화 후 전체 데이터를 다시 불러오기
         currentPage = 0;
         searchParams = null;
