@@ -482,17 +482,11 @@ button {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 30px;
-    width: 30px;
+    height: 15px;
+    width: 15px;
     border-radius: 50%;
-    border: 2px solid #ff6347;
-    background-color: #5C88C4;
-    z-index: 2; /* z-index를 높여서 테두리가 위에 표시되도록 설정 */
-}
-
-.days li.start,
-.days li.end {
-    color: #ff6347; /* 시작일과 마감일의 텍스트 색상 설정 */
+    border: 2px solid #5C88C4;
+    z-index: -1;
 }
 
 /* Date Input Styling */

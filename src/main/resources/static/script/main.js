@@ -651,12 +651,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 달력 PART
     let date = new Date();
-    let currYear = date.getFullYear(),
-        currMonth = date.getMonth();
+    let currYear = date.getUTCFullYear(),
+        currMonth = date.getUTCMonth();
 
     // 달력 밑 input 요소 value에 today 설정
-    let day = String(date.getDate()).padStart(2, '0');
-    let month = String(date.getMonth() + 1).padStart(2, '0');
+    let day = String(date.getUTCDate()).padStart(2, '0');
+    let month = String(date.getUTCMonth() + 1).padStart(2, '0');
     let todayString = currYear + '-' + month + '-' + day;
     document.querySelector('.date-end').value = todayString;
     const months = [
@@ -681,6 +681,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const daysTag = document.querySelector('.days');
     let startDate = null;
     let endDate = null;
+
+    // 날짜 비교를 위한 함수 추가
+    function isSameDate(d1, d2) {
+        return d1.toISOString().split('T')[0] === d2.toISOString().split('T')[0];
+    }
+
     // input date 설정 함수
     const updateInputDates = () => {
         const dateStartInput = document.querySelector('.date-start');
@@ -692,55 +698,66 @@ document.addEventListener('DOMContentLoaded', function () {
             dateEndInput.value = endDate.toISOString().split('T')[0];
         }
     };
+
     // month 넘기기
     prevNextIcon.forEach((icon) => {
         icon.addEventListener('click', (event) => {
             event.preventDefault();
             currMonth = icon.id === 'prev' ? currMonth - 1 : currMonth + 1;
             if (currMonth < 0 || currMonth > 11) {
-                date = new Date(currYear, currMonth);
-                currYear = date.getFullYear();
-                currMonth = date.getMonth();
+                date = new Date(Date.UTC(currYear, currMonth));
+                currYear = date.getUTCFullYear();
+                currMonth = date.getUTCMonth();
             } else {
                 date = new Date();
             }
             renderCalendar();
         });
     });
+
     // 캘린더를 불러오는 함수
     const renderCalendar = () => {
         currentDate.innerHTML = `${months[currMonth]} ${currYear}`;
         // 현재 달의 마지막 날짜 확인
-        let lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate();
+        let lastDateofMonth = new Date(Date.UTC(currYear, currMonth + 1, 0)).getUTCDate();
         let liTag = '';
         // 이전 달의 날짜 포함 출력
-        let firstDayofMonth = new Date(currYear, currMonth, 1).getDay();
-        let lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay();
-        let lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate();
+        let firstDayofMonth = new Date(Date.UTC(currYear, currMonth, 1)).getUTCDay();
+        let lastDayofMonth = new Date(Date.UTC(currYear, currMonth, lastDateofMonth)).getUTCDay();
+        let lastDateofLastMonth = new Date(Date.UTC(currYear, currMonth, 0)).getUTCDate();
+
         for (let i = firstDayofMonth; i > 0; i--) {
             liTag += `<li class = "inactive" data-date="${currYear}-${String(currMonth).padStart(2, '0')}-${String(lastDateofLastMonth - i + 1).padStart(2, '0')}">${lastDateofLastMonth - i + 1}</li>`;
         }
+
         // 오늘의 날짜를 표시하며 날짜 출력
         for (let i = 1; i <= lastDateofMonth; i++) {
             let isToday =
-                i === date.getDate() &&
-                currMonth === new Date().getMonth() &&
-                currYear === new Date().getFullYear()
+                i === date.getUTCDate() &&
+                currMonth === new Date().getUTCMonth() &&
+                currYear === new Date().getUTCFullYear()
                     ? 'active'
                     : '';
             let isSelected = '';
+
+            const current = new Date(Date.UTC(currYear, currMonth, i));
+            current.setUTCHours(0, 0, 0, 0); // 시간을 0으로 설정하여 비교
+
             if (startDate && endDate) {
-                let current = new Date(currYear, currMonth, i);
                 if (current >= startDate && current <= endDate) {
                     isSelected = 'selected';
+                    console.log(`selected: ${current.toISOString()}`);
                 }
             }
-            if (startDate && new Date(currYear, currMonth, i).getTime() === startDate.getTime()) {
+            if (startDate && isSameDate(current, startDate)) {
                 isSelected += ' start';
+                console.log(`Start date set: ${current.toISOString()}`);
             }
-            if (endDate && new Date(currYear, currMonth, i).getTime() === endDate.getTime()) {
+            if (endDate && isSameDate(current, endDate)) {
                 isSelected += ' end';
+                console.log(`End date set: ${current.toISOString()}`);
             }
+
             liTag += `<li class="${isToday} ${isSelected}" data-date="${currYear}-${String(currMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}">${i}</li>`;
         }
         // 이후 달 날짜
@@ -748,11 +765,13 @@ document.addEventListener('DOMContentLoaded', function () {
             liTag += `<li class = "inactive" data-date="${currYear}-${String(currMonth + 2).padStart(2, '0')}-${String(i - lastDayofMonth + 1).padStart(2, '0')}">${i - lastDayofMonth + 1}</li>`;
         }
         daysTag.innerHTML = liTag;
+
         // 기간 설정
         document.querySelectorAll('.days li').forEach(day => {
             day.addEventListener('click', () => {
                 if (!day.classList.contains('inactive')) {
                     const selectedDate = new Date(day.getAttribute('data-date'));
+                    selectedDate.setUTCHours(0, 0, 0, 0); // 시간을 0으로 설정하여 비교
                     if (!startDate || (startDate && endDate)) {
                         startDate = selectedDate;
                         endDate = null;
@@ -764,8 +783,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             endDate = selectedDate;
                         }
                     }
-                    updateInputDates();
-                    renderCalendar();
+                    renderCalendar(); // 업데이트 후 다시 렌더링
+                    updateInputDates(); // 렌더링 후 input dates 업데이트
                 }
             });
         });
