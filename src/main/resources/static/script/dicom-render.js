@@ -132,6 +132,7 @@ function createGridInContent(maxRow, maxCol) {
             cell.style.border = '1px solid #ccc';
             cell.style.width = '100%';
             cell.style.height = '100%';
+            cell.style.background = 'black';
             cell.oncontextmenu = (e) => e.preventDefault();
             cell.ondrop = (e) => onDrop(e, cell);
             cell.ondragover = (e) => e.preventDefault();
