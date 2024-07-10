@@ -80,6 +80,7 @@
                 <p class="error-msg" id="error-msg-telecom">통신사: 이용하는 통신사를 선택해 주세요.</p>
                 <p class="error-msg" id="error-msg-phone">휴대전화번호: 필수 정보입니다.</p>
                 <p class="error-msg" id="error-msg-phone-pattern">휴대전화번호: 휴대전화번호가 정확한지 확인해 주세요.</p>
+                <p class="error-msg" id="error-msg-phone-dupl">휴대전화번호: 사용할 수 없는 전화번호입니다.</p>
                 <p class="error-msg" id="error-msg-address">주소: 필수 정보입니다.</p>
                 <p class="error-msg" id="error-msg-department">부서: 필수 정보입니다.</p>
                 <p class="error-msg" id="error-msg-userGroup">그룹: 필수 정보입니다.</p>
