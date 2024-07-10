@@ -1,9 +1,11 @@
 import * as cornerstone from '@cornerstonejs/core'; // cornerstone 모듈 임포트
 import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader'; // cornerstone DICOM 이미지 로더 모듈 임포트
 import * as dicomParser from 'dicom-parser'; // dicom 파서 모듈 임포트
-import * as tools from './setTools.js'; // 사용자 정의 도구 모듈 임포트
+import * as tools from './setTools.js';
+import {LengthTool, PanTool, WindowLevelTool, ZoomTool} from "@cornerstonejs/tools";
 
-
+let isValid = false;
+const thumbnailBtn =  document.getElementById('thumbnail-btn');
 const toggleBox = document.getElementById('toggle-box');
 const thumbnailContainer = document.createElement('div');
 thumbnailContainer.style.display = 'flex';
@@ -26,8 +28,11 @@ let viewports = [];
 const seriesImages = {};
 let studyInfo = "";
 let seriesList = [];
+let selectedViewport = null; // 선택된 뷰포트를 추적하기 위한 변수
 
 let renderingEngine;
+let toolGroupId = `toolGroupId`; // 툴 그룹 ID 초기화
+
 const init = async () => {
     await cornerstone.init();
 
@@ -55,7 +60,10 @@ const init = async () => {
     try {
         const seriesList = await fetchSeriesKeys();
         await fetchDataAndRender(seriesList);
-        renderThumbnailsInOrder(seriesList);
+        // 첫 번째 뷰포트를 선택 상태로 설정
+        if (viewports.length > 0) {
+            selectViewport(viewports[0]);
+        }
     } catch (error) {
         console.error(error);
     }
@@ -124,31 +132,42 @@ function createGridInContent(maxRow, maxCol) {
             cell.style.border = '1px solid #ccc';
             cell.style.width = '100%';
             cell.style.height = '100%';
+            cell.style.background = 'black';
             cell.oncontextmenu = (e) => e.preventDefault();
             cell.ondrop = (e) => onDrop(e, cell);
             cell.ondragover = (e) => e.preventDefault();
+            cell.addEventListener('click', () => selectViewport(cell)); // 클릭 이벤트 추가
             viewports.push(cell);
             content.appendChild(cell);
             cellId++;
         }
     }
-    // Apply tools to the first viewport
-    if (viewports.length > 0) {
-        tools.setTools(`CT_AXIAL_STACK-${viewports[0].id}`, renderingEngine.id);
+    // Apply tools to all viewports
+    tools.setTools(viewports, renderingEngine.id, toolGroupId);
+}
+
+function selectViewport(cell) {
+    if (selectedViewport) {
+        selectedViewport.style.border = '1px solid #ccc'; // 기존 선택된 뷰포트의 테두리 초기화
     }
+    cell.style.border = '2px solid #5C88C4'; // 새로운 선택된 뷰포트에 파란색 테두리 적용
+    selectedViewport = cell;
 }
 
 const createThumbnailElement = (seriesKey) => {
     const thumbnail = document.createElement('div');
-    thumbnail.style.width = '100px';
-    thumbnail.style.height = '100px';
+    thumbnail.style.width = '200px'; // 썸네일 너비
+    thumbnail.style.height = '200px'; // 썸네일 높이
     thumbnail.style.border = '1px solid black';
     thumbnail.style.margin = '5px';
+    thumbnail.style.overflow = 'hidden'; // 썸네일 오버플로우 숨김
+    thumbnail.style.display = 'flex';
+    thumbnail.style.justifyContent = 'center';
+    thumbnail.style.alignItems = 'center';
     thumbnail.draggable = true;
     thumbnail.ondragstart = (e) => onDragStart(e, seriesKey);
-    thumbnail.innerText = seriesKey;
     return thumbnail;
-}
+};
 
 const onDragStart = (e, seriesKey) => {
     e.dataTransfer.setData('text/plain', seriesKey);
@@ -158,13 +177,7 @@ const onDrop = (e, element) => {
     e.preventDefault();
     const seriesKey = e.dataTransfer.getData('text/plain');
     const viewportId = `CT_AXIAL_STACK-${element.id}`;
-    const imageIds = seriesImages[seriesKey];
-    if (imageIds) {
-        displaySeries(seriesKey, element, renderingEngine.id, viewportId, imageIds);
-        tools.setTools(viewportId, renderingEngine.id);
-    } else {
-        console.error(`No images found for seriesKey: ${seriesKey}`);
-    }
+    displaySeries(seriesKey, element, renderingEngine.id, viewportId); // displaySeries 호출
 }
 
 async function fetchSeriesKeys() {
@@ -235,14 +248,15 @@ async function fetchDataAndRender(seriesList) {
             const viewportId = `CT_AXIAL_STACK-${viewports[i].id}`;
             const imageIds = seriesImages[seriesKey];
             displaySeries(seriesKey, viewports[i], renderingEngineId, viewportId, imageIds);
-            tools.setTools(viewportId, renderingEngine.id);
+            tools.setTools([viewports[i]], renderingEngine.id, toolGroupId); // 단일 요소 배열로 전달
             validSeriesIndex++;
         }
     }
 }
 
-const displaySeries = (seriesKey, element, renderingEngineId, viewportId, imageIds) => {
+const displaySeries = async (seriesKey, element, renderingEngineId, viewportId) => {
     element.className = 'parentDiv';
+    const imageIds = await fetchSeriesImages(seriesKey); // fetchSeriesImages 함수를 사용하여 imageIds를 가져옴
     if (imageIds && imageIds.length !== 0) {
         try {
             render(imageIds, element, renderingEngineId, viewportId);
@@ -267,7 +281,27 @@ const render = async (imageIds, element, renderingEngineId, viewportId) => {
 
         viewport.render();
 
-        tools.setTools(viewportId, renderingEngine.id);
+        tools.setTools([element], renderingEngine.id, toolGroupId); // 단일 요소 배열로 전달
+
+    } catch (error) {
+        console.error(`Rendering error for viewport ${viewportId}:`, error);
+    }
+};
+
+const tRender = async (imageIds, element, renderingEngineId, viewportId) => {
+    try {
+        const viewportInput = {
+            viewportId: viewportId,
+            element: element,
+            type: cornerstone.Enums.ViewportType.STACK,
+        };
+
+        renderingEngine.enableElement(viewportInput);
+        const viewport = renderingEngine.getViewport(viewportInput.viewportId);
+
+        viewport.setStack(imageIds, 0);
+
+        viewport.render();
 
     } catch (error) {
         console.error(`Rendering error for viewport ${viewportId}:`, error);
@@ -279,8 +313,52 @@ const renderThumbnailsInOrder = (seriesList) => {
         if (seriesImages[seriesKey] && seriesImages[seriesKey].length > 0) {
             const thumbnail = createThumbnailElement(seriesKey);
             thumbnailContainer.appendChild(thumbnail);
+
+            const firstImageId = seriesImages[seriesKey][0];
+            const thumbnailViewportId = `thumbnail-${seriesKey}`;
+            const thumbnailElement = document.createElement('div');
+            thumbnailElement.style.width = '100%'; // 썸네일 요소 너비
+            thumbnailElement.style.height = '100%'; // 썸네일 요소 높이
+            thumbnailElement.style.objectFit = 'contain'; // 이미지 비율 유지하면서 맞춤
+            thumbnailElement.style.display = 'flex';
+            thumbnailElement.style.justifyContent = 'center';
+            thumbnailElement.style.alignItems = 'center';
+
+            thumbnail.appendChild(thumbnailElement);
+
+            tRender([firstImageId], thumbnailElement, 'thumbnailRenderingEngine', thumbnailViewportId);
         }
     });
 };
 
+// Check if the toggle box is open
+const isToggleBoxOpen = () => {
+    return toggleBox.style.display !== 'none';
+};
+
+// Re-render thumbnails if toggle box is opened after rendering all series
+thumbnailBtn.addEventListener('click', () => {
+    if (!isValid && thumbnailContainer.childElementCount === 0 && isToggleBoxOpen()) {
+        renderThumbnailsInOrder(seriesList);
+        isValid = true;
+    }
+});
+
 init();
+
+// Tool buttons event listeners
+document.getElementById('zoom-tool-btn').addEventListener('click', () => {
+    tools.activateTool(ZoomTool, toolGroupId);
+});
+
+document.getElementById('window-level-tool-btn').addEventListener('click', () => {
+    tools.activateTool(WindowLevelTool, toolGroupId);
+});
+
+document.getElementById('pan-tool-btn').addEventListener('click', () => {
+    tools.activateTool(PanTool, toolGroupId);
+});
+
+document.getElementById('length-tool-btn').addEventListener('click', () => {
+    tools.activateTool(LengthTool, toolGroupId);
+})

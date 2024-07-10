@@ -640,7 +640,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const studyDate = targetRow.querySelector('.studydate').textContent;
             // const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}`;
             // 임시
-            const url = `/detail/${encodeURIComponent(studyKey)}`;
+            const url = `/detail/${encodeURIComponent(studyKey)}/${encodeURIComponent(studyDate)}`;
             window.location.href = url;
         }
     });

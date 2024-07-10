@@ -19,7 +19,7 @@
 <div class="container">
     <div class="left-panel">
         <!-- 왼쪽 패널 -->
-        <button class="thumbnail-btn" onclick="toggleBox()"><img
+        <button class="thumbnail-btn" id="thumbnail-btn" onclick="toggleBox()"><img
                 src="${pageContext.request.contextPath}/style/image/icon_thumbnail.png" alt=""></button>
         <label>썸네일</label>
         <button class="report-btn" onclick="showModal()"><img
@@ -30,6 +30,12 @@
 
     <!-- 상단 패널: 툴바 -->
     <div class="top-panel" id="top-panel">
+
+        <!-- 툴 버튼들 -->
+        <button id="zoom-tool-btn">Zoom Tool</button>
+        <button id="window-level-tool-btn">Window Level Tool</button>
+        <button id="pan-tool-btn">Pan Tool</button>
+        <button id="length-tool-btn">Length Tool</button>
 
         <!-- 그리드 -->
         <button id="grid-btn">Show Grid</button>
@@ -42,7 +48,6 @@
                 </c:forEach>
             </div>
         </div>
-
     </div>
 
     <div class="toggle-box" id="toggle-box">
@@ -96,5 +101,6 @@
 
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/detail_report.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/dicom-render.js"></script> <!-- dicom-render.js를 추가 -->
 </body>
 </html>
