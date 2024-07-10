@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
+    public User findByPhone(String phone);
+
     public List<User> findByAuthorityFalse();
 
 //    public Page<User> findByAuthorityFalse(Pageable pageable);

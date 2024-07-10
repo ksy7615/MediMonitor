@@ -73,6 +73,22 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping("/check/phone")
+    @ResponseBody
+    public ResponseEntity<Response> findUserByPhone(@RequestParam String phone) {
+        Response response =  new Response();
+        UserResponseDto user = null;
+
+        user = userService.findUserByPhone(phone);
+        if(user != null) {
+            response.setStatus(200);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            response.setStatus(400);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/admin")
     public ModelAndView adminUserList() {
         ModelAndView mv = new ModelAndView("user/admin/userList");
