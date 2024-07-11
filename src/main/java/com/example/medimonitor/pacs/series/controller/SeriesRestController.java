@@ -1,18 +1,12 @@
 package com.example.medimonitor.pacs.series.controller;
 
-import com.example.medimonitor.medi.log.domain.Log;
-import com.example.medimonitor.medi.log.domain.LogService;
+import com.example.medimonitor.medi.log.service.LogService;
 import com.example.medimonitor.medi.log.dto.LogRequestDto;
 import com.example.medimonitor.medi.user.dto.UserResponseDto;
-import com.example.medimonitor.pacs.series.domain.Series;
-import com.example.medimonitor.pacs.series.domain.SeriesRepository;
 import com.example.medimonitor.pacs.series.service.SeriesService;
 import com.example.medimonitor.pacs.study.domain.Study;
 import com.example.medimonitor.pacs.study.service.StudyService;
-import com.example.medimonitor.util.Response;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;

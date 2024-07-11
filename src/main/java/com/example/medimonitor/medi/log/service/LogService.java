@@ -1,5 +1,7 @@
-package com.example.medimonitor.medi.log.domain;
+package com.example.medimonitor.medi.log.service;
 
+import com.example.medimonitor.medi.log.domain.Log;
+import com.example.medimonitor.medi.log.domain.LogRepository;
 import com.example.medimonitor.medi.log.dto.LogRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
