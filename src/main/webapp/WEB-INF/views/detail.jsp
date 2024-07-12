@@ -31,11 +31,47 @@
     <!-- 상단 패널: 툴바 -->
     <div class="top-panel" id="top-panel">
 
-        <!-- 툴 버튼들 -->
-        <button id="zoom-tool-btn">Zoom Tool</button>
-        <button id="window-level-tool-btn">Window Level Tool</button>
-        <button id="pan-tool-btn">Pan Tool</button>
-        <button id="length-tool-btn">Length Tool</button>
+        <!-- 3개는 구현해야하는것 -->
+        <button id="WorkList-tool-btn">Work List</button>
+        <button id="Previous-tool-btn">Previous</button>
+        <button id="Next-tool-btn">Next</button>
+
+        <button id="StackScroll-tool-btn">StackScroll Tool</button>
+        <button id="Window-level-tool-btn">Window Level Tool</button>
+        <button id="Invert-tool-btn">Invert Tool</button>
+        <button id="Pan-tool-btn">Pan Tool</button>
+        <button id="scroll-loop-btn">Scroll Loop</button>
+
+        <!-- 플레이 클립 수정필요 -->
+        <button id="Playclip-tool-btn">Playclip</button>
+        <button id="StopPlayclip-tool-btn">Stopclip</button>
+
+        <!-- 여기서 부터 도구툴 -->
+        <button id="Magnify-tool-btn">Magnify Tool</button>
+        <button id="Zoom-tool-btn">Zoom Tool</button>
+        <button id="Rotate-tool-btn">Rotate Tool</button>
+        <button id="RigthRotate-tool-btn">Rigth Rotate Tool</button>
+        <button id="LeftRotate-tool-btn">Left Rotate Tool</button>
+        <button id="WidthFlip-tool-btn">WidthFlip Tool</button>
+        <button id="HeghtFlip-tool-btn">HeghtFlip Tool</button>
+
+
+        <!-- 여기서 주석툴임 리스트로 묶을것 -->
+        <button id="Length-tool-btn">Length Tool</button>
+        <button id="Height-tool-btn">Height Tool</button>
+        <button id="Probe-tool-btn">Probe Tool</button>
+        <button id="RectangleROI-tool-btn">RectangleROI Tool</button>
+        <button id="EllipticalIROI-tool-btn">EllipticalIROI Tool</button>
+        <button id="CircleROI-tool-btn">CircleROI Tool</button>
+        <button id="Bidirectional-tool-btn">Bidirectional Tool</button>
+        <button id="Angle-tool-btn">Angle Tool</button>
+        <button id="CobbAngle-tool-btn">CobbAngle Tool</button>
+        <button id="ArrowAnnotate-tool-btn">ArrowAnnotate Tool</button>
+        <button id="PlanarFreehandROI-tool-btn">PlanarFreehandROI Tool</button>
+        <button id="Eraser-tool-btn">Eraser Tool</button>
+
+        <!-- 리셋 -->
+        <button id="Rest-tool-btn">Reset Tool</button>
 
         <!-- 그리드 -->
         <button id="grid-btn">Show Grid</button>
