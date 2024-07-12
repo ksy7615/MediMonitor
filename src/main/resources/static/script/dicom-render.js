@@ -2,7 +2,19 @@ import * as cornerstone from '@cornerstonejs/core'; // cornerstone 모듈 임포
 import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader'; // cornerstone DICOM 이미지 로더 모듈 임포트
 import * as dicomParser from 'dicom-parser'; // dicom 파서 모듈 임포트
 import * as tools from './setTools.js';
-import {LengthTool, PanTool, WindowLevelTool, ZoomTool} from "@cornerstonejs/tools";
+import {
+    AngleTool, ArrowAnnotateTool,
+    BidirectionalTool,
+    CircleROITool, CobbAngleTool,
+    EllipticalROITool, EraserTool,
+    HeightTool,
+    LengthTool,
+    PanTool, PlanarFreehandROITool,
+    ProbeTool,
+    RectangleROITool, StackScrollTool, utilities,
+    WindowLevelTool,
+    ZoomTool
+} from "@cornerstonejs/tools";
 
 let isValid = false;
 const thumbnailBtn =  document.getElementById('thumbnail-btn');
@@ -11,6 +23,9 @@ const thumbnailContainer = document.createElement('div');
 thumbnailContainer.style.display = 'flex';
 thumbnailContainer.style.flexDirection = 'column';
 thumbnailContainer.style.marginRight = '10px';
+thumbnailContainer.style.justifyContent = 'center';
+thumbnailContainer.style.alignItems = 'center';
+thumbnailContainer.style.margin = 'auto';
 toggleBox.appendChild(thumbnailContainer);
 
 const gridBtn = document.getElementById('grid-btn');
@@ -30,8 +45,15 @@ let studyInfo = "";
 let seriesList = [];
 let selectedViewport = null; // 선택된 뷰포트를 추적하기 위한 변수
 
+let thumbnailCnt = 0;
+let viewportSeriesMap = {};       // 각 뷰포트에 로드된 시리즈 정보를 저장
+
+
 let renderingEngine;
 let toolGroupId = `toolGroupId`; // 툴 그룹 ID 초기화
+
+let previousGridSize = {rows: 1, cols: 1}
+let isDblClick = false;
 
 const init = async () => {
     await cornerstone.init();
@@ -86,6 +108,8 @@ gridItems.forEach(item => {
         const row = parseInt(item.getAttribute('data-row'));
         const col = parseInt(item.getAttribute('data-col'));
         createGridInContent(row, col);
+        // 그리드 하나 클릭하면 현재 그리드 개수 저장해두기 (백업을 위해)
+        previousGridSize = {rows: row, cols: col};
 
         toggleGrid();
         fetchSeriesKeys().then(seriesList => {
@@ -137,6 +161,16 @@ function createGridInContent(maxRow, maxCol) {
             cell.ondrop = (e) => onDrop(e, cell);
             cell.ondragover = (e) => e.preventDefault();
             cell.addEventListener('click', () => selectViewport(cell)); // 클릭 이벤트 추가
+
+            invertHandler(cell);
+
+            cell.addEventListener('dblclick', () => {
+                if(!isDblClick) {
+                    selectViewport(cell);
+                }
+                toggleGridSize();
+            })
+
             viewports.push(cell);
             content.appendChild(cell);
             cellId++;
@@ -146,8 +180,52 @@ function createGridInContent(maxRow, maxCol) {
     tools.setTools(viewports, renderingEngine.id, toolGroupId);
 }
 
+const toggleGridSize = () => {
+    if (thumbnailCnt > 0) {
+        createGridInContent(previousGridSize.rows, previousGridSize.cols);
+        Object.keys(viewportSeriesMap).forEach(viewportId => {
+            const seriesKey = viewportSeriesMap[viewportId];
+            const element = document.getElementById(viewportId);
+            displaySeries(seriesKey, element, renderingEngine.id, `CT_AXIAL_STACK-${element.id}`);
+        });
+        thumbnailCnt = 0;
+    } else {
+        // 더블클릭 1번 눌렀을 때 -> 화면 확대
+        if (!isDblClick) {
+            if (selectedViewport) {  // 선택된 뷰포트를 추적하기 위한 변수
+                content.innerHTML = '';
+                selectedViewport.style.gridRow = '1 / -1';
+                selectedViewport.style.gridColumn = '1 / -1';
+                selectedViewport.style.width = '100%';
+                selectedViewport.style.height = '100%';
+                content.appendChild(selectedViewport);
+                isDblClick = true; // 축소해야됨 상태로 바꾸기
+                // 뷰포트 맵을 사용하여 각 뷰포트에 로드된 시리즈를 표시
+                Object.keys(viewportSeriesMap).forEach(viewportId => {
+                    // 수정된 부분 시작
+                    if (selectedViewport && viewportId === selectedViewport.id) {
+                        const seriesKey = viewportSeriesMap[viewportId];
+                        displaySeries(seriesKey, selectedViewport, renderingEngine.id, `CT_AXIAL_STACK-${selectedViewport.id}`);
+                    }
+                });
+            }
+            // 더블클릭 두번째 눌렀을 때 -> 화면 축소
+        } else {
+            createGridInContent(previousGridSize.rows, previousGridSize.cols);
+            Object.keys(viewportSeriesMap).forEach(viewportId => {
+                const seriesKey = viewportSeriesMap[viewportId];
+                const element = document.getElementById(viewportId);
+                displaySeries(seriesKey, element, renderingEngine.id, `CT_AXIAL_STACK-${element.id}`);
+            });
+            isDblClick = false;  // 확대해야됨 상태로 바꾸기
+            // selectedViewport = null; // 선택된 뷰포트를 초기화 (이제 다썼으니까)
+        }
+    }
+}
+
 function selectViewport(cell) {
     if (selectedViewport) {
+        console.log(selectedViewport);
         selectedViewport.style.border = '1px solid #ccc'; // 기존 선택된 뷰포트의 테두리 초기화
     }
     cell.style.border = '2px solid #5C88C4'; // 새로운 선택된 뷰포트에 파란색 테두리 적용
@@ -166,8 +244,25 @@ const createThumbnailElement = (seriesKey) => {
     thumbnail.style.alignItems = 'center';
     thumbnail.draggable = true;
     thumbnail.ondragstart = (e) => onDragStart(e, seriesKey);
+
+    thumbnail.addEventListener('click', () => {
+        thumbnailCnt++;
+        displayThumbnailnGrid(seriesKey).then(() => {
+            selectViewport(viewports[0]);
+        });
+    })
+
     return thumbnail;
 };
+
+const displayThumbnailnGrid = async (seriesKey) => {
+    createGridInContent(0, 0);
+    if (viewports.length > 0) {
+        const element = viewports[0];
+        const viewportId = `CT_AXIAL_STACK-${element.id}`;
+        await displaySeries(seriesKey, element, renderingEngine.id, viewportId);
+    }
+}
 
 const onDragStart = (e, seriesKey) => {
     e.dataTransfer.setData('text/plain', seriesKey);
@@ -178,6 +273,8 @@ const onDrop = (e, element) => {
     const seriesKey = e.dataTransfer.getData('text/plain');
     const viewportId = `CT_AXIAL_STACK-${element.id}`;
     displaySeries(seriesKey, element, renderingEngine.id, viewportId); // displaySeries 호출
+
+    viewportSeriesMap[element.id] = seriesKey;
 }
 
 async function fetchSeriesKeys() {
@@ -212,6 +309,7 @@ async function fetchSeriesImages(seriesKey) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const list = await response.json();
+        console.log(list);
         const files = list.fileList;
 
         files.forEach((base64, index) => {
@@ -249,6 +347,7 @@ async function fetchDataAndRender(seriesList) {
             const imageIds = seriesImages[seriesKey];
             displaySeries(seriesKey, viewports[i], renderingEngineId, viewportId, imageIds);
             tools.setTools([viewports[i]], renderingEngine.id, toolGroupId); // 단일 요소 배열로 전달
+            viewportSeriesMap[viewports[i].id] = seriesKey;
             validSeriesIndex++;
         }
     }
@@ -346,19 +445,173 @@ thumbnailBtn.addEventListener('click', () => {
 
 init();
 
-// Tool buttons event listeners
-document.getElementById('zoom-tool-btn').addEventListener('click', () => {
+document.getElementById('Zoom-tool-btn').addEventListener('click', () => {
     tools.activateTool(ZoomTool, toolGroupId);
 });
 
-document.getElementById('window-level-tool-btn').addEventListener('click', () => {
+document.getElementById('Window-level-tool-btn').addEventListener('click', () => {
     tools.activateTool(WindowLevelTool, toolGroupId);
 });
 
-document.getElementById('pan-tool-btn').addEventListener('click', () => {
+document.getElementById('Pan-tool-btn').addEventListener('click', () => {
     tools.activateTool(PanTool, toolGroupId);
 });
 
-document.getElementById('length-tool-btn').addEventListener('click', () => {
+document.getElementById('Length-tool-btn').addEventListener('click', () => {
     tools.activateTool(LengthTool, toolGroupId);
 })
+
+document.getElementById('Height-tool-btn').addEventListener('click', () => {
+    tools.activateTool(HeightTool, toolGroupId);
+})
+
+document.getElementById('Probe-tool-btn').addEventListener('click', () => {
+    tools.activateTool(ProbeTool, toolGroupId);
+})
+
+document.getElementById('RectangleROI-tool-btn').addEventListener('click', () =>{
+    tools.activateTool(RectangleROITool, toolGroupId);
+})
+
+document.getElementById('EllipticalIROI-tool-btn').addEventListener('click', () => {
+    tools.activateTool(EllipticalROITool, toolGroupId);
+})
+
+document.getElementById('CircleROI-tool-btn').addEventListener('click', () => {
+    tools.activateTool(CircleROITool, toolGroupId);
+})
+
+document.getElementById('Bidirectional-tool-btn').addEventListener('click', () => {
+    tools.activateTool(BidirectionalTool, toolGroupId);
+})
+
+document.getElementById('Angle-tool-btn').addEventListener('click', () => {
+    tools.activateTool(AngleTool, toolGroupId);
+})
+
+document.getElementById('CobbAngle-tool-btn').addEventListener('click', ()=> {
+    tools.activateTool(CobbAngleTool,toolGroupId);
+})
+
+document.getElementById('ArrowAnnotate-tool-btn').addEventListener('click', () => {
+    tools.activateTool(ArrowAnnotateTool, toolGroupId);
+})
+
+document.getElementById('PlanarFreehandROI-tool-btn').addEventListener('click', () => {
+    tools.activateTool(PlanarFreehandROITool, toolGroupId);
+})
+
+document.getElementById('Eraser-tool-btn').addEventListener('click' , () => {
+    tools.activateTool(EraserTool, toolGroupId);
+})
+
+document.getElementById('StackScroll-tool-btn').addEventListener('click', () => {
+    tools.activateTool(StackScrollTool, toolGroupId);
+});
+
+document.getElementById('Playclip-tool-btn').addEventListener('click', () => {
+    tools.play(selectedViewport); // 스피드 조절 가능
+})
+
+document.getElementById('StopPlayclip-tool-btn').addEventListener('click', () =>{
+    tools.stop(selectedViewport);
+})
+
+const invertButton = document.getElementById('Invert-tool-btn');
+let invertCheck;
+
+function invertImageWithWWWC(viewportElement) {
+    const viewportId = `CT_AXIAL_STACK-${viewportElement.id}`;
+    console.log(`Attempting to get viewport with ID: ${viewportId}`);
+    const viewport = renderingEngine.getViewport(viewportId);
+
+    if (viewport) {
+        const properties = viewport.getProperties();
+        console.log(`Current invert status: ${properties.invert}`);
+
+        // Toggle the invert status
+        properties.invert = invertCheck;
+        viewport.setProperties(properties);
+
+        console.log(`New invert status: ${properties.invert}`);
+        viewport.render();
+    } else {
+        console.error(`Viewport with ID ${viewportId} not found.`);
+    }
+}
+
+invertButton.addEventListener('click', () => {
+    console.log('Invert button clicked');
+    if (selectedViewport) {
+        const viewportElement = selectedViewport;
+        console.log(`Selected viewport ID: ${viewportElement.id}`);
+
+        if (viewportElement.getAttribute('invert') === 'unchecked') {
+            viewportElement.setAttribute('invert', 'checked');
+            invertCheck = true;
+        } else {
+            viewportElement.setAttribute('invert', 'unchecked');
+            invertCheck = false;
+        }
+        console.log(`Invert check status: ${invertCheck}`);
+        invertImageWithWWWC(viewportElement);
+    } else {
+        console.error("No viewport selected.");
+    }
+});
+
+function invertHandler(viewportElement) {
+    const invertVal = viewportElement.getAttribute('invert');
+    if (invertVal === null) {
+        viewportElement.setAttribute('invert', 'unchecked');
+    }
+}
+
+let scrollLoopEnabled = false;
+
+document.getElementById('scroll-loop-btn').addEventListener('click', () => {
+    if (selectedViewport) {
+        scrollLoopEnabled = !scrollLoopEnabled;
+        if (scrollLoopEnabled) {
+            enableScrollLoop(selectedViewport);
+        } else {
+            disableScrollLoop(selectedViewport);
+        }
+    }
+});
+
+function enableScrollLoop(viewportElement) {
+    viewportElement.addEventListener('wheel', handleScrollLoop);
+}
+
+function disableScrollLoop(viewportElement) {
+    viewportElement.removeEventListener('wheel', handleScrollLoop);
+}
+
+function handleScrollLoop(event) {
+    event.preventDefault();
+
+    const viewportId = `CT_AXIAL_STACK-${event.currentTarget.id}`;
+    const viewport = renderingEngine.getViewport(viewportId);
+
+    if (viewport) {
+        const imageIds = viewport.getImageIds();
+        const currentIndex = viewport.getCurrentImageIdIndex();
+        const totalImages = imageIds.length;
+
+        let newIndex = currentIndex;
+
+        if (newIndex >= totalImages - 1) {
+            newIndex = 0;
+        } else if (newIndex <= 0) {
+            newIndex = totalImages - 1;
+        }
+        console.log('index', newIndex);
+        console.log('max', totalImages);
+
+        viewport.setStack(imageIds, newIndex);
+        viewport.render();
+    } else {
+        console.error(`Viewport with ID ${viewportId} not found.`);
+    }
+}
