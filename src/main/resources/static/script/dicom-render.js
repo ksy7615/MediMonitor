@@ -23,6 +23,9 @@ const thumbnailContainer = document.createElement('div');
 thumbnailContainer.style.display = 'flex';
 thumbnailContainer.style.flexDirection = 'column';
 thumbnailContainer.style.marginRight = '10px';
+thumbnailContainer.style.justifyContent = 'center';
+thumbnailContainer.style.alignItems = 'center';
+thumbnailContainer.style.margin = 'auto';
 toggleBox.appendChild(thumbnailContainer);
 
 const gridBtn = document.getElementById('grid-btn');
@@ -42,8 +45,15 @@ let studyInfo = "";
 let seriesList = [];
 let selectedViewport = null; // 선택된 뷰포트를 추적하기 위한 변수
 
+let thumbnailCnt = 0;
+let viewportSeriesMap = {};       // 각 뷰포트에 로드된 시리즈 정보를 저장
+
+
 let renderingEngine;
 let toolGroupId = `toolGroupId`; // 툴 그룹 ID 초기화
+
+let previousGridSize = {rows: 1, cols: 1}
+let isDblClick = false;
 
 const init = async () => {
     await cornerstone.init();
@@ -98,6 +108,8 @@ gridItems.forEach(item => {
         const row = parseInt(item.getAttribute('data-row'));
         const col = parseInt(item.getAttribute('data-col'));
         createGridInContent(row, col);
+        // 그리드 하나 클릭하면 현재 그리드 개수 저장해두기 (백업을 위해)
+        previousGridSize = {rows: row, cols: col};
 
         toggleGrid();
         fetchSeriesKeys().then(seriesList => {
@@ -152,6 +164,13 @@ function createGridInContent(maxRow, maxCol) {
 
             invertHandler(cell);
 
+            cell.addEventListener('dblclick', () => {
+                if(!isDblClick) {
+                    selectViewport(cell);
+                }
+                toggleGridSize();
+            })
+
             viewports.push(cell);
             content.appendChild(cell);
             cellId++;
@@ -159,6 +178,49 @@ function createGridInContent(maxRow, maxCol) {
     }
     // Apply tools to all viewports
     tools.setTools(viewports, renderingEngine.id, toolGroupId);
+}
+
+const toggleGridSize = () => {
+    if (thumbnailCnt > 0) {
+        createGridInContent(previousGridSize.rows, previousGridSize.cols);
+        Object.keys(viewportSeriesMap).forEach(viewportId => {
+            const seriesKey = viewportSeriesMap[viewportId];
+            const element = document.getElementById(viewportId);
+            displaySeries(seriesKey, element, renderingEngine.id, `CT_AXIAL_STACK-${element.id}`);
+        });
+        thumbnailCnt = 0;
+    } else {
+        // 더블클릭 1번 눌렀을 때 -> 화면 확대
+        if (!isDblClick) {
+            if (selectedViewport) {  // 선택된 뷰포트를 추적하기 위한 변수
+                content.innerHTML = '';
+                selectedViewport.style.gridRow = '1 / -1';
+                selectedViewport.style.gridColumn = '1 / -1';
+                selectedViewport.style.width = '100%';
+                selectedViewport.style.height = '100%';
+                content.appendChild(selectedViewport);
+                isDblClick = true; // 축소해야됨 상태로 바꾸기
+                // 뷰포트 맵을 사용하여 각 뷰포트에 로드된 시리즈를 표시
+                Object.keys(viewportSeriesMap).forEach(viewportId => {
+                    // 수정된 부분 시작
+                    if (selectedViewport && viewportId === selectedViewport.id) {
+                        const seriesKey = viewportSeriesMap[viewportId];
+                        displaySeries(seriesKey, selectedViewport, renderingEngine.id, `CT_AXIAL_STACK-${selectedViewport.id}`);
+                    }
+                });
+            }
+            // 더블클릭 두번째 눌렀을 때 -> 화면 축소
+        } else {
+            createGridInContent(previousGridSize.rows, previousGridSize.cols);
+            Object.keys(viewportSeriesMap).forEach(viewportId => {
+                const seriesKey = viewportSeriesMap[viewportId];
+                const element = document.getElementById(viewportId);
+                displaySeries(seriesKey, element, renderingEngine.id, `CT_AXIAL_STACK-${element.id}`);
+            });
+            isDblClick = false;  // 확대해야됨 상태로 바꾸기
+            // selectedViewport = null; // 선택된 뷰포트를 초기화 (이제 다썼으니까)
+        }
+    }
 }
 
 function selectViewport(cell) {
@@ -182,8 +244,25 @@ const createThumbnailElement = (seriesKey) => {
     thumbnail.style.alignItems = 'center';
     thumbnail.draggable = true;
     thumbnail.ondragstart = (e) => onDragStart(e, seriesKey);
+
+    thumbnail.addEventListener('click', () => {
+        thumbnailCnt++;
+        displayThumbnailnGrid(seriesKey).then(() => {
+            selectViewport(viewports[0]);
+        });
+    })
+
     return thumbnail;
 };
+
+const displayThumbnailnGrid = async (seriesKey) => {
+    createGridInContent(0, 0);
+    if (viewports.length > 0) {
+        const element = viewports[0];
+        const viewportId = `CT_AXIAL_STACK-${element.id}`;
+        await displaySeries(seriesKey, element, renderingEngine.id, viewportId);
+    }
+}
 
 const onDragStart = (e, seriesKey) => {
     e.dataTransfer.setData('text/plain', seriesKey);
@@ -194,6 +273,8 @@ const onDrop = (e, element) => {
     const seriesKey = e.dataTransfer.getData('text/plain');
     const viewportId = `CT_AXIAL_STACK-${element.id}`;
     displaySeries(seriesKey, element, renderingEngine.id, viewportId); // displaySeries 호출
+
+    viewportSeriesMap[element.id] = seriesKey;
 }
 
 async function fetchSeriesKeys() {
@@ -266,6 +347,7 @@ async function fetchDataAndRender(seriesList) {
             const imageIds = seriesImages[seriesKey];
             displaySeries(seriesKey, viewports[i], renderingEngineId, viewportId, imageIds);
             tools.setTools([viewports[i]], renderingEngine.id, toolGroupId); // 단일 요소 배열로 전달
+            viewportSeriesMap[viewports[i].id] = seriesKey;
             validSeriesIndex++;
         }
     }
