@@ -1,0 +1,38 @@
+body {
+    background-color: #333;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.log-info {
+    padding: 20px;
+    text-align: center;
+    width: 80%;
+    box-sizing: border-box;
+}
+
+table.log-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table.log-table th, table.log-table td {
+    border: 1px solid #555;
+    padding: 10px;
+    text-align: center;
+}
+
+table.log-table th {
+    background-color: #444;
+}
+
+table.log-table tbody tr:nth-child(even) {
+    background-color: #555;
+}

@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>접근 기록 확인</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/log.css">
     <c:import url="/header" />
 </head>
 <body>
