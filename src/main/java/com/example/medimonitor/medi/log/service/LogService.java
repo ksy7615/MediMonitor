@@ -4,6 +4,8 @@ import com.example.medimonitor.medi.log.domain.Log;
 import com.example.medimonitor.medi.log.domain.LogRepository;
 import com.example.medimonitor.medi.log.dto.LogRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +21,11 @@ public class LogService {
         return logRepository.save(log);
     }
 
-    public List<Log> findAllLogByUsername (String username) {
+    public Page<Log> findAllLogByUsername (String username, Pageable pageable) {
         if(username.equals("admin")) {
-            return logRepository.findAll();
+            return logRepository.findAll(pageable);
         } else {
-            return logRepository.findLogByUsername(username);
+            return logRepository.findLogByUsername(username, pageable);
         }
     }
 }

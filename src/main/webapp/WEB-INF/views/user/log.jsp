@@ -27,6 +27,11 @@
         <tbody class="contentBody">
         </tbody>
     </table>
+    <div class="button-set">
+        <button class="button blue-button" id="left">◀</button>
+        <label id="pageCnt"></label>
+        <button class="button blue-button" id="right">▶</button>
+    </div>
 </div>
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/user/log.js"></script>

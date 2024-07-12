@@ -1,7 +1,25 @@
-console.log('log.js is loaded'); // JavaScript 파일이 로드되었는지 확인
-
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('DOM fully loaded and parsed'); // DOMContentLoaded 이벤트가 발생했는지 확인
+    let currentPage = 0;
+    const pageSize = 10;
+    let totalPages = 0;
+
+    document.getElementById('left').addEventListener('click', function () {
+        if (currentPage > 0) {
+            currentPage--;
+            fetchLogs(username, currentPage, pageSize);
+        } else {
+            alert("첫 페이지입니다.");
+        }
+    });
+
+    document.getElementById('right').addEventListener('click', function () {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            fetchLogs(username, currentPage, pageSize);
+        } else {
+            alert("다음 페이지가 없습니다.");
+        }
+    });
 
     const usernameElement = document.getElementById('username');
     if (!usernameElement) {
@@ -12,8 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const username = usernameElement.value;
     console.log('Username:', username); // username 값이 올바르게 설정되었는지 확인
 
-    function fetchLogs(username) {
-        let url = '/log';
+    function fetchLogs(username, page, size) {
+        let url = `/log?page=${page}&size=${size}`;
         let fetchOptions = {
             method: 'POST', // POST 메소드로 설정
             headers: {
@@ -21,9 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({ username: username })
         };
-
-        console.log('Sending request to:', url); // 디버깅용 로그
-        console.log('Request body:', fetchOptions.body); // 디버깅용 로그
 
         fetch(url, fetchOptions)
             .then(response => {
@@ -33,7 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
-                updateLogTable(data);
+                totalPages = data.totalPages;
+                updateLogTable(data.content);
             })
             .catch(error => {
                 console.error('데이터를 불러오는 중 오류 발생:', error);
@@ -60,8 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${formatDate(log.regDate)}</td>
             `;
         });
-        console.log("Updated table with data:", data); // 디버깅용 로그
     }
 
-    fetchLogs(username);
+    fetchLogs(username, currentPage, pageSize);
 });
