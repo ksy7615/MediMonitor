@@ -41,6 +41,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+    function formatDate(timestamp) {
+        const date = new Date(timestamp);
+        return date.toISOString().substring(0, 10) + ' ' + date.toISOString().substring(11, 19);
+    }
+
     function updateLogTable(data) {
         const dataTable = document.getElementById('log-table').getElementsByTagName('tbody')[0];
         dataTable.innerHTML = '';
@@ -52,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${log.code}</td>
                 <td>${log.studykey}</td>
                 <td>${log.username}</td>
-                <td>${log.regdate}</td>
+                <td>${formatDate(log.regDate)}</td>
             `;
         });
         console.log("Updated table with data:", data); // 디버깅용 로그
