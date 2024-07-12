@@ -4,10 +4,6 @@
 <head>
     <title>접근 기록 확인</title>
     <c:import url="/header" />
-    <script type="text/javascript">
-        console.log('JSP is loaded'); // JSP 파일이 로드되었는지 확인
-    </script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/script/user/log.js"></script>
 </head>
 <body>
 <c:if test="${empty user}">
@@ -31,8 +27,6 @@
         </tbody>
     </table>
 </div>
-<script type="text/javascript">
-    console.log('Inline script is executed'); // 인라인 스크립트가 실행되었는지 확인
-</script>
 </body>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/user/log.js"></script>
 </html>
