@@ -4,6 +4,7 @@ import com.example.medimonitor.medi.message.domain.Message;
 import com.example.medimonitor.medi.message.domain.MessageRepository;
 import com.example.medimonitor.medi.message.dto.MessageRequestDto;
 import com.example.medimonitor.medi.message.dto.MessageResponseDto;
+import com.example.medimonitor.notifications.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,12 @@ import java.util.List;
 public class MessageService {
     private final MessageRepository messageRepository;
 
+    private final NotificationService notificationService;
+
     public MessageResponseDto save(MessageRequestDto messageDto) {
         Message message = new Message(messageDto);
         MessageResponseDto messageResponseDto = new MessageResponseDto(messageRepository.save(message));
+        notificationService.notifyUser(messageDto.getRecipient(), "새로운 쪽지가 도착했습니다.");
         return messageResponseDto;
     }
 
@@ -58,8 +62,8 @@ public class MessageService {
         return messageList;
     }
 
-    public List<MessageResponseDto> findBySenderLimit(String sender) {
-        List<Message> list = messageRepository.findBySenderLimit(sender);
+    public List<MessageResponseDto> findFirst30BySenderOrderByRegDateDesc(String sender) {
+        List<Message> list = messageRepository.findFirst30BySenderOrderByRegDateDesc(sender);
         List<MessageResponseDto> messageList = new ArrayList<>();
 
         for(Message message : list) {
@@ -70,8 +74,8 @@ public class MessageService {
         return messageList;
     }
 
-    public List<MessageResponseDto> findByRecipientLimit(String recipient) {
-        List<Message> list = messageRepository.findByRecipientLimit(recipient);
+    public List<MessageResponseDto> findFirst30ByRecipientOrderByRegDateDesc(String recipient) {
+        List<Message> list = messageRepository.findFirst30ByRecipientOrderByRegDateDesc(recipient);
         List<MessageResponseDto> messageList = new ArrayList<>();
 
         for(Message message : list) {
@@ -94,5 +98,21 @@ public class MessageService {
     public boolean updateStatus(int code) {
         int updatedCount = messageRepository.updateStatus(code);
         return updatedCount > 0; // 업데이트된 행의 수가 0보다 큰 경우 true 반환
+    }
+
+    public int countUnreadMessageBySender(String sender) {
+        return messageRepository.countByStatusFalseAndSender(sender);
+    }
+
+    public int countUnreadMessageByRecipient(String recipient) {
+        return messageRepository.countByStatusFalseAndRecipient(recipient);
+    }
+
+    public int countBySender(String sender) {
+        return messageRepository.countBySender(sender);
+    }
+
+    public int countByRecipient(String recipient) {
+        return messageRepository.countByRecipient(recipient);
     }
 }

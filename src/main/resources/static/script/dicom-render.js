@@ -17,7 +17,7 @@ import {
 } from "@cornerstonejs/tools";
 
 let isValid = false;
-const thumbnailBtn =  document.getElementById('thumbnail-btn');
+const thumbnailBtn = document.getElementById('thumbnail-btn');
 const toggleBox = document.getElementById('toggle-box');
 const thumbnailContainer = document.createElement('div');
 thumbnailContainer.style.display = 'flex';
@@ -43,8 +43,7 @@ let viewports = [];
 const seriesImages = {};
 let studyInfo = "";
 let seriesList = [];
-let selectedViewport = null; // 선택된 뷰포트를 추적하기 위한 변수
-
+let selectedViewport = null;    // 선택된 뷰포트를 추적하기 위한 변수
 let thumbnailCnt = 0;
 let viewportSeriesMap = {};       // 각 뷰포트에 로드된 시리즈 정보를 저장
 
@@ -164,6 +163,7 @@ function createGridInContent(maxRow, maxCol) {
 
             invertHandler(cell);
 
+
             cell.addEventListener('dblclick', () => {
                 if(!isDblClick) {
                     selectViewport(cell);
@@ -181,6 +181,7 @@ function createGridInContent(maxRow, maxCol) {
 }
 
 const toggleGridSize = () => {
+
     if (thumbnailCnt > 0) {
         createGridInContent(previousGridSize.rows, previousGridSize.cols);
         Object.keys(viewportSeriesMap).forEach(viewportId => {
@@ -188,6 +189,7 @@ const toggleGridSize = () => {
             const element = document.getElementById(viewportId);
             displaySeries(seriesKey, element, renderingEngine.id, `CT_AXIAL_STACK-${element.id}`);
         });
+
         thumbnailCnt = 0;
     } else {
         // 더블클릭 1번 눌렀을 때 -> 화면 확대
@@ -200,6 +202,7 @@ const toggleGridSize = () => {
                 selectedViewport.style.height = '100%';
                 content.appendChild(selectedViewport);
                 isDblClick = true; // 축소해야됨 상태로 바꾸기
+
                 // 뷰포트 맵을 사용하여 각 뷰포트에 로드된 시리즈를 표시
                 Object.keys(viewportSeriesMap).forEach(viewportId => {
                     // 수정된 부분 시작
@@ -209,6 +212,7 @@ const toggleGridSize = () => {
                     }
                 });
             }
+
             // 더블클릭 두번째 눌렀을 때 -> 화면 축소
         } else {
             createGridInContent(previousGridSize.rows, previousGridSize.cols);
@@ -246,16 +250,19 @@ const createThumbnailElement = (seriesKey) => {
     thumbnail.ondragstart = (e) => onDragStart(e, seriesKey);
 
     thumbnail.addEventListener('click', () => {
+
         thumbnailCnt++;
         displayThumbnailnGrid(seriesKey).then(() => {
             selectViewport(viewports[0]);
         });
     })
 
+
     return thumbnail;
 };
 
 const displayThumbnailnGrid = async (seriesKey) => {
+
     createGridInContent(0, 0);
     if (viewports.length > 0) {
         const element = viewports[0];
@@ -273,7 +280,6 @@ const onDrop = (e, element) => {
     const seriesKey = e.dataTransfer.getData('text/plain');
     const viewportId = `CT_AXIAL_STACK-${element.id}`;
     displaySeries(seriesKey, element, renderingEngine.id, viewportId); // displaySeries 호출
-
     viewportSeriesMap[element.id] = seriesKey;
 }
 
@@ -281,7 +287,7 @@ async function fetchSeriesKeys() {
     const seriesEndpoint = `/api/detail/${studyKey}`;
 
     try {
-        const response = await fetch(seriesEndpoint, { method: 'GET' });
+        const response = await fetch(seriesEndpoint, {method: 'GET'});
         const series = await response.json();
 
         console.log("series:", series);
@@ -304,7 +310,7 @@ async function fetchSeriesImages(seriesKey) {
 
     let imageIds = [];
     try {
-        const response = await fetch(imageEndpoint, { method: 'POST' });
+        const response = await fetch(imageEndpoint, {method: 'POST'});
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -315,7 +321,7 @@ async function fetchSeriesImages(seriesKey) {
         files.forEach((base64, index) => {
             const binaryString = atob(base64);
             const arrayBuffer = Uint8Array.from(binaryString, c => c.charCodeAt(0));
-            const blob = new Blob([arrayBuffer], { type: 'application/dicom' });
+            const blob = new Blob([arrayBuffer], {type: 'application/dicom'});
             const imageId = cornerstoneDICOMImageLoader.wadouri.fileManager.add(blob, `image-${seriesKey}-${index}`);
             imageIds.push(imageId);
         });

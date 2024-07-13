@@ -293,7 +293,7 @@ label {
     border-radius: 5px;
 }
 
-/* 그리드 */
+/* 그리드 버튼 스타일 */
 #grid-btn {
     padding: 10px 20px;
     font-size: 16px;
@@ -301,31 +301,34 @@ label {
     margin-bottom: 20px;
 }
 
+/* 그리드 컨테이너 수정 */
 .grid-container {
-    display: none; /* 초기에는 숨김 */
+    display: flex; /* flex로 변경하여 버튼 옆에 위치하도록 설정 */
     justify-content: center;
     align-items: center;
     z-index: 10000; /* 매우 높은 z-index 값으로 설정 */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: absolute; /* absolute로 위치 고정 */
+    top: 0;
+    left: 100%; /* grid-btn 옆에 위치 */
+    transform: translate(-100%, 0); /* 위치 미세 조정 */
     background-color: white;
-    padding: 20px;
+    padding: 5px; /* 패딩 줄이기 */
     border: 2px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* 그리드 레이아웃 수정 */
 .grid {
     display: grid;
-    grid-template-columns: repeat(5, 50px);
-    grid-template-rows: repeat(5, 50px);
+    grid-template-columns: repeat(3, 20px); /* 3열로 변경 */
+    grid-template-rows: repeat(3, 20px); /* 3행으로 변경 */
     gap: 5px;
 }
 
+/* 그리드 아이템 수정 */
 .grid-item {
-    width: 50px;
-    height: 50px;
+    width: 20px; /* 아이템 크기 줄이기 */
+    height: 20px; /* 아이템 크기 줄이기 */
     background-color: #ccc;
     transition: background-color 0.3s;
 }

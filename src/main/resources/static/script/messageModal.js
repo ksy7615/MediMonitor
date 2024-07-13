@@ -23,7 +23,7 @@ function formatMailDate(mailDate) {
 // modal.js
 
 function openMiniInbox() {
-    document.getElementById('mini-inbox-modal').style.display = 'block';
+    $('#mini-inbox-modal').css('display', 'block');
 
     var settings = {
         "url": "/find/miniInbox",
@@ -34,51 +34,36 @@ function openMiniInbox() {
     };
 
     $.ajax(settings).done(function (response) {
-        console.log(response)
-        const mailList = document.querySelector('.inbox-mail-list');
-        mailList.innerHTML = ''; // 기존 리스트 초기화
+        const mailList = $('.inbox-mail-list');
+        mailList.empty(); // 기존 리스트 초기화
 
-        if(response.length === 0) {
-            const emptyMessage = document.createElement('span');
-            emptyMessage.id = 'emptyMessage';
-            emptyMessage.innerText = "쪽지함이 비었습니다.";
+        if (response.length === 0) {
+            const emptyMessage = $('<span></span>').attr('id', 'emptyMessage').text('쪽지함이 비었습니다.');
             mailList.append(emptyMessage);
-        }else {
-            for(let message of response) {
-                const list = document.createElement('li');
+        } else {
+            response.forEach(message => {
+                const list = $('<li></li>');
 
-                const mailSender = document.createElement('span');
-                mailSender.className = 'mail-sender';
-                mailSender.innerText = message.sender;
-                const mailSubject = document.createElement('span');
-                mailSubject.className = 'mail-subject';
-                const link = document.createElement('a');
-                link.href = `/message/${message.code}`;
-                link.innerText = message.title;
-                mailSubject.append(link);
-                const mailTime = document.createElement('span');
-                mailTime.className = 'mail-time';
-                mailTime.innerText = formatMailDate(message.regDate);
+                const mailSender = $('<span></span>').addClass('mail-sender').text(message.sender);
+                const mailSubject = $('<span></span>').addClass('mail-subject').text(message.title) .attr('onclick', 'openDetailModal(' + message.code + ')');
 
-                list.append(mailSender);
-                list.append(mailSubject);
-                list.append(mailTime);
+                const mailTime = $('<span></span>').addClass('mail-time').text(formatMailDate(message.regDate));
 
+                list.append(mailSender, mailSubject, mailTime);
                 mailList.append(list);
-            }
+            });
         }
     }).fail(function (response) {
-        alert("쪽지 가져오기에 실패했습니다.")
+        alert("쪽지 가져오기에 실패했습니다.");
     });
-
 }
 
 function closeMiniInbox() {
-    document.getElementById('mini-inbox-modal').style.display = 'none';
+    $('#mini-inbox-modal').css('display', 'none');
 }
 
 function openMiniSent() {
-    document.getElementById('mini-sent-modal').style.display = 'block';
+    $('#mini-sent-modal').css('display', 'block');
 
     var settings = {
         "url": "/find/miniSent",
@@ -89,45 +74,99 @@ function openMiniSent() {
     };
 
     $.ajax(settings).done(function (response) {
-        console.log(response)
-        const mailList = document.querySelector('.sent-mail-list');
-        mailList.innerHTML = ''; // 기존 리스트 초기화
+        const mailList = $('.sent-mail-list');
+        mailList.empty(); // 기존 리스트 초기화
 
-        if(response.length === 0) {
-            const emptyMessage = document.createElement('span');
-            emptyMessage.id = 'emptyMessage';
-            emptyMessage.innerText = "쪽지함이 비었습니다.";
+        if (response.length === 0) {
+            const emptyMessage = $('<span></span>').attr('id', 'emptyMessage').text('쪽지함이 비었습니다.');
             mailList.append(emptyMessage);
-        }else {
-            for(let message of response) {
-                const list = document.createElement('li');
+        } else {
+            response.forEach(message => {
+                const list = $('<li></li>');
 
-                const mailRecipient = document.createElement('span');
-                mailRecipient.className = 'mail-recipient';
-                mailRecipient.innerText = message.recipient;
-                const mailSubject = document.createElement('span');
-                mailSubject.className = 'mail-subject';
-                const link = document.createElement('a');
-                link.href = `/message/${message.code}`;
-                link.innerText = message.title;
-                mailSubject.append(link);
-                const mailTime = document.createElement('span');
-                mailTime.className = 'mail-time';
-                mailTime.innerText = formatMailDate(message.regDate);
+                const mailRecipient = $('<span></span>').addClass('mail-recipient').text(message.recipient);
+                const mailSubject = $('<span></span>').addClass('mail-subject').text(message.title) .attr('onclick', 'openDetailModal(' + message.code + ')');
+                mailSubject.on('click', openDetailModal);
 
-                list.append(mailRecipient);
-                list.append(mailSubject);
-                list.append(mailTime);
+                const mailTime = $('<span></span>').addClass('mail-time').text(formatMailDate(message.regDate));
 
+                list.append(mailRecipient, mailSubject, mailTime);
                 mailList.append(list);
-            }
+            });
         }
     }).fail(function (response) {
-        alert("쪽지 가져오기에 실패했습니다.")
+        alert("쪽지 가져오기에 실패했습니다.");
     });
-
 }
 
 function closeMiniSent() {
-    document.getElementById('mini-sent-modal').style.display = 'none';
+    $('#mini-sent-modal').css('display', 'none');
 }
+
+// 쪽지 상세보기
+function openDetailModal(code) {
+    $('#detail-container-modal').show();
+    var settings = {
+        "url": "/message/"+code,
+        "method": "GET",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+    };
+
+    $.ajax(settings).done(function (response) {
+        if (response === null) {
+            location.href = "redirect:/";
+        }
+        else {
+            // response 객체를 이용해 모달 내용을 업데이트
+            $('#detail-title-span').text(response.title);
+            $('.detail-date').text(response.formattedRegDate);
+            $('#detail-content').val(response.content);
+            $('#detailModalDeleteBtn').val(response.code);
+        }
+    })
+}
+
+function closeDetailModal() {
+    $('#detail-container-modal').hide();
+    if(window.location.pathname === "/sent" || window.location.pathname === "/inbox") {
+        location.reload();
+    }
+}
+
+$(document).ready(() => {
+    $('#detailModalCloseBtn').click(function() {
+        $('#detail-myModal').hide();
+    });
+
+    window.openDeleteModal = function() {
+        $('#detail-myModal').show();
+    }
+
+    $('#detailModalDeleteBtn').click(function() {
+        const code = $('#detailModalDeleteBtn').val();
+        var settings = {
+            "url": "/message/delete",
+            "method": "DELETE",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "code": code
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+            if (response.status === 200) {
+                $('#detail-container-modal').hide();
+                $('#detail-myModal').hide();
+                // window.history.back();
+            }
+        }).fail(function (response) {
+            if (response.status === 400) {
+                alert(response.message);
+            }
+        });
+    });
+});
