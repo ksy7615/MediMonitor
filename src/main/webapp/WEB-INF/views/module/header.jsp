@@ -42,7 +42,7 @@
                     <a href="${pageContext.request.contextPath}/logout">로그아웃</a>
                 </div>
             </div>
-            <span class="admin-text"  id="user-text" data-user-id="${user.username}">${user.name}</span>
+            <span class="admin-text"  id="user-text">${user.name}</span>
         </div>
 <%--        <div id="notifications" data-user-id="${user.username}"></div> <!-- 사용자 ID를 data 속성에 포함 -->--%>
     </c:if>
@@ -167,7 +167,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/header.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/messageModal.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/message/findUsername.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/message/writeMessage.js"></script>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/script/message/writeMessage.js"></script>--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/notifications/messageNotifications.js"></script>
 
 </html>
