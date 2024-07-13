@@ -1,7 +1,9 @@
 package com.example.medimonitor.notifications.event;
 
+import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
+@Getter
 public class NotificationEvent extends ApplicationEvent {
 
     private final String userId;
@@ -13,17 +15,5 @@ public class NotificationEvent extends ApplicationEvent {
         this.userId = userId;
         this.message = message;
         this.count = count;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public int getCount() {
-        return count;
     }
 }
