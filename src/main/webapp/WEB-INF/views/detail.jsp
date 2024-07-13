@@ -52,6 +52,7 @@
         <button id="Rotate-tool-btn">Rotate Tool</button>
         <button id="RigthRotate-tool-btn">Rigth Rotate Tool</button>
         <button id="LeftRotate-tool-btn">Left Rotate Tool</button>
+        <!-- 이름수정 -->
         <button id="WidthFlip-tool-btn">WidthFlip Tool</button>
         <button id="HeghtFlip-tool-btn">HeghtFlip Tool</button>
 
