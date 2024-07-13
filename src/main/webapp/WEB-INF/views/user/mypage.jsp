@@ -13,6 +13,23 @@
         location.href='/login';
     </script>
 </c:if>
+<div class="side">
+    <aside class="mypage-sidebar">
+        <button onclick="location.href='/log'">
+            <img src="https://cdn-icons-png.flaticon.com/128/3000/3000040.png" alt="Log Icon" class="icon-image">
+            <span>접근기록 확인</span>
+        </button>
+        <button onclick="location.href='/check'">
+            <img src="https://cdn-icons-png.flaticon.com/128/1159/1159633.png" alt="Check Icon" class="icon-image">
+            <span>회원정보 수정</span>
+        </button>
+        <div class="spacer"></div>
+        <button onclick="location.href='/delete'">
+            <img src="https://cdn-icons-png.flaticon.com/512/10423/10423304.png" alt="Delete Icon" class="icon-image">
+            <span>회원 탈퇴</span>
+        </button>
+    </aside>
+</div>
 <div class="container">
     <h1>회원정보</h1>
     <div class="signup-form">
@@ -71,9 +88,6 @@
             <option value="resident" ${user.position == 'resident' ? 'selected' : ''}>전공의</option>
             <option value="professor" ${user.position == 'professor' ? 'selected' : ''}>교수</option>
         </select>
-
-        <button onclick="location.href='/check'">회원정보 수정</button>
-        <button>회원 탈퇴</button>
     </div>
 </div>
 </body>
