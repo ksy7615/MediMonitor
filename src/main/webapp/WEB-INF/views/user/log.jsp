@@ -15,6 +15,7 @@
 </c:if>
 <div class="log-info">
     <input type="hidden" id="username" value="${user.username}">
+    <h1>접근 기록 확인</h1>
     <table class="log-table" id="log-table">
         <thead>
         <tr>
