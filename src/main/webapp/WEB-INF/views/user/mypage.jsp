@@ -73,7 +73,7 @@
         </select>
 
         <button onclick="location.href='/check'">회원정보 수정</button>
-        <button>회원 탈퇴</button>
+        <button onclick="location.href='/delete'">회원 탈퇴</button>
     </div>
 </div>
 </body>
