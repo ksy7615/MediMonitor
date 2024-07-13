@@ -529,6 +529,54 @@ thumbnailBtn.addEventListener('click', () => {
 
 init();
 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const annotationBtn = document.getElementById('annotationBtn');
+    const annotationGroup = document.getElementById('annotation-group');
+    const annotationButtons = annotationGroup.querySelectorAll('.tools');
+
+    const toolGroupBtn = document.getElementById('toolGroupBtn');
+    const toolGroup = document.getElementById('tools-group');
+    const toolButtons = annotationGroup.querySelectorAll('.tools');
+
+    annotationBtn.addEventListener('click', function () {
+        if (annotationGroup.style.display === 'none' || annotationGroup.style.display === '') {
+            annotationGroup.style.display = 'flex';
+            const rect = annotationBtn.getBoundingClientRect();
+            annotationGroup.style.top = `${rect.bottom}px`;
+            annotationGroup.style.left = `${rect.left}px`;
+        } else {
+            annotationGroup.style.display = 'none';
+        }
+    });
+
+    toolGroupBtn.addEventListener('click', function () {
+        if (toolGroup.style.display === 'none' || toolGroup.style.display === '') {
+            toolGroup.style.display = 'flex';
+            const rect = toolGroupBtn.getBoundingClientRect();
+            toolGroup.style.top = `${rect.bottom}px`;
+            toolGroup.style.left = `${rect.left}px`;
+        } else {
+            toolGroup.style.display = 'none';
+        }
+    });
+
+
+    annotationButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            annotationGroup.style.display = 'none';
+        });
+    });
+
+    toolButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            toolGroup.style.display = 'none';
+        });
+    });
+});
+
+
+
 document.getElementById('Zoom-tool-btn').addEventListener('click', () => {
     tools.activateTool(ZoomTool, toolGroupId);
 });
