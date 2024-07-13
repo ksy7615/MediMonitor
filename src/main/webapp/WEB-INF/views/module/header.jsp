@@ -108,13 +108,13 @@
                 </div>
                 <div class="messageWrite-form-group">
                     <label for="messageWrite-title">제목</label>
-                    <input type="text" id="messageWrite-title" name="messageWrite-title" placeholder="제목을 입력하세요.">
+                    <input type="text" id="messageWrite-title" name="messageWrite-title" placeholder="제목을 입력하세요." maxlength="30">
                 </div>
                 <div class="char-count-container">
                     <span class="char-count">0/30</span>
                 </div>
                 <div class="messageWrite-form-group-textarea">
-                    <textarea id="messageWrite-content" name="messageWrite-content" placeholder="쪽지 내용을 입력하세요"></textarea>
+                    <textarea id="messageWrite-content" name="messageWrite-content" placeholder="쪽지 내용을 입력하세요" maxlength="500"></textarea>
                     <span class="char-count">0/500</span>
                 </div>
                 <div class="messageWrite-message-error-container">

@@ -21,6 +21,22 @@ function closeMessageWriteModal() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 제목 글자 수 세기
+    const titleInput = document.getElementById('messageWrite-title');
+    const titleCharCount = document.querySelector('.char-count-container .char-count');
+
+    titleInput.addEventListener('input', () => {
+        titleCharCount.textContent = `${titleInput.value.length}/30`;
+    });
+
+    // 내용 글자 수 세기
+    const contentInput = document.getElementById('messageWrite-content');
+    const contentCharCount = document.querySelector('.messageWrite-form-group-textarea .char-count');
+
+    contentInput.addEventListener('input', () => {
+        contentCharCount.textContent = `${contentInput.value.length}/500`;
+    });
+
     document.getElementById('sender').addEventListener('focusout', (e) => {
         const sender = document.getElementById('sender');
         const errorMsgSender = document.getElementById('error-msg-sender');
@@ -83,29 +99,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('messageWrite-title').addEventListener('focusout', (e) => {
-        const title = document.getElementById('messageWrite-title');
+    titleInput.addEventListener('focusout', (e) => {
         const errorMsgTitle = document.getElementById('error-msg-title');
-
-        if (title.value === "") {
+        if (titleInput.value === "") {
             errorMsgTitle.style.display = 'block';
-            title.style.border = 'solid 1px #ff3f3f';
+            titleInput.style.border = 'solid 1px #ff3f3f';
         } else {
             errorMsgTitle.style.display = 'none';
-            title.style.border = 'solid 1px lightgrey';
+            titleInput.style.border = 'solid 1px lightgrey';
         }
     });
 
-    document.getElementById('messageWrite-content').addEventListener('focusout', (e) => {
-        const content = document.getElementById('messageWrite-content');
+    contentInput.addEventListener('focusout', (e) => {
         const errorMsgContent = document.getElementById('error-msg-content');
-
-        if (content.value === "") {
+        if (contentInput.value === "") {
             errorMsgContent.style.display = 'block';
-            content.style.border = 'solid 1px #ff3f3f';
+            contentInput.style.border = 'solid 1px #ff3f3f';
         } else {
             errorMsgContent.style.display = 'none';
-            content.style.border = 'solid 1px lightgrey';
+            contentInput.style.border = 'solid 1px lightgrey';
         }
     });
 
@@ -114,8 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const sender = document.getElementById('sender').value;
         const recipient = document.getElementById('recipient').value;
-        const title = document.getElementById('messageWrite-title').value;
-        const content = document.getElementById('messageWrite-content').value;
+        const title = titleInput.value;
+        const content = contentInput.value;
 
         let isValid = true;
 
@@ -129,15 +141,15 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('error-msg-recipient').style.display = 'block';
             document.getElementById('recipient').style.border = 'solid 1px #ff3f3f';
         }
-        if (title === "") {
+        if (title === "" || title.length > 30) {
             isValid = false;
             document.getElementById('error-msg-title').style.display = 'block';
-            document.getElementById('messageWrite-title').style.border = 'solid 1px #ff3f3f';
+            titleInput.style.border = 'solid 1px #ff3f3f';
         }
-        if (content === "") {
+        if (content === "" || content.length > 500) {
             isValid = false;
             document.getElementById('error-msg-content').style.display = 'block';
-            document.getElementById('messageWrite-content').style.border = 'solid 1px #ff3f3f';
+            contentInput.style.border = 'solid 1px #ff3f3f';
         }
 
         if (isValid) {
@@ -157,8 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (response.status === 200) {
                         alert(response.message);
                         document.getElementById('recipient').value = '';
-                        document.getElementById('messageWrite-title').value = '';
-                        document.getElementById('messageWrite-content').value = '';
+                        titleInput.value = '';
+                        contentInput.value = '';
+                        titleCharCount.textContent = '0/30';
+                        contentCharCount.textContent = '0/500';
                     } else {
                         alert(response.message);
                     }
