@@ -91,7 +91,7 @@ const init = async () => {
     }
 };
 
-gridBtn.addEventListener('click', toggleGrid);
+// gridBtn.addEventListener('click', toggleGrid);
 
 gridItems.forEach(item => {
     item.addEventListener('mouseenter', () => {
@@ -561,6 +561,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    gridBtn.addEventListener('click', function () {
+        if (gridContainer.style.display === 'none' || gridContainer.style.display === '') {
+            gridContainer.style.display = 'flex';
+            const rect = gridBtn.getBoundingClientRect();
+            gridContainer.style.top = `${rect.bottom + 80}px`;
+            gridContainer.style.left = `${rect.left + 80}px`;
+        } else {
+            gridContainer.style.display = 'none';
+        }
+    });
 
     annotationButtons.forEach(button => {
         button.addEventListener('click', function () {
