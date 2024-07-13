@@ -5,7 +5,9 @@ import com.example.medimonitor.medi.log.domain.LogRepository;
 import com.example.medimonitor.medi.log.dto.LogRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,10 +24,12 @@ public class LogService {
     }
 
     public Page<Log> findAllLogByUsername (String username, Pageable pageable) {
+        Pageable sortedByDate = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("regDate").descending());
+
         if(username.equals("admin")) {
-            return logRepository.findAll(pageable);
+            return logRepository.findAll(sortedByDate);
         } else {
-            return logRepository.findLogByUsername(username, pageable);
+            return logRepository.findLogByUsername(username, sortedByDate);
         }
     }
 }
