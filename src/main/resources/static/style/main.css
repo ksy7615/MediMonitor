@@ -152,6 +152,16 @@ header .admin {
     background-color: #242424;
 }
 
+.data-table th:nth-child(3),
+.data-table td:nth-child(3) {
+    width: 90px !important;
+}
+
+.data-table th:nth-child(9),
+.data-table td:nth-child(9) {
+    width: 120px !important;
+}
+
 .previous {
     margin-bottom: 20px;
 }

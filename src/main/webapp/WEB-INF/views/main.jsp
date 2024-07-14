@@ -98,12 +98,6 @@
                         <option value="US">US</option>
                         <option value="VF">VF</option>
                     </select>
-                    <label>Verify</label>
-                    <select id="examstatus">
-                        <option value="">선택해주세요</option>
-                        <option value="1">Not Requested</option>
-                        <option value="2">Request Completed</option>
-                    </select>
                     <button type="button" class="button search-button" id="searchButton">검색</button>
                 </form>
             </div>
@@ -122,7 +116,7 @@
                         <th>판독상태</th>
                         <th>시리즈</th>
                         <th>이미지</th>
-                        <th>Verify</th>
+                        <th>AI Score</th>
                     </tr>
                     </thead>
                     <tbody class="contentBody">
@@ -155,7 +149,7 @@
                             <th>판독상태</th>
                             <th>시리즈</th>
                             <th>이미지</th>
-                            <th>Verify</th>
+                            <th>AI Score</th>
                         </tr>
                         </thead>
                         <tbody>

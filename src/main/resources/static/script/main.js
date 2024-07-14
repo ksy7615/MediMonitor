@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${reportStatusText}</td>
                 <td>${study.seriescnt}</td>
                 <td>${study.imagecnt}</td>
-                <td>${study.examstatus}</td>
+                <td>${study.ai_score}</td>
                 <input type="hidden" class="studykey" value="${study.studykey}">
             `;
         });
@@ -614,7 +614,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${reportStatusText}</td>
                 <td>${study.seriescnt}</td>
                 <td>${study.imagecnt}</td>
-                <td>${study.examstatus}</td>
+                <td>${study.ai_score}</td>
                 <input type="hidden" class="pid" value="${study.pid}">
                 <input type="hidden" class="pname" value="${study.pname}">
                 <input type="hidden" class="studykey" value="${study.studykey}">
