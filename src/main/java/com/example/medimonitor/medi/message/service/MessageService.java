@@ -21,7 +21,8 @@ public class MessageService {
     public MessageResponseDto save(MessageRequestDto messageDto) {
         Message message = new Message(messageDto);
         MessageResponseDto messageResponseDto = new MessageResponseDto(messageRepository.save(message));
-        notificationService.notifyUser(messageDto.getRecipient(), "새로운 쪽지가 도착했습니다.");
+
+        notificationService.customNotify(messageDto.getRecipient(), messageDto, "쪽지가 도착했습니다.", "message");
         return messageResponseDto;
     }
 
