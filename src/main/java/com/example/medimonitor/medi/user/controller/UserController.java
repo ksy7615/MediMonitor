@@ -4,6 +4,7 @@ import com.example.medimonitor.medi.user.domain.User;
 import com.example.medimonitor.medi.user.dto.UserRequestDto;
 import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import com.example.medimonitor.medi.user.domain.UserService;
+import com.example.medimonitor.notifications.service.NotificationService;
 import com.example.medimonitor.util.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,13 +19,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
 public class UserController {
 
     private final UserService userService;
+    private final NotificationService notificationService;
 
     @GetMapping("/join")
     public String join() {
@@ -342,4 +346,23 @@ public class UserController {
 
         return list;
     }
+
+    @GetMapping("/user/notifications/count")
+    @ResponseBody
+    public Map<String, Integer> getNotificationCount(HttpSession session) {
+        System.out.println("Request to /user/notifications/count");
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
+        if (user == null) {
+            System.out.println("User not logged in");
+            throw new IllegalStateException("User not logged in");
+        }
+        String userId = user.getUsername();
+        System.out.println("Fetching notification count for userId: " + userId);
+        int count = notificationService.getNotificationCount(userId);
+        System.out.println("Notification count for userId " + userId + ": " + count);
+        Map<String, Integer> response = new HashMap<>();
+        response.put("count", count);
+        return response;
+    }
+
 }

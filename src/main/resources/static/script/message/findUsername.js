@@ -4,7 +4,7 @@ function findUserModal() {
     document.getElementById('userModal').style.display = "block";
 }
 
-function closeModal() {
+function closeUserModal() {
     document.getElementById('userModal').style.display = "none";
 }
 
@@ -44,5 +44,5 @@ function searchUser() {
 
 function selectUser(username) {
     document.getElementById('recipient').value = username;
-    closeModal();
+    closeUserModal();
 }

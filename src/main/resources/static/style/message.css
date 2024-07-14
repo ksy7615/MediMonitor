@@ -1,7 +1,7 @@
 .message-modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 1;
     right: 10px;
     top: 50px;
     width: 600px;
@@ -24,7 +24,7 @@
     font-size: 20px;
 }
 
-.close {
+.mini-close {
     color: #aaa;
     position: absolute;
     top: 10px;
@@ -33,8 +33,8 @@
     font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.mini-close:hover,
+.mini-close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -120,6 +120,14 @@
     padding-left: 15px;
     font-size: 18px;
     color: white;
+    cursor: pointer;
+}
+
+.mail-subject:hover {
+    padding-left: 15px;
+    font-size: 18px;
+    color: #cccccc;
+    cursor: pointer;
 }
 
 .mail-time {
@@ -166,30 +174,37 @@
     text-decoration: underline;
 }
 
-.write-container {
-    position: relative;
-    width: 650px;
-    height: 700px;
-    margin: 80px auto;
+
+/* 쪽지 작성 모달 */
+.messageWrite-message-modal {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 850px;
     padding: 30px;
     background-color: #464646;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.write-container form {
+.messageWrite-message-modal-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
-.write-container h1 {
+.messageWrite-message-modal h1 {
     margin-bottom: 40px;
     text-align: center;
     color: white;
 }
 
-.form-group {
+.messageWrite-form-group {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -197,15 +212,15 @@
     margin-bottom: 15px;
 }
 
-.form-group label {
+.messageWrite-form-group label {
     width: 20%;
     margin-right: 10px;
     color: white;
 }
 
-.form-group input[type="text"] {
+.messageWrite-form-group input[type="text"] {
     flex-grow: 1;
-    padding: 10px;
+    padding: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
@@ -214,14 +229,14 @@
 
 #recipient {
     flex-grow: 1;
-    padding: 10px;
+    padding: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
     color: #000;
 }
 
-.user-list {
+.messageWrite-user-list {
     width: 100px;
     padding: 10px;
     background-color: #5c88c4;
@@ -230,16 +245,23 @@
     border-radius: 4px;
     cursor: pointer;
     margin-left: 10px;
+    height: 47px;
 }
 
-.form-group-textarea {
+.messageWrite-user-list:hover {
+    background-color: #4a74a3;
+    cursor: pointer;
+}
+
+.messageWrite-form-group-textarea {
     width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: end;
     margin-bottom: 15px;
 }
 
-.form-group-textarea textarea {
+.messageWrite-form-group-textarea textarea {
     width: 100%;
     height: 350px;
     padding: 10px;
@@ -248,6 +270,14 @@
     background-color: #fff;
     color: #000;
     resize: none;
+    margin-bottom: 15px;
+}
+
+.char-count-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
 }
 
 .friend-list {
@@ -260,58 +290,79 @@
 }
 
 .char-count {
-    /*position: relative;*/
-    /*width: 100%;*/
-    /*height: 50px;*/
-    align-self: flex-end;
     color: #ccc;
 }
 
-.write-button-group {
-    position: relative;
+.messageWrite-button-group {
+    position: absolute;
     text-align: center;
+    right: 270px;
+    top: 770px;
 }
 
-button.cancel {
-    position: absolute;
-    bottom: -70px;
-    left: calc(50% - 110px);
+button.messageWrite-cancel {
     background-color: #686868;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
+    margin-right: 10px;
+    height: 50px;
 }
 
-button.send {
-    position: absolute;
-    bottom: -70px;
-    width: 110px;
-    left: calc(50% + 10px);
+button.messageWrite-cancel:hover {
+    background-color: #5e5e5e;
+    cursor: pointer;
+}
+
+button.messageWrite-send {
     background-color: #5C88C4;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
+    height: 50px;
 }
 
-.message-error-container {
-    position: absolute;
-    top: 640px;
-    left: 35px;
+button.messageWrite-send:hover {
+    background-color: #4a74a3;
+    cursor: pointer;
+}
+
+.messageWrite-message-error-container {
     margin: 10px 0 0 0;
     color: #ff3f3f;
     width: 100%;
     font-size: 0.8em;
-    line-height: 1.5em;
+    line-height: 2.3em;
     text-align: left;
+    position: absolute;
+    top: 720px;
+    left: 40px;
 }
 
-.message-error-container > p {
+.messageWrite-message-error-container > p {
     display: none;
 }
+
+.messageWrite-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    color: #aaa;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.messageWrite-close:hover {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
 
 
 
@@ -319,7 +370,7 @@ button.send {
 .find-user-modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 3;
     left: 0;
     top: 0;
     width: 100%;
@@ -331,12 +382,14 @@ button.send {
 
 .find-user-modal h2 {
     color: white;
+    margin-bottom: 30px;
 }
 
 .find-user-modal input {
-    width: 350px;
+    width: 450px;
     height: 45px;
     border-radius: 5px;
+    margin-right: 10px;
 }
 
 #find-user-button {
@@ -355,8 +408,8 @@ button.send {
     border: 1px solid #888;
     border-radius: 5px;
     margin: 15% auto;
-    padding: 20px;
-    width: 50%;
+    padding: 30px;
+    width: 600px;
 }
 
 .find-user-close {
@@ -403,45 +456,43 @@ button.send {
 
 
 
-
-
-
-
+/* 쪽지함 */
 .mailbox-container {
     margin-top: 60px;
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 60px);
 }
 
 #mailbox-sidebar {
     width: 200px;
-    background-color: #3a3a3a; /* sidebar dark gray */
-    border-right: 1px solid #444444; /* darker border */
+    background-color: #3a3a3a;
+    border-right: 1px solid #444444;
 }
 
 .mailbox-menu-item {
     padding: 15px;
     cursor: pointer;
-    color: #ffffff; /* white text */
+    color: #ffffff;
 }
 
 #mailbox-menu-item-active, .mailbox-menu-item:hover {
-    background-color: #505050; /* lighter gray on hover */
+    background-color: #505050;
 }
 
 #mailbox-main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 #mailbox-header {
     display: flex;
     justify-content: space-between;
     padding: 15px;
-    background-color: #3a3a3a; /* same as sidebar */
-    border-bottom: 1px solid #444444; /* darker border */
+    background-color: #3a3a3a;
+    border-bottom: 1px solid #444444;
     color: white;
 }
 
@@ -449,72 +500,70 @@ button.send {
     flex: 1;
     padding: 15px;
     overflow-y: auto;
-    background-color: #2e2e2e; /* dark background */
+    background-color: #2e2e2e;
 }
 
 .mailbox-message {
     display: flex;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #444444; /* darker border */
+    border-bottom: 1px solid #444444;
 }
 
 .mailbox-message.mailbox-read {
-    background-color: #3a3a3a; /* same as sidebar */
+    background-color: #3a3a3a;
 }
 
 .mailbox-message.mailbox-unread {
-    background-color: #505050; /* lighter gray for unread messages */
+    background-color: #505050;
 }
 
 .mailbox-message-info {
     flex: 1;
     display: flex;
-    justify-content: space-between;
-    margin-left: 10px; /* margin to separate from checkbox */
+    align-items: center;
+    margin-left: 10px;
 }
 
 .mailbox-sender-unread {
     font-weight: bold;
-    color: #ffffff; /* white text */
+    color: #ffffff;
 }
 
 .mailbox-date-unread {
-    color: #ffffff; /* light gray text */
+    color: #ffffff;
 }
 
 .mailbox-sender,
 .mailbox-recipient,
-.mailbox-title
-{
-    font-weight: bold;
-    color: #cccccc; /* white text */
-}
-
-.mailbox-title a {
+.mailbox-title {
     font-weight: bold;
     color: #cccccc;
-    text-decoration: none;
-    display: block;
-    cursor: pointer;
+    flex-basis: 310px;
+}
+
+.mailbox-title {
+    flex-grow: 1;
+    text-align: left;
 }
 
 .mailbox-date {
-    color: #cccccc; /* light gray text */
+    color: #cccccc;
+    flex-basis: 100px;
+    text-align: right;
 }
 
 #mailbox-footer {
     display: flex;
     justify-content: space-between;
     padding: 15px;
-    background-color: #3a3a3a; /* same as sidebar */
-    border-top: 1px solid #444444; /* darker border */
+    background-color: #3a3a3a;
 }
 
 .mailbox-footer-select, .mailbox-footer-input {
-    background-color: #505050; /* lighter gray */
-    color: #ffffff; /* white text */
-    border: 1px solid #686868; /* darker border */
+    background-color: #505050;
+    color: #ffffff;
+    border: 1px solid #686868;
     padding: 10px;
     margin-right: 10px;
 }
@@ -533,145 +582,5 @@ button.send {
 }
 
 .mailbox-checkbox {
-    margin-right: 10px; /* space between checkbox and message content */
-}
-
-
-
-
-.detail-container {
-    width: 600px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-}
-
-.detail-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #ccc;
-}
-
-.detail-header-left,
-.detail-header-right {
-    display: flex;
-}
-
-.detail-button {
-    background-color: #f2f2f2;
-    border: 1px solid #ccc;
-    padding: 5px 10px;
-    margin-right: 5px;
-    cursor: pointer;
-}
-
-.detail-title {
-    grid-area: title;
-    margin-top: 60px;
-    display: grid;
-    grid-template: "title date trashIcon" 50px / 6fr 2.2fr 1fr;
-    padding: 15px;
-    border-bottom: 1px solid #ccc;
-}
-
-.detail-date {
-    grid-area: date;
-    display: flex;
-    justify-content: center;
-}
-
-.trash {
-    grid-area: trashIcon;
-    display: flex;
-    justify-content: end;
-}
-
-.detail-title span {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-}
-
-#detail-title-span {
-    font-size: 20px;
-}
-
-.detail-content {
-    padding: 40px 20px 0 20px;
-}
-
-.detail-content p {
-    margin: 0;
-    padding: 5px 0;
-    color: white;
-}
-
-
-
-/* 모달 스타일 */
-.detail-modal {
-    display: none;
-    color: white;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-}
-
-.detail-modal-content {
-    background-color: #383838;
-    margin: auto;
-    border: 1px solid white;
-    border-radius: 10px;
-    width: 400px;
-    height: 200px;
-    align-content: center;
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#detail-button {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-#detailModalDeleteBtn {
-    background-color: #5c88c4;
-    border-radius: 5px;
-    display: block;
-    margin: 40px auto 0 90px;
-    width: 90px;
-    height: 40px;
-    color: white;
-    cursor: pointer;
-}
-
-#detailModalCloseBtn {
-    background-color: #686868;
-    border-radius: 5px;
-    display: block;
-    margin: 40px 90px 0 auto;
-    width: 90px;
-    height: 40px;
-    color: white;
-    cursor: pointer;
-}
-
-#detailModalDeleteBtn:hover {
-    background-color: #4a74a3;
-}
-
-#detailModalCloseBtn:hover {
-    background-color: #555555;
+    margin-right: 10px;
 }

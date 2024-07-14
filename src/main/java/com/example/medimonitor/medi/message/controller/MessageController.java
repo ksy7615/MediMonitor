@@ -64,6 +64,28 @@ public class MessageController {
         }
     }
 
+    @DeleteMapping("/message/delete/checked")
+    @ResponseBody
+    public ResponseEntity<Response> deleteMessages(@RequestBody List<Integer> messages) {
+        Response response = new Response();
+
+        for(int code : messages) {
+            boolean isDelete = messageService.delete(code);
+
+            if(!isDelete) {
+                response.setStatus(400);
+                response.setMessage("삭제에 실패하였습니다.");
+
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        response.setStatus(200);
+        response.setMessage("삭제되었습니다.");
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @DeleteMapping("/message/delete/send")
     @ResponseBody
     public ResponseEntity<Response> deleteSender(@RequestBody MessageRequestDto messageDto, HttpSession session) {
@@ -127,7 +149,7 @@ public class MessageController {
         String recipient = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
-        messageList = messageService.findByRecipientLimit(recipient);
+        messageList = messageService.findFirst30ByRecipientOrderByRegDateDesc(recipient);
 
         return messageList;
     }
@@ -139,7 +161,7 @@ public class MessageController {
         String sender = user.getUsername();
         List<MessageResponseDto> messageList = new ArrayList<>();
 
-        messageList = messageService.findBySenderLimit(sender);
+        messageList = messageService.findFirst30BySenderOrderByRegDateDesc(sender);
 
         return messageList;
     }
@@ -159,7 +181,11 @@ public class MessageController {
         List<MessageResponseDto> messageList = new ArrayList<>();
 
         messageList = messageService.findByRecipientOrderByRegDateDesc(recipient);
+        int unReadCnt = messageService.countUnreadMessageByRecipient(recipient);
+        int messageCnt = messageService.countByRecipient(recipient);
         mv.addObject("messageList", messageList);
+        mv.addObject("unReadCnt", unReadCnt);
+        mv.addObject("messageCnt", messageCnt);
 
         return mv;
     }
@@ -179,40 +205,30 @@ public class MessageController {
         List<MessageResponseDto> messageList = new ArrayList<>();
 
         messageList = messageService.findBySenderOrderByRegDateDesc(sender);
+        int unReadCnt = messageService.countUnreadMessageBySender(sender);
+        int messageCnt = messageService.countBySender(sender);
         mv.addObject("messageList", messageList);
+        mv.addObject("unReadCnt", unReadCnt);
+        mv.addObject("messageCnt", messageCnt);
 
         return mv;
     }
 
     @GetMapping("/message/{code}")
-    public ModelAndView messageDetail(@PathVariable int code, HttpSession session, HttpServletRequest request) {
+    @ResponseBody
+    public MessageResponseDto messageDetail(@PathVariable int code, HttpSession session, HttpServletRequest request) {
         if(session.getAttribute("user") == null) {
-            ModelAndView mv = new ModelAndView("redirect:/");
-            return mv;
+            return null;
         }
-        ModelAndView mv = new ModelAndView("message/detail");
 
         MessageResponseDto message = messageService.findMessageByCode(code);
-
-        if(!message.isStatus()) {
-            if(!messageService.updateStatus(message.getCode())){
-                String referer = request.getHeader("Referer");
-
-                if (referer != null)
-                    mv = new ModelAndView("redirect:" + referer);
-                else
-                    mv = new ModelAndView("redirect:/main");
-                return mv;
+        if(message != null) {
+            if(!message.isStatus()) {
+                messageService.updateStatus(message.getCode());
             }
         }
 
-        mv.addObject("message", message);
-        return mv;
+        return message;
     }
-
-//    @GetMapping("/mailBox")
-//    public String messageBox() {
-//        return "sent";
-//    }
 
 }
