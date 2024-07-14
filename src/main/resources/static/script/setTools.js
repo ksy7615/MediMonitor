@@ -17,14 +17,13 @@ import {
     PlanarFreehandROITool,
     EraserTool,
     StackScrollTool,
-    utilities
+    utilities, MagnifyTool, PlanarRotateTool, annotation
 } from "@cornerstonejs/tools";
 import * as cornerstoneTools from "@cornerstonejs/tools";
 const { ToolGroupManager } = cornerstoneTools;
 const { MouseBindings } = cornerstoneTools.Enums;
 
 let toolGroup;
-const globalToolGroupId = `toolGroupId`;
 
 const setTools = (viewports, renderingEngineId, toolGroupId) => {
     // 툴 초기화
@@ -53,7 +52,8 @@ const setTools = (viewports, renderingEngineId, toolGroupId) => {
         cornerstoneTools.addTool(PlanarFreehandROITool);
         cornerstoneTools.addTool(EraserTool);
         cornerstoneTools.addTool(StackScrollTool);
-
+        cornerstoneTools.addTool(MagnifyTool);
+        cornerstoneTools.addTool(PlanarRotateTool);
 
         // 툴 그룹 생성
         toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
@@ -77,6 +77,8 @@ const setTools = (viewports, renderingEngineId, toolGroupId) => {
         toolGroup.addTool(PlanarFreehandROITool.toolName);
         toolGroup.addTool(EraserTool.toolName);
         toolGroup.addTool(StackScrollTool.toolName);
+        toolGroup.addTool(MagnifyTool.toolName);
+        toolGroup.addTool(PlanarRotateTool.toolName);
 
         // 툴 활성화 (기본 도구 설정)
         toolGroup.setToolActive(StackScrollMouseWheelTool.toolName, {
@@ -116,7 +118,9 @@ const activateTool = (toolName, toolGroupId) => {
             ArrowAnnotateTool.toolName,
             PlanarFreehandROITool.toolName,
             EraserTool.toolName,
-            StackScrollTool.toolName
+            StackScrollTool.toolName,
+            MagnifyTool.toolName,
+            PlanarRotateTool.toolName
         ];
         
         // 툴제거
@@ -147,5 +151,6 @@ const stop = (selectedViewport) => {
         utilities.cine.stopClip(selectedViewport);
     }
 }
+
 
 export { setTools, activateTool, play, stop };

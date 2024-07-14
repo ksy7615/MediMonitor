@@ -8,10 +8,10 @@ import {
     CircleROITool, CobbAngleTool,
     EllipticalROITool, EraserTool,
     HeightTool,
-    LengthTool,
-    PanTool, PlanarFreehandROITool,
+    LengthTool, MagnifyTool,
+    PanTool, PlanarFreehandROITool, PlanarRotateTool,
     ProbeTool,
-    RectangleROITool, StackScrollTool, utilities,
+    RectangleROITool, StackScrollTool,
     WindowLevelTool,
     ZoomTool
 } from "@cornerstonejs/tools";
@@ -535,8 +535,6 @@ function invertImageWithWWWC(viewportElement) {
 
         console.log(`New invert status: ${properties.invert}`);
         viewport.render();
-    } else {
-        console.error(`Viewport with ID ${viewportId} not found.`);
     }
 }
 
@@ -555,8 +553,6 @@ invertButton.addEventListener('click', () => {
         }
         console.log(`Invert check status: ${invertCheck}`);
         invertImageWithWWWC(viewportElement);
-    } else {
-        console.error("No viewport selected.");
     }
 });
 
@@ -611,7 +607,89 @@ function handleScrollLoop(event) {
 
         viewport.setStack(imageIds, newIndex);
         viewport.render();
-    } else {
-        console.error(`Viewport with ID ${viewportId} not found.`);
     }
 }
+
+document.getElementById('Magnify-tool-btn').addEventListener('click', () => {
+    tools.activateTool(MagnifyTool, toolGroupId);
+});
+
+document.getElementById('Rotate-tool-btn').addEventListener('click', () => {
+    tools.activateTool(PlanarRotateTool, toolGroupId);
+});
+
+document.getElementById('RigthRotate-tool-btn').addEventListener('click', () => {
+    if (selectedViewport) {
+        const viewportId = `CT_AXIAL_STACK-${selectedViewport.id}`;
+        const viewport = renderingEngine.getViewport(viewportId);
+
+        if (viewport) {
+            const properties = viewport.getProperties();
+            const newRotation = (properties.rotation || 0) + 60;
+
+            viewport.setProperties({ rotation: newRotation });
+            viewport.render();
+        }
+    }
+});
+
+document.getElementById('LeftRotate-tool-btn').addEventListener('click', () => {
+    if (selectedViewport) {
+        const viewportId = `CT_AXIAL_STACK-${selectedViewport.id}`;
+        const viewport = renderingEngine.getViewport(viewportId);
+
+        if (viewport) {
+            const properties = viewport.getProperties();
+            const newRotation = (properties.rotation || 0) - 60;
+
+            viewport.setProperties({ rotation: newRotation });
+            viewport.render();
+        }
+    }
+});
+
+// 여기서 고칠것
+document.getElementById('WidthFlip-tool-btn').addEventListener('click' , () => {
+   if(selectedViewport){
+       const viewportId = `CT_AXIAL_STACK-${selectedViewport.id}`;
+       const viewport = renderingEngine.getViewport(viewportId);
+
+       if(viewport){
+           const camera = viewport.getCamera();
+           const { flipVertical } = camera;
+           viewport.setCamera({ flipVertical : !flipVertical });
+
+           viewport.render();
+       }
+   }
+});
+
+document.getElementById('HeghtFlip-tool-btn').addEventListener('click' , () => {
+    if(selectedViewport){
+        const viewportId = `CT_AXIAL_STACK-${selectedViewport.id}`;
+        const viewport = renderingEngine.getViewport(viewportId);
+
+        if(viewport){
+            const camera = viewport.getCamera();
+            const { flipHorizontal } = camera;
+            viewport.setCamera({ flipHorizontal : !flipHorizontal });
+
+            viewport.render();
+        }
+    }
+});
+
+document.getElementById('Rest-tool-btn').addEventListener('click', () => {
+    if (selectedViewport) {
+        const viewportId = `CT_AXIAL_STACK-${selectedViewport.id}`;
+        const viewport = renderingEngine.getViewport(viewportId);
+        if (viewport) {
+            viewport.resetCamera();
+            const imageIds = viewport.getImageIds();
+
+            viewport.setStack(imageIds, 0);
+            viewport.render();
+
+        }
+    }
+});
