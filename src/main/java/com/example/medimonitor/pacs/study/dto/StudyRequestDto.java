@@ -24,4 +24,5 @@ public class StudyRequestDto {
     private long seriescnt;
     private long imagecnt;
     private long examstatus;
+    private Float ai_score;
 }
