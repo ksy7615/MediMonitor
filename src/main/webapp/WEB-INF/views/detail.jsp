@@ -12,7 +12,7 @@
 <c:if test="${empty user}">
     <script type="text/javascript">
         alert("로그인 후 이용가능합니다.");
-        location.href='/login';
+        location.href = '/login';
     </script>
 </c:if>
 
@@ -32,50 +32,173 @@
     <div class="top-panel" id="top-panel">
 
         <!-- 3개는 구현해야하는것 -->
-        <button id="WorkList-tool-btn">Work List</button>
-        <button id="Previous-tool-btn">Previous</button>
-        <button id="Next-tool-btn">Next</button>
+        <button class="tool" id="WorkList-tool-btn">
+            <img id="workList" src="${pageContext.request.contextPath}/style/image/tool/workList.png">
+            <span>워크리스트</span>
+        </button>
 
-        <button id="StackScroll-tool-btn">StackScroll Tool</button>
-        <button id="Window-level-tool-btn">Window Level Tool</button>
-        <button id="Invert-tool-btn">Invert Tool</button>
-        <button id="Pan-tool-btn">Pan Tool</button>
-        <button id="scroll-loop-btn">Scroll Loop</button>
+        <button class="tool" id="Previous-tool-btn">
+            <img id="previous" src="${pageContext.request.contextPath}/style/image/tool/previous.png">
+            <span>이전</span>
+        </button>
+
+        <button class="tool" id="Next-tool-btn">
+            <img id="next" src="${pageContext.request.contextPath}/style/image/tool/next.png">
+            <span>다음</span>
+        </button>
+
+
+        <button class="tool" id="StackScroll-tool-btn">
+            <img id="defalut" src="${pageContext.request.contextPath}/style/image/tool/stackScroll.png">
+            <span>DefalutTool</span>
+        </button>
+
+        <button class="tool" id="Window-level-tool-btn">
+            <img id="windowLevel" src="${pageContext.request.contextPath}/style/image/tool/windowLevel.png">
+            <span>윈도우레벨</span>
+        </button>
+
+        <button class="tool" id="Invert-tool-btn">
+            <img id="invert" src="${pageContext.request.contextPath}/style/image/tool/invert.png">
+            <span>흑백반전</span>
+        </button>
+
+        <button class="tool" id="Pan-tool-btn">
+            <img id="pan" src="${pageContext.request.contextPath}/style/image/tool/pan.png">
+            <span>이동</span>
+        </button>
+
+        <button class="tool" id="scroll-loop-btn">
+            <img id="scrollLoop" src="${pageContext.request.contextPath}/style/image/tool/scrollLoop.png">
+            <span>스크롤루프</span>
+        </button>
 
         <!-- 플레이 클립 수정필요 -->
-        <button id="Playclip-tool-btn">Playclip</button>
-        <button id="StopPlayclip-tool-btn">Stopclip</button>
+        <button class="tool" id="Playclip-tool-btn">
+            <img id="playclip" src="${pageContext.request.contextPath}/style/image/tool/playclip.png">
+            <span>플레이</span>
+        </button>
+        <button class="tool" id="StopPlayclip-tool-btn">
+            <img id="stopPlayclip" src="${pageContext.request.contextPath}/style/image/tool/stopPlayclip.png">
+            <span>정지</span>
+        </button>
 
         <!-- 여기서 부터 도구툴 -->
-        <button id="Magnify-tool-btn">Magnify Tool</button>
-        <button id="Zoom-tool-btn">Zoom Tool</button>
-        <button id="Rotate-tool-btn">Rotate Tool</button>
-        <button id="RigthRotate-tool-btn">Rigth Rotate Tool</button>
-        <button id="LeftRotate-tool-btn">Left Rotate Tool</button>
-        <!-- 이름수정 -->
-        <button id="WidthFlip-tool-btn">WidthFlip Tool</button>
-        <button id="HeghtFlip-tool-btn">HeghtFlip Tool</button>
+        <button class="tool" id="toolGroupBtn">
+            <img id="toolGroup" src="${pageContext.request.contextPath}/style/image/tool/toolGroup.png">
+            <span>도구 ▼ </span>
+        </button>
 
+        <div class="tools-group" id="tools-group">
+            <button class="tools" id="Magnify-tool-btn">
+                <img id="magnify" src="${pageContext.request.contextPath}/style/image/tool/magnify.png">
+                <span>돋보기</span>
+            </button>
+            <button class="tools" id="Zoom-tool-btn">
+                <img id="zoom" src="${pageContext.request.contextPath}/style/image/tool/zoom.png">
+                <span>확대/축소</span>
+            </button>
+            <button class="tools" id="Rotate-tool-btn">
+                <img id="rotate" src="${pageContext.request.contextPath}/style/image/tool/rotate.png">
+                <span>회전</span>
+            </button>
+            <button class="tools" id="RigthRotate-tool-btn">
+                <img id="rightRotate" src="${pageContext.request.contextPath}/style/image/tool/rightRotate.png">
+                <span>오른쪽회전</span>
+            </button>
+            <button class="tools" id="LeftRotate-tool-btn">
+                <img id="leftRotate" src="${pageContext.request.contextPath}/style/image/tool/leftRotate.png">
+                <span>왼쪽회전</span>
+            </button>
+            <button class="tools" id="WidthFlip-tool-btn">
+                <img id="widthFlip" src="${pageContext.request.contextPath}/style/image/tool/widthFlip.png">
+                <span>수평뒤집기</span>
+            </button>
+            <button class="tools" id="HeghtFlip-tool-btn">
+                <img id="heightFlip" src="${pageContext.request.contextPath}/style/image/tool/heightFlip.png">
+                <span>수직대칭이동</span>
+            </button>
+        </div>
 
         <!-- 여기서 주석툴임 리스트로 묶을것 -->
-        <button id="Length-tool-btn">Length Tool</button>
-        <button id="Height-tool-btn">Height Tool</button>
-        <button id="Probe-tool-btn">Probe Tool</button>
-        <button id="RectangleROI-tool-btn">RectangleROI Tool</button>
-        <button id="EllipticalIROI-tool-btn">EllipticalIROI Tool</button>
-        <button id="CircleROI-tool-btn">CircleROI Tool</button>
-        <button id="Bidirectional-tool-btn">Bidirectional Tool</button>
-        <button id="Angle-tool-btn">Angle Tool</button>
-        <button id="CobbAngle-tool-btn">CobbAngle Tool</button>
-        <button id="ArrowAnnotate-tool-btn">ArrowAnnotate Tool</button>
-        <button id="PlanarFreehandROI-tool-btn">PlanarFreehandROI Tool</button>
-        <button id="Eraser-tool-btn">Eraser Tool</button>
+        <button class="tool" id="annotationBtn">
+            <img id="annotation" src="${pageContext.request.contextPath}/style/image/tool/annotation.png">
+            <span>주석 ▼</span>
+        </button>
 
+        <div class="annotation-group" id="annotation-group">
+            <button class="tools" id="Length-tool-btn">
+                <img id="length" src="${pageContext.request.contextPath}/style/image/tool/length.png">
+                <span>길이</span>
+            </button>
+
+            <button class="tools" id="Height-tool-btn">
+                <img id="height" src="${pageContext.request.contextPath}/style/image/tool/height.png">
+                <span>높이</span>
+            </button>
+
+            <button class="tools" id="Probe-tool-btn">
+                <img id="probe" src="${pageContext.request.contextPath}/style/image/tool/probe.png">
+                <span>probe</span>
+            </button>
+
+            <button class="tools" id="RectangleROI-tool-btn">
+                <img id="rectangle" src="${pageContext.request.contextPath}/style/image/tool/rectangle.png">
+                <span>사각형그리기</span>
+            </button>
+
+            <button class="tools" id="EllipticalIROI-tool-btn">
+                <img id="elliptical" src="${pageContext.request.contextPath}/style/image/tool/elliptical.png">
+                <span>타원그리기</span>
+            </button>
+
+            <button class="tools" id="CircleROI-tool-btn">
+                <img id="circle" src="${pageContext.request.contextPath}/style/image/tool/circle.png">
+                <span>원그리기</span>
+            </button>
+
+            <button class="tools" id="Bidirectional-tool-btn">
+                <img id="bidirectional" src="${pageContext.request.contextPath}/style/image/tool/bidirectional.png">
+                <span>Bidirectional</span>
+            </button>
+
+            <button class="tools" id="Angle-tool-btn">
+                <img id="angle" src="${pageContext.request.contextPath}/style/image/tool/angle.png">
+                <span>자율그리기</span>
+            </button>
+
+            <button class="tools" id="CobbAngle-tool-btn">
+                <img id="cobbAngle" src="${pageContext.request.contextPath}/style/image/tool/cobbAngle.png">
+                <span>콥앵글</span>
+            </button>
+
+            <button class="tools" id="ArrowAnnotate-tool-btn">
+                <img id="arrowAnnotate" src="${pageContext.request.contextPath}/style/image/tool/arrowAnnotate.png">
+                <span>화살표주석</span>
+            </button>
+
+            <button class="tools" id="PlanarFreehandROI-tool-btn">
+                <img id="planarFreehand" src="${pageContext.request.contextPath}/style/image/tool/planarFreehand.png">
+                <span>그리기</span>
+            </button>
+
+            <button class="tools" id="Eraser-tool-btn">
+                <img id="eraser" src="${pageContext.request.contextPath}/style/image/tool/eraser.png">
+                <span>선택삭제</span>
+            </button>
+
+        </div>
         <!-- 리셋 -->
-        <button id="Rest-tool-btn">Reset Tool</button>
+        <button class="tools" id="Reset-tool-btn">
+            <img id="reset" src="${pageContext.request.contextPath}/style/image/tool/reset.png">
+            <span>전부삭제</span>
+        </button>
 
         <!-- 그리드 -->
-        <button id="grid-btn">Show Grid</button>
+        <button class="tools" id="grid-btn">
+            <img id="showGrid" src="${pageContext.request.contextPath}/style/image/tool/grid.png">
+            <span>그리드</span>
+        </button>
         <div class="grid-container" id="grid-container" style="display: none;">
             <div class="grid">
                 <c:forEach var="row" begin="0" end="4">
@@ -105,7 +228,7 @@
         </div>
         <div class="modal-body">
             <div class="write-box">
-                <textarea class="comment" id='comment' placeholder="코멘트" ></textarea>
+                <textarea class="comment" id='comment' placeholder="코멘트"></textarea>
                 <textarea class="quest" id='quest' placeholder="
 [Finding]
 
@@ -115,7 +238,7 @@
 
 [Recommend]
 
-" ></textarea>
+"></textarea>
             </div>
             <div class="analysis">
                 <label>판독 일시</label>
@@ -138,6 +261,7 @@
 
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/detail_report.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/dicom-render.js"></script> <!-- dicom-render.js를 추가 -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/dicom-render.js"></script>
+<!-- dicom-render.js를 추가 -->
 </body>
 </html>

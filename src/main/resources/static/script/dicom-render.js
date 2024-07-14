@@ -91,7 +91,7 @@ const init = async () => {
     }
 };
 
-gridBtn.addEventListener('click', toggleGrid);
+// gridBtn.addEventListener('click', toggleGrid);
 
 gridItems.forEach(item => {
     item.addEventListener('mouseenter', () => {
@@ -186,7 +186,16 @@ const toggleGridSize = () => {
         Object.keys(viewportSeriesMap).forEach(viewportId => {
             const seriesKey = viewportSeriesMap[viewportId];
             const element = document.getElementById(viewportId);
-            displaySeries(seriesKey, element, renderingEngine.id, `CT_AXIAL_STACK-${element.id}`);
+
+            const viewportIds = `CT_AXIAL_STACK-${viewportId}`;
+            const viewport = renderingEngine.getViewport(viewportIds);
+            if (viewport) {
+                const currentIndex = viewport.getCurrentImageIdIndex();
+                console.log("currentIndex 1 : " + currentIndex);
+                eDisplaySeries(seriesKey, element, renderingEngine.id, `CT_AXIAL_STACK-${element.id}`, currentIndex);
+            } else {
+                console.error(`Viewport with ID ${viewportId} not found.`);
+            }
         });
         thumbnailCnt = 0;
     } else {
@@ -205,7 +214,18 @@ const toggleGridSize = () => {
                     // 수정된 부분 시작
                     if (selectedViewport && viewportId === selectedViewport.id) {
                         const seriesKey = viewportSeriesMap[viewportId];
-                        displaySeries(seriesKey, selectedViewport, renderingEngine.id, `CT_AXIAL_STACK-${selectedViewport.id}`);
+
+                        const viewportIds = `CT_AXIAL_STACK-${viewportId}`;
+                        const viewport = renderingEngine.getViewport(viewportIds);
+
+                        if (viewport) {
+                            const currentIndex = viewport.getCurrentImageIdIndex();
+                            console.log("currentIndex 2 : " + currentIndex);
+
+                            eDisplaySeries(seriesKey, selectedViewport, renderingEngine.id, `CT_AXIAL_STACK-${selectedViewport.id}`, currentIndex);
+                        } else {
+                            console.error(`Viewport with ID ${viewportId} not found.`);
+                        }
                     }
                 });
             }
@@ -215,7 +235,18 @@ const toggleGridSize = () => {
             Object.keys(viewportSeriesMap).forEach(viewportId => {
                 const seriesKey = viewportSeriesMap[viewportId];
                 const element = document.getElementById(viewportId);
-                displaySeries(seriesKey, element, renderingEngine.id, `CT_AXIAL_STACK-${element.id}`);
+
+                const viewportIds = `CT_AXIAL_STACK-${viewportId}`;
+                const viewport = renderingEngine.getViewport(viewportIds);
+
+                if (viewport) {
+                    const currentIndex = viewport.getCurrentImageIdIndex();
+                    console.log("currentIndex 3 : " + currentIndex);
+
+                    eDisplaySeries(seriesKey, element, renderingEngine.id, `CT_AXIAL_STACK-${element.id}`, currentIndex);
+                } else {
+                    console.error(`Viewport with ID ${viewportId} not found.`);
+                }
             });
             isDblClick = false;  // 확대해야됨 상태로 바꾸기
             // selectedViewport = null; // 선택된 뷰포트를 초기화 (이제 다썼으니까)
@@ -365,6 +396,49 @@ const displaySeries = async (seriesKey, element, renderingEngineId, viewportId) 
     }
 }
 
+const eDisplaySeries = async (seriesKey, element, renderingEngineId, viewportId, currentIndex) => {
+    element.className = 'parentDiv';
+    const imageIds = await fetchSeriesImages(seriesKey); // fetchSeriesImages 함수를 사용하여 imageIds를 가져옴
+    if (imageIds && imageIds.length !== 0) {
+        try {
+            eRender(imageIds, element, renderingEngineId, viewportId, currentIndex);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}
+
+
+const eRender = async (imageIds, element, renderingEngineId, viewportId, currentIndex) => {
+    try {
+        const viewportInput = {
+            viewportId: viewportId,
+            element: element,
+            type: cornerstone.Enums.ViewportType.STACK,
+        };
+
+        renderingEngine.enableElement(viewportInput);
+        const viewport = renderingEngine.getViewport(viewportInput.viewportId);
+
+        if (!viewport) {
+            console.error(`Viewport with ID ${viewportId} not found.`);
+            return;
+        }
+
+        console.log("currentIndex : " + currentIndex);
+
+        viewport.setStack(imageIds, currentIndex);
+
+        viewport.render();
+
+        tools.setTools([element], renderingEngine.id, toolGroupId); // 단일 요소 배열로 전달
+
+    } catch (error) {
+        console.error(`Rendering error for viewport ${viewportId}:`, error);
+    }
+};
+
+
 const render = async (imageIds, element, renderingEngineId, viewportId) => {
     try {
         const viewportInput = {
@@ -375,6 +449,11 @@ const render = async (imageIds, element, renderingEngineId, viewportId) => {
 
         renderingEngine.enableElement(viewportInput);
         const viewport = renderingEngine.getViewport(viewportInput.viewportId);
+
+        if (!viewport) {
+            console.error(`Viewport with ID ${viewportId} not found.`);
+            return;
+        }
 
         viewport.setStack(imageIds, 0);
 
@@ -397,6 +476,11 @@ const tRender = async (imageIds, element, renderingEngineId, viewportId) => {
 
         renderingEngine.enableElement(viewportInput);
         const viewport = renderingEngine.getViewport(viewportInput.viewportId);
+
+        if (!viewport) {
+            console.error(`Viewport with ID ${viewportId} not found.`);
+            return;
+        }
 
         viewport.setStack(imageIds, 0);
 
@@ -444,6 +528,64 @@ thumbnailBtn.addEventListener('click', () => {
 });
 
 init();
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const annotationBtn = document.getElementById('annotationBtn');
+    const annotationGroup = document.getElementById('annotation-group');
+    const annotationButtons = annotationGroup.querySelectorAll('.tools');
+
+    const toolGroupBtn = document.getElementById('toolGroupBtn');
+    const toolGroup = document.getElementById('tools-group');
+    const toolButtons = annotationGroup.querySelectorAll('.tools');
+
+    annotationBtn.addEventListener('click', function () {
+        if (annotationGroup.style.display === 'none' || annotationGroup.style.display === '') {
+            annotationGroup.style.display = 'flex';
+            const rect = annotationBtn.getBoundingClientRect();
+            annotationGroup.style.top = `${rect.bottom}px`;
+            annotationGroup.style.left = `${rect.left}px`;
+        } else {
+            annotationGroup.style.display = 'none';
+        }
+    });
+
+    toolGroupBtn.addEventListener('click', function () {
+        if (toolGroup.style.display === 'none' || toolGroup.style.display === '') {
+            toolGroup.style.display = 'flex';
+            const rect = toolGroupBtn.getBoundingClientRect();
+            toolGroup.style.top = `${rect.bottom}px`;
+            toolGroup.style.left = `${rect.left}px`;
+        } else {
+            toolGroup.style.display = 'none';
+        }
+    });
+
+    gridBtn.addEventListener('click', function () {
+        if (gridContainer.style.display === 'none' || gridContainer.style.display === '') {
+            gridContainer.style.display = 'flex';
+            const rect = gridBtn.getBoundingClientRect();
+            gridContainer.style.top = `${rect.bottom + 80}px`;
+            gridContainer.style.left = `${rect.left + 80}px`;
+        } else {
+            gridContainer.style.display = 'none';
+        }
+    });
+
+    annotationButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            annotationGroup.style.display = 'none';
+        });
+    });
+
+    toolButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            toolGroup.style.display = 'none';
+        });
+    });
+});
+
+
 
 document.getElementById('Zoom-tool-btn').addEventListener('click', () => {
     tools.activateTool(ZoomTool, toolGroupId);
