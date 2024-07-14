@@ -22,6 +22,10 @@ public class MessageRequestDto {
     private Timestamp modDate;
 
     public String getFormattedRegDate() {
+        if (this.regDate == null) {
+            return null;
+        }
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return sdf.format(this.regDate);
     }
