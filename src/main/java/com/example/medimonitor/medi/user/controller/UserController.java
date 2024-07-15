@@ -51,6 +51,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/agree")
+    public String agree() {
+        return "user/agree";
+    }
+
     @PostMapping("/check/username")
     @ResponseBody
     public ResponseEntity<Response> findUserByUsername(@RequestParam String username) {
@@ -105,33 +110,6 @@ public class UserController {
 
         return mv;
     }
-
-//    @GetMapping("/admin/authority")
-//    public ModelAndView adminUserAuthorityList(@RequestParam(defaultValue = "1") int page) {
-//        int offset = (page - 1) * 8;
-//        ModelAndView mv = new ModelAndView("user/admin/authorityList");
-//
-//        List<UserResponseDto> userList = userService.findByAuthorityFalse(offset);
-//        mv.addObject("users", userList);
-//
-//        int totalUsers = userService.countUsersByAuthorityFalse();
-//        int totalPages = (int) Math.ceil((double) totalUsers / 8);
-//        mv.addObject("currentPage", page);
-//        mv.addObject("totalPages", totalPages);
-//
-//        return mv;
-//    }
-
-//    @GetMapping("/admin/authority")
-//    public ModelAndView adminUserAuthorityList(@RequestParam(defaultValue = "0") int page) {
-//        Pageable pageable = PageRequest.of(page, 8); // 8 users per page
-//        Page<UserResponseDto> userPage = userService.getUsersWithAuthorityFalse(pageable);
-//
-//        ModelAndView mv = new ModelAndView("user/admin/authorityList");
-//        mv.addObject("userPage", userPage);
-//        mv.addObject("currentPage", page);
-//        return mv;
-//    }
 
     @GetMapping("/login")
     public String userLogin() { return "user/login"; }

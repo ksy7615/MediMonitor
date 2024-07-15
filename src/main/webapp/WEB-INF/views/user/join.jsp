@@ -86,7 +86,7 @@
                 <p class="error-msg" id="error-msg-userGroup">그룹: 필수 정보입니다.</p>
                 <p class="error-msg" id="error-msg-position">직책: 필수 정보입니다.</p>
             </div>
-            <button type="submit">회원가입</button>
+            <button type="submit">다음</button>
         </form>
     </div>
 </body>

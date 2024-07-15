@@ -271,8 +271,7 @@ $(document).ready(() => {
 
             $.ajax(settings).done(function (response) {
                 if(response.status === 200) {
-                    alert(response.message);
-                    location.href = "/login";
+                    location.href = "/agree";
                 }
             }).fail(function (response) {
                 if(response.status === 400) {

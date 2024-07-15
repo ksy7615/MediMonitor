@@ -1,0 +1,127 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    margin: 0;
+}
+
+.form-container {
+    position: fixed;
+    background-color: #444;
+    padding: 20px 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 750px;
+    height: 1100px;
+    margin-top: 80px;
+    max-width: 100%;
+}
+
+h2 {
+    text-align: center;
+    margin: 40px auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid white;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    width: 30%;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #464646;
+    color: white;
+}
+
+.checkboxes, .radios {
+    display: flex;
+    justify-content: space-around;
+    margin: 80px auto;
+}
+
+label {
+    display: flex;
+    align-items: center;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    appearance: none;
+    background-color: #fff;
+    border: 1px solid white;
+    border-radius: 3px;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+input[type="checkbox"]:checked, input[type="radio"]:checked {
+    background-color: #5c88c4;
+    border: none;
+}
+
+input[type="checkbox"]:checked::after, input[type="radio"]:checked::after {
+    content: '✔';
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 3px;
+    font-size: 16px;
+}
+
+.submit-section {
+    text-align: center;
+}
+
+input[type="submit"] {
+    background-color: #5c88c4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    position: absolute;
+    top: 1000px;
+    left: 370px;
+}
+
+input[type="submit"]:hover {
+    background-color: #4a78a4;
+}
+
+.error-container {
+    margin: 10px 0 0 0;
+    color: #ff3f3f;
+    width: 100%;
+    font-size: 0.8em;
+    line-height: 1.5em;
+    text-align: left;
+    position: absolute;
+    top: 800px;
+}
+
+.error-container > p {
+    display: none;
+}
+
