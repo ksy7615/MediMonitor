@@ -27,7 +27,7 @@
                     <span class="notification-badge" id="notification-badge"></span>
                 </span>
                 <div class="dropdown-content" id="message-dropdown">
-                    <a onclick="openMiniInbox()">받은 쪽지함</a>
+                    <a onclick="openMiniInbox(); markNotificationsAsReadAndClear()">받은 쪽지함</a>
                     <a onclick="openMiniSent()">보낸 쪽지함</a>
                     <a onclick="openMessageWriteModal()">쪽지 보내기</a>
                 </div>
@@ -44,7 +44,8 @@
             </div>
             <span class="admin-text"  id="user-text">${user.name}</span>
         </div>
-<%--        <div id="notifications" data-user-id="${user.username}"></div> <!-- 사용자 ID를 data 속성에 포함 -->--%>
+
+        <input type="hidden" class="username"  id="username" value="${user.username}"> <!-- 사용자 ID를 data 속성에 포함 -->
     </c:if>
 
     <!-- 보낸 메일함 -->
@@ -58,7 +59,7 @@
                     </ul>
                 </div>
                 <button class="mail-button"><a href="${pageContext.request.contextPath}/sent">📮쪽지</a></button>
-                <button class="mail-write" onclick="openWriteModal()">✏️쪽지쓰기</button>
+                <button class="mail-write" onclick="openMessageWriteModal()">✏️쪽지쓰기</button>
             </div>
         </div>
     </div>
@@ -75,7 +76,7 @@
                     </ul>
                 </div>
                 <button class="mail-button"><a href="${pageContext.request.contextPath}/inbox">📮쪽지</a></button>
-                <button class="mail-write" onclick="openWriteModal()">✏️쪽지쓰기</button>
+                <button class="mail-write" onclick="openMessageWriteModal()">✏️쪽지쓰기</button>
             </div>
         </div>
     </div>
@@ -130,6 +131,14 @@
                     <button type="submit" class="messageWrite-send">쪽지보내기</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- 알림 모달 -->
+    <div id="notification-modal" class="notification-modal">
+        <div class="notification-modal-content">
+            <span class="notification-close" onclick="closeNotificationModal()"><i class="fas fa-times"></i></span>
+            <p id="notification-message"></p>
         </div>
     </div>
 

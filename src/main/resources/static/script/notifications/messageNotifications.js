@@ -20,29 +20,142 @@ function closeMessageWriteModal() {
     document.getElementById('messageWrite-content').style.border = 'solid 1px lightgrey';
 }
 
+function closeNotificationModal() {
+    const notificationModal = document.getElementById('notification-modal');
+    notificationModal.style.display = 'none';
+}
+
+let notificationCountElement;  // 전역 변수로 선언
+let initialNotificationDisplayed = false; // 초기 알림 표시 여부를 추적하는 변수
+
+function markNotificationsAsReadAndClear() {
+    const usernameElement = document.getElementById('username');
+    if (usernameElement) {
+        const username = usernameElement.value;
+        markNotificationsAsRead(username);
+        clearNotifications(username);
+    }
+}
+
+function markNotificationsAsRead(username) {
+    fetch(`/notifications/${username}/read`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (!response.ok) {
+            console.error('Error marking notifications as read');
+        }
+    }).catch(error => console.error('Error marking notifications as read:', error));
+}
+
+function clearNotifications(username) {
+    fetch(`/notifications/${username}/clear`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (!response.ok) {
+            console.error('Error clearing notifications');
+        } else {
+            notificationCountElement.textContent = '0';
+            notificationCountElement.style.display = 'none';
+        }
+    }).catch(error => console.error('Error clearing notifications:', error));
+}
+
+function fetchNotificationCount(username) {
+    fetch(`/notifications/${username}/count`)
+        .then(response => response.json())
+        .then(count => {
+            if (count > 0) {
+                notificationCountElement.textContent = count;
+                notificationCountElement.style.display = 'block';
+            } else {
+                notificationCountElement.style.display = 'none';
+            }
+        })
+        .catch(error => console.error('Error fetching notification count:', error));
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 알림 배지 요소
-    const notificationCountElement = document.getElementById('notification-badge');
+    notificationCountElement = document.getElementById('notification-badge');  // 초기화
+    let eventSource;
 
-    function initializeEventSource(userId) {
-        const eventSource = new EventSource(`/notifications/${userId}/events`);
+    function initializeEventSource(username) {
+        if (!eventSource || eventSource.readyState === EventSource.CLOSED) {
+            eventSource = new EventSource(`/sendNotification/${username}`);
 
-        eventSource.onmessage = function(event) {
-            const newElement = document.createElement('li');
-            newElement.textContent = event.data;
-            document.getElementById('notifications').appendChild(newElement);
-            // 알림 배지 업데이트
-            let currentCount = parseInt(notificationCountElement.textContent) || 0;
-            notificationCountElement.textContent = currentCount + 1;
-            notificationCountElement.style.display = 'block';
-        };
+            eventSource.onmessage = function(event) {
+                console.log("Event received:", event); // 이벤트 수신 로그 추가
+                const data = JSON.parse(event.data);
+                if (data.comment === "쪽지가 도착했습니다.") {
+                    showNotificationModal("새로운 쪽지가 도착했습니다.");
+                } else {
+                    updateNotificationBadge();
+                }
+            };
 
-        eventSource.onerror = function(event) {
-            console.error("Error occurred: ", event);
-        };
+            eventSource.onerror = function(event) {
+                console.error("Error occurred: ", event);
+                if (eventSource.readyState === EventSource.CLOSED) {
+                    // 연결이 끊어진 경우 재시도 로직을 추가할 수 있습니다.
+                    setTimeout(() => initializeEventSource(username), 5000);
+                }
+            };
+        }
     }
 
-    // 제목 글자 수 세기
+    // 현재 로그인 중인 사용자의 username을 가져와 SSE 초기화
+    const usernameElement = document.getElementById('username');
+    if (usernameElement) {
+        const username = usernameElement.value;
+        initializeEventSource(username);
+        fetchNotifications(username); // 로그인 시 알림 조회
+        fetchNotificationCount(username); // 로그인 시 알림 개수 조회
+    }
+
+    function fetchNotifications(username) {
+        fetch(`/notifications/${username}`)
+            .then(response => response.json())
+            .then(notifications => {
+                if (!initialNotificationDisplayed && notifications.length > 0) {
+                    showNotificationModal("새로운 쪽지가 도착했습니다.");
+                    initialNotificationDisplayed = true; // 초기 알림 표시 상태 업데이트
+                }
+                notifications.forEach(notification => {
+                    if (notification.comment !== "쪽지가 도착했습니다.") {
+                        updateNotificationBadge();
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching notifications:', error));
+    }
+
+    function updateNotificationBadge() {
+        let currentCount = parseInt(notificationCountElement.textContent) || 0;
+        notificationCountElement.textContent = currentCount + 1;
+        notificationCountElement.style.display = 'block';
+    }
+
+    function showNotificationModal(message) {
+        const notificationModal = document.getElementById('notification-modal');
+        const notificationMessage = document.getElementById('notification-message');
+        notificationMessage.textContent = message;
+        notificationModal.style.display = 'block';
+
+        // 일정 시간 후 자동으로 모달 닫기
+        setTimeout(() => {
+            notificationModal.style.display = 'none';
+        }, 5000); // 5초 후 자동으로 닫기
+    }
+
+    // 알림을 읽음 처리하고 초기화하는 함수
+    document.querySelector('#message-icon').addEventListener('click', markNotificationsAsReadAndClear);
+
     const titleInput = document.getElementById('messageWrite-title');
     const titleCharCount = document.querySelector('.char-count-container .char-count');
 
@@ -50,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
         titleCharCount.textContent = `${titleInput.value.length}/30`;
     });
 
-    // 내용 글자 수 세기
     const contentInput = document.getElementById('messageWrite-content');
     const contentCharCount = document.querySelector('.messageWrite-form-group-textarea .char-count');
 
@@ -190,39 +302,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (response.status === 200) {
                         alert(response.message);
 
-
-
-
-                        // 알림 관련 코드
-                        const userId = recipient;
-                        if (userId) {
-                            console.log(`Fetching notification count for userId: ${userId}`);
-                            fetch("/user/notifications/count")
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error("HTTP error " + response.status);
-                                    }
-                                    return response.json();
-                                })
-                                .then(data => {
-                                    console.log("Notification count fetched:", data);
-                                    if (data.count !== undefined && data.count > 0) {
-                                        notificationCountElement.textContent = data.count;
-                                        notificationCountElement.style.display = 'block';
-                                    } else {
-                                        notificationCountElement.style.display = 'none';
-                                    }
-                                })
-                                .catch(error => {
-                                    notificationCountElement.style.display = 'none';
-                                    console.error("Error fetching notification count:", error);
-                                });
-
-                            initializeEventSource(userId);
-                        } else {
-                            console.error("User ID not found in session");
+                        // 쪽지를 받은 사용자에게 SSE 연결 초기화는 초기 1회만 필요합니다.
+                        if (!eventSource || eventSource.readyState === EventSource.CLOSED) {
+                            initializeEventSource(recipient);
                         }
-
 
                         document.getElementById('recipient').value = '';
                         titleInput.value = '';
@@ -230,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         titleCharCount.textContent = '0/30';
                         contentCharCount.textContent = '0/500';
                     } else {
-                        alert(response.message);
+                        alert(response.JSONObject.message);
                     }
                 }).catch(error => {
                 console.error('Error:', error);

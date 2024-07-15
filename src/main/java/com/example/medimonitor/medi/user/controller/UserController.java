@@ -180,7 +180,7 @@ public class UserController {
     public String logout(HttpSession session) {
         session.removeAttribute("user");
 
-        return "user/login";
+        return "redirect:/";
     }
 
     @ResponseBody
@@ -345,24 +345,6 @@ public class UserController {
         list = userService.findUsernameByName(name);
 
         return list;
-    }
-
-    @GetMapping("/user/notifications/count")
-    @ResponseBody
-    public Map<String, Integer> getNotificationCount(HttpSession session) {
-        System.out.println("Request to /user/notifications/count");
-        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
-        if (user == null) {
-            System.out.println("User not logged in");
-            throw new IllegalStateException("User not logged in");
-        }
-        String userId = user.getUsername();
-        System.out.println("Fetching notification count for userId: " + userId);
-        int count = notificationService.getNotificationCount(userId);
-        System.out.println("Notification count for userId " + userId + ": " + count);
-        Map<String, Integer> response = new HashMap<>();
-        response.put("count", count);
-        return response;
     }
 
 }

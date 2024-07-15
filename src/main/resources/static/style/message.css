@@ -584,3 +584,39 @@ button.messageWrite-send:hover {
 .mailbox-checkbox {
     margin-right: 10px;
 }
+
+
+
+
+
+/* 알림 모달 */
+.notification-modal {
+    display: none;
+    background-color: #686868;
+    position: fixed;
+    z-index: 6;
+    left: 45%;
+    top: 1%;
+    width: 400px;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.notification-modal-content {
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.notification-close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.notification-close:hover {
+    color: red;
+}
