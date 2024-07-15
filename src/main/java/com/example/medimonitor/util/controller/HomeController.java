@@ -23,6 +23,11 @@ public class HomeController {
         return "module/header";
     }
 
+    @GetMapping("/footer")
+    public String footer() {
+        return "module/footer";
+    }
+
     @GetMapping("/main")
     public String getMainView() {
         return "main";
