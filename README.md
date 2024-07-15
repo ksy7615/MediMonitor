@@ -1,6 +1,6 @@
-# MediMonitor
+# 🏥MediMonitor
 
-## 프로젝트 개요
+## ▶ 프로젝트 개요
 #### ⓛ 주제 선정 동기
    1. 현대 의료 기술의 발전
    2. 효과적인 관리와 분석을 위한 프로그램의 필요성
@@ -32,11 +32,11 @@
       - 이미지 정보 접근 시 모든 로그 기록
 
 
-## 활용 기술
+## ▶ 활용 기술
 <img src="https://github.com/user-attachments/assets/754c4ef8-a100-44fc-9348-6612a91c07be" width="700px">
 
 
-## 프로젝트 문서
+## ▶ 프로젝트 문서
 1. [요구사항 정의서](https://docs.google.com/spreadsheets/d/1qz6Qibb2Q5YubVvZVwLoBi7Ar3MUL0z3Kp018mO87yk/edit?usp=drive_link)
 2. [인터페이스 정의서](https://docs.google.com/spreadsheets/d/1AznNA--CgFnc6EGh5GIyCHFvloFMJyWAF19_Oh941_k/edit?usp=drive_link)
 3. [테이블 정의서](https://docs.google.com/spreadsheets/d/1jU3AHaCr0q3byJ2bof9I9myIQbTLlNy-RrEHzpwIE64/edit?usp=drive_link) <br>
@@ -46,16 +46,16 @@
 6. [WBS](https://docs.google.com/spreadsheets/d/1EwlwSsCUgzkFW5pGpehYE0ctfDgzc05q2HxDkOlRGB8/edit?usp=drive_link)
 
 
-## DEMO
+## 📹DEMO
 
 #### 회원가입 (동의서)
-<img src="" width="700px">
+<img src="https://github.com/user-attachments/assets/281dd0f4-4919-4f7d-96fb-620d34f53abe" width="1000px">
 
 #### 로그인 실패 → 승인X
-<img src="" width="700px">
+<img src="https://github.com/user-attachments/assets/cadfae7e-0e8c-4971-b90a-cc47a373a40d" width="1000px">
 
 #### 관리자의 승인 관리
-<img src="" width="700px">
+<img src="https://github.com/user-attachments/assets/e87522b3-b35d-4e06-83b5-597e1de7db54" width="1000px">
 
 #### 관리자의 유저 삭제 관리
 <img src="" width="700px">
@@ -65,7 +65,8 @@
 <img src="" width="700px">
 
 #### Previous(미리보기)
-<img src="" width="700px">
+<img src="https://github.com/user-attachments/assets/bb545ecb-ffaa-4a1c-a5dd-6eeba6c7f3a4" width="700px">
+<img src="https://github.com/user-attachments/assets/d4995cd0-2ac7-41d7-bfc9-57349c4db183" width="1000px">
 
 #### 리포트
 - 메인화면 리포트
