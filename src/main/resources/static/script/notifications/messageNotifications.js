@@ -26,7 +26,6 @@ function closeNotificationModal() {
 }
 
 let notificationCountElement;  // 전역 변수로 선언
-let initialNotificationDisplayed = false; // 초기 알림 표시 여부를 추적하는 변수
 
 function markNotificationsAsReadAndClear() {
     const usernameElement = document.getElementById('username');
@@ -90,21 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
             eventSource = new EventSource(`/sendNotification/${username}`);
 
             eventSource.onmessage = function(event) {
-                console.log("Event received:", event); // 이벤트 수신 로그 추가
-                const data = JSON.parse(event.data);
-                if (data.comment === "쪽지가 도착했습니다.") {
-                    showNotificationModal("새로운 쪽지가 도착했습니다.");
-                } else {
-                    updateNotificationBadge();
-                }
-            };
-
-            eventSource.onerror = function(event) {
-                console.error("Error occurred: ", event);
-                if (eventSource.readyState === EventSource.CLOSED) {
-                    // 연결이 끊어진 경우 재시도 로직을 추가할 수 있습니다.
-                    setTimeout(() => initializeEventSource(username), 5000);
-                }
+                console.log("Event received:", event);
+                showNotificationModal("새로운 쪽지가 도착했습니다.");
+                updateNotificationBadge();
             };
         }
     }
@@ -122,10 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(`/notifications/${username}`)
             .then(response => response.json())
             .then(notifications => {
-                if (!initialNotificationDisplayed && notifications.length > 0) {
-                    showNotificationModal("새로운 쪽지가 도착했습니다.");
-                    initialNotificationDisplayed = true; // 초기 알림 표시 상태 업데이트
-                }
                 notifications.forEach(notification => {
                     if (notification.comment !== "쪽지가 도착했습니다.") {
                         updateNotificationBadge();
@@ -152,9 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
             notificationModal.style.display = 'none';
         }, 5000); // 5초 후 자동으로 닫기
     }
-
-    // 알림을 읽음 처리하고 초기화하는 함수
-    document.querySelector('#message-icon').addEventListener('click', markNotificationsAsReadAndClear);
 
     const titleInput = document.getElementById('messageWrite-title');
     const titleCharCount = document.querySelector('.char-count-container .char-count');
