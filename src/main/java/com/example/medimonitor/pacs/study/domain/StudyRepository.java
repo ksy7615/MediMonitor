@@ -29,4 +29,8 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
                        @Param("startDate") String startDate,
                        @Param("endDate") String endDate,
                        Pageable pageable);
+
+    List<Study> findByStudydateLessThanEqualOrderByStudydateDescStudykeyDesc(String currentDate);
+
+    List<Study> findByStudydateGreaterThanEqualOrderByStudydateAscStudykeyAsc(String currentDate);
 }
