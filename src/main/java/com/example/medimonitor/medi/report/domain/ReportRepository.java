@@ -13,8 +13,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     Optional<Report> findFirstByStudykey(long studykey);
     List<Report> findByStudykey(long studykey);
     Boolean existsByStudykey(long studykey);
-//    Boolean existsByFirstDoctor(String username);
-//    Boolean existsBySecondDoctor(String username);
+
     Boolean existsByStudykeyAndPreDoctor(Long studykey, String preDoctor);
 
     @Query("SELECT r.secondDoctor FROM Report r WHERE r.studykey = :studykey")

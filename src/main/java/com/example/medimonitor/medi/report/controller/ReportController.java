@@ -81,18 +81,6 @@ public class ReportController {
         return ResponseEntity.ok(value);
     }
 
-//    @GetMapping("/checkFirstDoctor")
-//    public ResponseEntity<Boolean> checkFirstDoctor(@RequestParam String username) {
-//        boolean equals = reportService.checkIfFirstDoctorExists(username);
-//        return ResponseEntity.ok(equals);
-//    }
-//
-//    @GetMapping("/checkSecondDoctor")
-//    public ResponseEntity<Boolean> checkSecondDoctor(@RequestParam String username) {
-//        boolean equals = reportService.checkIfSecondDoctorExists(username);
-//        return ResponseEntity.ok(equals);
-//    }
-
     @PutMapping("/updateReport")
     public ResponseEntity<?> updateReport(@RequestBody ReportRequestDto reportRequestDto) {
         try {

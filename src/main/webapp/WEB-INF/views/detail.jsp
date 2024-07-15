@@ -18,7 +18,7 @@
 
 <div class="container">
     <div class="left-panel">
-        <!-- 왼쪽 패널 -->
+
         <button class="thumbnail-btn" id="thumbnail-btn" onclick="toggleBox()"><img
                 src="${pageContext.request.contextPath}/style/image/icon_thumbnail.png" alt=""></button>
         <label>썸네일</label>
@@ -28,10 +28,8 @@
     </div>
 
 
-    <!-- 상단 패널: 툴바 -->
     <div class="top-panel" id="top-panel">
 
-        <!-- 3개는 구현해야하는것 -->
         <button class="tool" id="WorkList-tool-btn">
             <img id="workList" src="${pageContext.request.contextPath}/style/image/tool/workList.png">
             <span>워크리스트</span>
@@ -73,7 +71,6 @@
             <span>스크롤루프</span>
         </button>
 
-        <!-- 플레이 클립 수정필요 -->
         <div class="tool-container">
             <button class="tool" id="Playclip-tool-btn">
                 <img id="playclip" src="${pageContext.request.contextPath}/style/image/tool/playclip.png">
@@ -91,7 +88,6 @@
             </div>
         </div>
 
-        <!-- 여기서 부터 도구툴 -->
         <button class="tool" id="toolGroupBtn">
             <img id="toolGroup" src="${pageContext.request.contextPath}/style/image/tool/toolGroup.png">
             <span>도구 ▼ </span>
@@ -128,7 +124,6 @@
             </button>
         </div>
 
-        <!-- 여기서 주석툴임 리스트로 묶을것 -->
         <button class="tool" id="annotationBtn">
             <img id="annotation" src="${pageContext.request.contextPath}/style/image/tool/annotation.png">
             <span>주석 ▼</span>
@@ -196,13 +191,13 @@
             </button>
 
         </div>
-        <!-- 리셋 -->
+
         <button class="tools" id="Reset-tool-btn">
             <img id="reset" src="${pageContext.request.contextPath}/style/image/tool/reset.png">
             <span>전부삭제</span>
         </button>
 
-        <!-- 그리드 -->
+
         <button class="tools" id="grid-btn">
             <img id="showGrid" src="${pageContext.request.contextPath}/style/image/tool/grid.png">
             <span>그리드</span>
@@ -219,7 +214,7 @@
     </div>
 
     <div class="toggle-box" id="toggle-box">
-        <!-- 오른쪽에 나타날 네모칸 -->
+
     </div>
 
     <div class="content" id="content">
@@ -227,7 +222,7 @@
     </div>
 </div>
 
-<!-- 모달 창 -->
+
 <div id="modal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
@@ -270,6 +265,6 @@
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/detail_report.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/detail/dicom-render.js"></script>
-<!-- dicom-render.js를 추가 -->
+
 </body>
 </html>

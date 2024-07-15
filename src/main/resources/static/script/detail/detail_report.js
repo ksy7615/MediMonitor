@@ -4,7 +4,6 @@ const pathParts = paths.split('/');
 let currentStudyKey = pathParts[2];
 
 
-// 토글박스
 function toggleBox() {
     var toggleBox = document.getElementById('toggle-box');
     var mainPanel = document.getElementById('content');
@@ -19,10 +18,8 @@ function toggleBox() {
 }
 
 
-// 모달창 띄우기
 function showModal() {
     document.getElementById('modal').style.display = 'block';
-    console.log("key: " + currentStudyKey);
     fetchReportByStudykey(currentStudyKey);
 }
 
@@ -38,12 +35,10 @@ window.onclick = function(event) {
 
 
 
-// 리포트 시작
 function fetchReportByStudykey(studykey) {
     fetch(`/mainReport/${studykey}`)
         .then(response => response.ok ? response.json() : Promise.reject(response))
         .then(data => {
-            console.log(data);
             getAllStudiesInfo(currentStudyKey);
             displayReport(data);
         })
@@ -53,13 +48,12 @@ function fetchReportByStudykey(studykey) {
         });
 }
 
-// timestamp 포맷팅
 function formatTimestamp(timestamp) {
     console.log(timestamp);
 
     const date = new Date(timestamp);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -106,7 +100,6 @@ function getAllStudiesInfo(studykey) {
     fetch(`/allInfo/${studykey}`)
         .then(response => response.ok ? response.json() : Promise.reject(response))
         .then(data => {
-            console.log(data);
             displayReportInfo(data);
         })
         .catch(error => {
@@ -139,7 +132,6 @@ function displayReportInfo(data) {
     });
 }
 
-// 리포트 값 넣기
 document.getElementById("btn-pre-reading").addEventListener('click', () => {
     const comment = document.getElementById('comment').value;
     const quest = document.getElementById('quest').value;
@@ -155,7 +147,7 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
         status: 'predecipher',
         preDoctor: username
     };
-    // studykey가 존재하는지 확인하는 함수 호출
+
     checkStudyKeyExistence(currentStudyKey)
         .then(exists => {
             if (exists) {
@@ -175,7 +167,6 @@ document.getElementById("btn-pre-reading").addEventListener('click', () => {
                         }
                     });
             } else {
-                // studykey가 존재하지 않으면 삽입
                 saveReport(reportData);
             }
         })
@@ -210,63 +201,44 @@ document.getElementById("btn-reading").addEventListener('click', () => {
         secondDoctor: username
     };
 
-    // studykey가 존재하는지 확인
+
     checkStudyKeyExistence(currentStudyKey)
         .then(exists => {
-            // 존재O -> INSERT 되어 있는 것이므로 UPDATE 하기
+
             if (exists) {
-                // 판독의2에 값이 존재하는지 확인
                 checkSecondDoctorValue(currentStudyKey)
                     .then(isEmpty => {
-                        // 예비판독을 한 의사여부 확인
                         checkPreDoctor(username)
                             .then(equals => {
                                 if (equals) {
                                     alert('예비판독의는 판독이 불가합니다.');
                                     return null;
                                 } else {
-                                    // 만약 판독의2가 비어있으면
                                     if (isEmpty) {
-                                        // 판독의1 값이 있는지 없는지 확인
                                         checkFirstDoctorValue(currentStudyKey)
                                             .then(isEmpty => {
-                                                // 판독의1 값이 존재하면 -> 이미 판독의에 들어간 값인지 확인 후 -> 판독의 2에 기록
                                                 if (!isEmpty) {
-                                                    // 판독의1과 동일한가?
                                                     checkFirstDoctor(currentStudyKey)
                                                         .then(value => {
-                                                            console.log(typeof value === 'string');
-
-                                                            // 동일하면 내용만 update
                                                             if (value === username) {
-                                                                console.log('판독의 1 값과 동일 -> 업데이트')
                                                                 updateReport(reportFirstData);
                                                             } else {
-                                                                // 다르면 판독의 2 추가
-                                                                console.log('판독의 1 값과 다름 -> 판독의 2에 기록');
                                                                 updateSecondReport(reportSecondData);
                                                             }
                                                         });
                                                 } else {
-                                                    // 판독의1 값이 존재하지 않으면
-                                                    console.log('판독의1에 값 넣기');
                                                     updateFirstReport(reportFirstData);
                                                 }
                                             });
                                     } else {
-                                        // 비어있지 않으면 판독의1,2의 내용 수정만 가능
-                                        // 판독의1 확인
                                         checkFirstDoctor(currentStudyKey)
                                             .then(value => {
                                                 if (value === username) {
-                                                    console.log('판독의1의 값 수정');
                                                     updateReport(reportFirstData);
                                                 } else {
-                                                    // 판독의1이 아니면 판독의2인지 확인
                                                     checkSecondDoctor(currentStudyKey)
                                                         .then(value => {
                                                             if (value === username) {
-                                                                console.log('판독의2의 값 수정');
                                                                 updateSecondReport(reportSecondData);
                                                             } else {
                                                                 alert('담당자만 관리 가능합니다.');
@@ -279,8 +251,6 @@ document.getElementById("btn-reading").addEventListener('click', () => {
                             });
                     });
             } else {
-                // firstDoctor 인지, secondDoctor인지 다르기 때문에 각각 써줌
-                console.log('여기2');
                 saveReport(reportFirstData);
             }
         })
@@ -356,13 +326,13 @@ function checkFirstDoctor(studykey) {
             if (!response.ok) {
                 throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
             }
-            return response.text();  // JSON 대신 텍스트로 응답을 받음
+            return response.text();
         })
         .then(text => {
             try {
-                return JSON.parse(text);  // JSON 파싱 시도
+                return JSON.parse(text);
             } catch (error) {
-                return text;  // 파싱에 실패하면 텍스트 반환
+                return text;
             }
         })
         .catch(error => {
@@ -377,13 +347,13 @@ function checkSecondDoctor(studykey) {
             if (!response.ok) {
                 throw new Error('네트워크 응답이 올바르지 않습니다: ' + response.statusText);
             }
-            return response.text();  // JSON 대신 텍스트로 응답을 받음
+            return response.text();
         })
         .then(text => {
             try {
-                return JSON.parse(text);  // JSON 파싱 시도
+                return JSON.parse(text);
             } catch (error) {
-                return text;  // 파싱에 실패하면 텍스트 반환
+                return text;
             }
         })
         .catch(error => {
@@ -409,7 +379,6 @@ function updateFirstReport(reportData) {
             return response.json();
         })
         .then(data => {
-            console.log('업데이트 성공:', data);
             alert('성공적으로 저장 되었습니다.');
             fetchReportByStudykey(currentStudyKey);
         })
@@ -436,7 +405,6 @@ function updateSecondReport(reportData) {
             return response.json();
         })
         .then(data => {
-            console.log('업데이트 성공:', data);
             alert('성공적으로 저장 되었습니다.');
             fetchReportByStudykey(currentStudyKey);
         })
@@ -463,7 +431,6 @@ function updateReport(reportData) {
             return response.json();
         })
         .then(data => {
-            console.log('업데이트 성공:', data);
             alert('성공적으로 업데이트 되었습니다.');
             fetchReportByStudykey(currentStudyKey);
         })
@@ -490,7 +457,6 @@ function saveReport(reportData) {
             return response.json();
         })
         .then(data => {
-            console.log('저장 성공:', data);
             alert('성공적으로 저장되었습니다.');
             fetchReportByStudykey(currentStudyKey);
         })
