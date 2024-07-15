@@ -543,7 +543,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const toolGroupBtn = document.getElementById('toolGroupBtn');
     const toolGroup = document.getElementById('tools-group');
-    const toolButtons = annotationGroup.querySelectorAll('.tools');
+    const toolButtons = toolGroup.querySelectorAll('.tools');
 
     annotationBtn.addEventListener('click', function () {
         if (annotationGroup.style.display === 'none' || annotationGroup.style.display === '') {
@@ -551,6 +551,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const rect = annotationBtn.getBoundingClientRect();
             annotationGroup.style.top = `${rect.bottom}px`;
             annotationGroup.style.left = `${rect.left}px`;
+
+            if(toolGroup.style.display === 'flex') {
+                toolGroup.style.display = 'none';
+            }
         } else {
             annotationGroup.style.display = 'none';
         }
@@ -562,6 +566,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const rect = toolGroupBtn.getBoundingClientRect();
             toolGroup.style.top = `${rect.bottom}px`;
             toolGroup.style.left = `${rect.left}px`;
+
+            if(annotationGroup.style.display === 'flex') {
+                annotationGroup.style.display = 'none';
+            }
+
         } else {
             toolGroup.style.display = 'none';
         }
