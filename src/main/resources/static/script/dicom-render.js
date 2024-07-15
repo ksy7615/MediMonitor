@@ -38,6 +38,7 @@ content.oncontextmenu = (e) => e.preventDefault();
 const paths = window.location.pathname;
 const pathParts = paths.split('/');
 const studyKey = pathParts[2];
+const studyDate = pathParts[3];
 
 let viewports = [];
 const seriesImages = {};
@@ -349,11 +350,10 @@ async function fetchSeriesImages(seriesKey) {
         console.log(list);
         const files = list.fileList;
 
-        files.forEach((base64, index) => {
+        files.forEach((base64) => {
             const binaryString = atob(base64);
             const arrayBuffer = Uint8Array.from(binaryString, c => c.charCodeAt(0));
-            const blob = new Blob([arrayBuffer], {type: 'application/dicom'});
-            const imageId = cornerstoneDICOMImageLoader.wadouri.fileManager.add(blob, `image-${seriesKey}-${index}`);
+            const imageId = `dicomweb:${URL.createObjectURL(new Blob([arrayBuffer], {type: 'application/dicom'}))}`;
             imageIds.push(imageId);
         });
 
@@ -591,8 +591,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-
 document.getElementById('Zoom-tool-btn').addEventListener('click', () => {
     tools.activateTool(ZoomTool, toolGroupId);
 });
@@ -658,12 +656,22 @@ document.getElementById('StackScroll-tool-btn').addEventListener('click', () => 
 });
 
 document.getElementById('Playclip-tool-btn').addEventListener('click', () => {
-    tools.play(selectedViewport); // 스피드 조절 가능
-})
+    const fpsSliderContainer = document.getElementById('fps-slider-container');
+    fpsSliderContainer.style.display = fpsSliderContainer.style.display === 'none' ? 'block' : 'none';
+});
 
-document.getElementById('StopPlayclip-tool-btn').addEventListener('click', () =>{
+document.getElementById('StartPlayclip-tool-btn').addEventListener('click', () => {
+    const fps = document.getElementById('fps-slider').value;
+    tools.play(selectedViewport, fps);
+});
+
+document.getElementById('fps-slider').addEventListener('input', (event) => {
+    document.getElementById('fps-value').innerText = event.target.value;
+});
+
+document.getElementById('StopPlayclip-tool-btn').addEventListener('click', () => {
     tools.stop(selectedViewport);
-})
+});
 
 const invertButton = document.getElementById('Invert-tool-btn');
 let invertCheck;
@@ -827,7 +835,7 @@ document.getElementById('HeghtFlip-tool-btn').addEventListener('click' , () => {
     }
 });
 
-document.getElementById('Rest-tool-btn').addEventListener('click', () => {
+document.getElementById('Reset-tool-btn').addEventListener('click', () => {
     if (selectedViewport) {
         const viewportId = `CT_AXIAL_STACK-${selectedViewport.id}`;
         const viewport = renderingEngine.getViewport(viewportId);
@@ -839,5 +847,44 @@ document.getElementById('Rest-tool-btn').addEventListener('click', () => {
             viewport.render();
 
         }
+    }
+});
+
+document.getElementById('WorkList-tool-btn').addEventListener('click', () => {
+    const url = `/main`;
+    window.location.href = url;
+});
+
+document.getElementById('Previous-tool-btn').addEventListener('click', async () => {
+    const previousEndPoint = `/api/study/previousDate/${studyDate}/${studyKey}`;
+    const response = await fetch(previousEndPoint, { method: 'POST' });
+    const data = await response.json();
+
+    if (response.ok) {
+        if (data && data.studyKey && data.studyDate) {
+            const url = `/detail/${encodeURIComponent(data.studyKey)}/${encodeURIComponent(data.studyDate)}`;
+            window.location.href = url;
+        } else if (data && data.message) {
+            alert(data.message);
+        }
+    } else {
+        alert('서버에 문제가 발생했습니다.');
+    }
+});
+
+document.getElementById('Next-tool-btn').addEventListener('click', async () => {
+    const nextEndPoint = `/api/study/nextDate/${studyDate}/${studyKey}`;
+    const response = await fetch(nextEndPoint, { method: 'POST' });
+    const data = await response.json();
+
+    if (response.ok) {
+        if (data && data.studyKey && data.studyDate) {
+            const url = `/detail/${encodeURIComponent(data.studyKey)}/${encodeURIComponent(data.studyDate)}`;
+            window.location.href = url;
+        } else if (data && data.message) {
+            alert(data.message);
+        }
+    } else {
+        alert('서버에 문제가 발생했습니다.');
     }
 });

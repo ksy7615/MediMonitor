@@ -74,14 +74,22 @@
         </button>
 
         <!-- 플레이 클립 수정필요 -->
-        <button class="tool" id="Playclip-tool-btn">
-            <img id="playclip" src="${pageContext.request.contextPath}/style/image/tool/playclip.png">
-            <span>플레이</span>
-        </button>
-        <button class="tool" id="StopPlayclip-tool-btn">
-            <img id="stopPlayclip" src="${pageContext.request.contextPath}/style/image/tool/stopPlayclip.png">
-            <span>정지</span>
-        </button>
+        <div class="tool-container">
+            <button class="tool" id="Playclip-tool-btn">
+                <img id="playclip" src="${pageContext.request.contextPath}/style/image/tool/playclip.png">
+                <span>플레이</span>
+            </button>
+            <div id="fps-slider-container" style="display: none;">
+                <div class="fps-controls">
+                    <label for="fps-slider">FPS: <span id="fps-value">10</span></label>
+                </div>
+                <input type="range" id="fps-slider" min="1" max="100" value="10">
+                <div class="button-controls">
+                    <button class="tool" id="StartPlayclip-tool-btn">시작</button>
+                    <button class="tool" id="StopPlayclip-tool-btn">정지</button>
+                </div>
+            </div>
+        </div>
 
         <!-- 여기서 부터 도구툴 -->
         <button class="tool" id="toolGroupBtn">

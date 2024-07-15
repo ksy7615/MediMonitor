@@ -137,10 +137,10 @@ const activateTool = (toolName, toolGroupId) => {
     }
 }
 
-const play = (selectedViewport) => {
+const play = (selectedViewport , fpsValue) => {
     if(selectedViewport){
         utilities.cine.playClip(selectedViewport,{
-            framesPerSecond: 24,
+            framesPerSecond: fpsValue,
             loop: true
         })
     }
