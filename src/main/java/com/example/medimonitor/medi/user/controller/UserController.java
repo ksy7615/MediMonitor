@@ -1,27 +1,20 @@
 package com.example.medimonitor.medi.user.controller;
 
-import com.example.medimonitor.medi.user.domain.User;
 import com.example.medimonitor.medi.user.dto.UserRequestDto;
 import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import com.example.medimonitor.medi.user.domain.UserService;
 import com.example.medimonitor.notifications.service.NotificationService;
 import com.example.medimonitor.util.Response;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller

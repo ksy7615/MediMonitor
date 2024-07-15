@@ -29,7 +29,6 @@
         <c:forEach var="user" items="${users}">
             <div class="card">
                 <div class="card-header">
-                        <%--<img src="${pageContext.request.contextPath}/images/default-avatar.png" alt="User Avatar">--%>
                     <div>${user.name}</div>
                 </div>
                 <div class="card-body">

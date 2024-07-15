@@ -59,8 +59,6 @@ public class NotificationService {
                 notificationRepository.deleteById(username);
                 emitter.completeWithError(e);
             }
-        } else {
-            System.err.println("No SSE emitter found for " + username); // 로그 추가
         }
         saveNotification(username, data, comment, "sse");
     }
@@ -75,14 +73,10 @@ public class NotificationService {
                         .name(type)
                         .data(data)
                         .comment(comment));
-                System.out.println("SSE message sent to " + username + ": " + data); // 로그 추가
             } catch (IOException e) {
                 notificationRepository.deleteById(username);
                 emitter.completeWithError(e);
-                System.err.println("Failed to send event to " + username + ": " + e.getMessage());
             }
-        } else {
-            System.err.println("No SSE emitter found for " + username); // 로그 추가
         }
         saveNotification(username, data, comment, type);
     }

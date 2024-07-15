@@ -25,7 +25,6 @@ $(document).ready(() => {
         const username = $('#username').val();
         const password = $('#password').val();
 
-        // 유효성 검사
         let isValid = true;
 
         if(username === "") {
@@ -69,7 +68,6 @@ $(document).ready(() => {
 
     });
 
-    // 모달창 닫기
     $('#modalCloseBtn').click(function() {
         $('#myModal').hide();
     });

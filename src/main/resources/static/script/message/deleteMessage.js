@@ -23,7 +23,6 @@ $(document).ready(() => {
 
         $.ajax(settings).done(function (response) {
             if(response.status === 200) {
-                // localStorage.setItem('reloadPreviousPage', 'true');
                 window.history.back();
             }
         }).fail(function (response) {
@@ -32,9 +31,4 @@ $(document).ready(() => {
             }
         });
     });
-    //
-    // if (localStorage.getItem('reloadPreviousPage') === 'true') {
-    //     localStorage.removeItem('reloadPreviousPage'); // 로컬 스토리지에서 플래그 제거
-    //     location.reload(); // 페이지 새로고침
-    // }
 })

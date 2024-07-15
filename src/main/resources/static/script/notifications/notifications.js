@@ -4,12 +4,10 @@ $(document).ready(function() {
     const notificationCountElement = $("#notificationCount");
 
     if (userId) {
-        console.log(`Fetching notification count for userId: ${userId}`);
         $.ajax({
             url: "/user/notifications/count",
             method: "GET",
             success: function(data) {
-                console.log("Notification count fetched:", data);
                 if (data.count !== undefined) {
                     notificationCountElement.text(data.count);
                 } else {
@@ -34,15 +32,11 @@ $(document).ready(function() {
         };
 
         $("#sendNotificationButton").click(function() {
-            console.log("Sending notification");
             $.ajax({
                 url: `/send-message?userId=${userId}`,
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify("새로운 쪽지가 도착했습니다!"),
-                success: function() {
-                    console.log("Message sent successfully.");
-                },
                 error: function(xhr, status, error) {
                     console.error("Error sending message:", error);
                 }

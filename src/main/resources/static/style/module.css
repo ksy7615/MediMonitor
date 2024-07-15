@@ -50,7 +50,12 @@
     display: inline-block;
 }
 
-/* 메시지 알림 개수 추가 */
+
+
+
+
+
+
 .notification-badge {
     position: absolute;
     top: -10px;
@@ -101,9 +106,9 @@
     display: block;
 }
 
-/*.dropdown:hover .dropdown-content {*/
-/*    display: block;*/
-/*}*/
+
+
+
 
 #header-logo {
     display: flex;
@@ -145,7 +150,10 @@
     color: white;
 }
 
-/* Footer Styles */
+
+
+
+
 #footer-body {
     display: flex;
     flex-direction: column;

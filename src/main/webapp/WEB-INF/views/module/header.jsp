@@ -176,7 +176,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/header.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/messageModal.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/message/findUsername.js"></script>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/script/message/writeMessage.js"></script>--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/notifications/messageNotifications.js"></script>
 
 </html>

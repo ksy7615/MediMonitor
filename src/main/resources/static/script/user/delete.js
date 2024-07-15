@@ -14,7 +14,6 @@ $(document).ready(() => {
 
         const password = $('#password').val();
 
-        // 유효성 검사
         let isValid = true;
         if(password === ""){
             isValid = false;

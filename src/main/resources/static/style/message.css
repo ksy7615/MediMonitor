@@ -56,7 +56,6 @@
     padding-right: 15px;
 }
 
-/* Scrollbar Design */
 .mail-list-container::-webkit-scrollbar {
     width: 10px;
 }
@@ -136,7 +135,6 @@
     color: white;
 }
 
-/* Added Button Styles */
 .mail-button,
 .mail-write {
     position: absolute;
@@ -160,7 +158,6 @@
     background-color: #464646;
 }
 
-/* Anchor tag styles */
 .mail-button a,
 .mail-write a {
     font-size: 20px;
@@ -175,7 +172,9 @@
 }
 
 
-/* 쪽지 작성 모달 */
+
+
+
 .messageWrite-message-modal {
     display: none;
     position: fixed;
@@ -366,7 +365,9 @@ button.messageWrite-send:hover {
 
 
 
-/* modal.css */
+
+
+
 .find-user-modal {
     display: none;
     position: fixed;
@@ -456,7 +457,11 @@ button.messageWrite-send:hover {
 
 
 
-/* 쪽지함 */
+
+
+
+
+
 .mailbox-container {
     margin-top: 60px;
     display: flex;
@@ -589,7 +594,10 @@ button.messageWrite-send:hover {
 
 
 
-/* 알림 모달 */
+
+
+
+
 .notification-modal {
     display: none;
     background-color: #686868;
