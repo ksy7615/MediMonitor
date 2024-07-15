@@ -10,8 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -119,5 +120,63 @@ public class StudyService {
 
     public List<Study> findByStudykey(long studykey) {
         return studyRepository.findByStudykey(studykey);
+    }
+
+    public Map<String, Object> getPreviousDate(String studyDate, long studyKey) {
+        List<Study> previousStudies = studyRepository.findByStudydateLessThanEqualOrderByStudydateDescStudykeyDesc(studyDate);
+
+        int i = 0;
+        Study previousStudy = previousStudies.get(i);
+
+        if(previousStudies.size() > 1){
+            while (previousStudy.getStudydate().equals(studyDate)){
+                i++;
+                previousStudy = previousStudies.get(i);
+
+                if(studyKey > previousStudy.getStudykey()) {
+                    break;
+                }
+            }
+            Map<String, Object> response = new HashMap<>();
+            response.put("studyDate", previousStudy.getStudydate());
+            response.put("studyKey", previousStudy.getStudykey());
+            return response;
+
+        } else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "마지막 검사입니다.");
+            return response;
+        }
+
+
+    }
+
+    public Map<String, Object> getNextDate(String studyDate , long studyKey) {
+        List<Study> nextStudies = studyRepository.findByStudydateGreaterThanEqualOrderByStudydateAscStudykeyAsc(studyDate);
+
+        int i = 0;
+
+        Study nextStudy = nextStudies.get(0);
+
+        if(nextStudies.size() > 1){
+            while (nextStudy.getStudydate().equals(studyDate)){
+                i++;
+                nextStudy = nextStudies.get(i);
+
+                if(studyKey < nextStudy.getStudykey()) {
+                    break;
+                }
+            }
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("studyDate", nextStudy.getStudydate());
+            response.put("studyKey", nextStudy.getStudykey());
+            return response;
+        } else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "첫번째 검사입니다.");
+            return response;
+        }
+
     }
 }
