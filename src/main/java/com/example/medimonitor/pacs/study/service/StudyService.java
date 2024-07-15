@@ -41,7 +41,9 @@ public class StudyService {
     }
 
     public Page<InfoResponseDto> findStudiesWithPagination(int page, int size, String type, String value) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("studydate").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by(
+                Sort.Order.desc("studydate"),
+                Sort.Order.desc("studykey")));
         Page<Study> studies;
 
         switch (type.toLowerCase()) {
