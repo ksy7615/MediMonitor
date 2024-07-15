@@ -27,7 +27,7 @@
                     <span class="notification-badge" id="notification-badge"></span>
                 </span>
                 <div class="dropdown-content" id="message-dropdown">
-                    <a onclick="openMiniInbox()">받은 쪽지함</a>
+                    <a onclick="openMiniInbox(); markNotificationsAsReadAndClear()">받은 쪽지함</a>
                     <a onclick="openMiniSent()">보낸 쪽지함</a>
                     <a onclick="openMessageWriteModal()">쪽지 보내기</a>
                 </div>
