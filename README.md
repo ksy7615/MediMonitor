@@ -47,3 +47,43 @@
 
 
 ## DEMO
+
+#### 회원가입 (동의서)
+<img src="" width="700px">
+
+#### 로그인 실패 → 승인X
+<img src="" width="700px">
+
+#### 관리자의 승인 관리
+<img src="" width="700px">
+
+#### 관리자의 유저 삭제 관리
+<img src="" width="700px">
+
+#### 검색
+- 환자 아이디, 환자 이름, 판독상태, 검사일자, 검사장비로 세부 검색
+<img src="" width="700px">
+
+#### Previous(미리보기)
+<img src="" width="700px">
+
+#### 리포트
+- 메인화면 리포트
+<img src="https://github.com/user-attachments/assets/d28b4a03-74aa-4157-817d-97b8c19f5269" width="700px">
+
+-  상세화면 리포트
+<img src="https://github.com/user-attachments/assets/24cf08c5-e1b8-4865-8c44-325c65463e19" width="700px">
+
+- 예비판독 및 판독 성공
+<img src="https://github.com/user-attachments/assets/ee514d71-c45f-4bf6-996e-97efeba97e6b" width="400px">
+
+- 예비판독 및 판독 업데이트 성공 (기입된 판독의와 로그인 유저가 동일할 시에만 가능)
+<img src="https://github.com/user-attachments/assets/0a3700a8-20c1-4c22-9842-78e055cf43b2" width="400px">
+
+- 예비판독이 완료된 검사에 다른 유저가 예비판독 시도
+<img src="https://github.com/user-attachments/assets/4150d6ff-e18d-4e18-933a-43988c8a5e3f" width="400px">
+
+- 판독이 완료된 검사에 예비판독 시도
+<img src="https://github.com/user-attachments/assets/d89cc6a1-0483-411a-904c-ba124680ee93" width="400px">
+
+
