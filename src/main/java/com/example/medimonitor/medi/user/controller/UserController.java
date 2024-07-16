@@ -54,7 +54,6 @@ public class UserController {
     }
 
     @GetMapping("/agree")
-//    @ResponseBody
     public String agree(@RequestParam Map<String, String> params, Model model) {
         model.addAllAttributes(params);
         return "user/agree";
