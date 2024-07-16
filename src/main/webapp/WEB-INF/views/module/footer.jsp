@@ -4,35 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/module.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/footer.css">
     <title>Medimonitor</title>
 </head>
 <body id="footer-body">
 <footer class="footer">
     <div>
-        <h5>Team Members:</h5>
-        <ul>
-            <li>
-                <strong>김선영</strong><br>
+        <h5>MediMonitor Team Members</h5>
+        <div style="display: flex; justify-content: space-between;">
+            <div style="flex: 1;">
+                <strong>[김선영]</strong>
                 Git: <a href="https://github.com/ksy7615">https://github.com/ksy7615</a><br>
                 Email: sykim7615@daum.net
-            </li>
-            <li>
-                <strong>김재현</strong><br>
+            </div>
+            <div style="flex: 1;">
+                <strong>[김재현]</strong>
                 Git: <a href="https://github.com/iconew123">https://github.com/iconew123</a><br>
                 Email: iconew123@gmail.com
-            </li>
-            <li>
-                <strong>윤소원</strong><br>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <div style="flex: 1;">
+                <strong>[윤소원]</strong>
                 Git: <a href="https://github.com/yoon-wish">https://github.com/yoon-wish</a><br>
                 Email: ysw0801@naver.com
-            </li>
-            <li>
-                <strong>허채은</strong><br>
+            </div>
+            <div style="flex: 1;">
+                <strong>[허채은]</strong>
                 Git: <a href="https://github.com/c-chae-eun-n">https://github.com/c-chae-eun-n</a><br>
                 Email: ce.hue125@gmail.com
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 </footer>
 </body>

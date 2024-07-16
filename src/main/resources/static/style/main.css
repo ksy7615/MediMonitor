@@ -20,7 +20,8 @@ body {
     display: flex;
     flex-direction: column;
     padding-top: 60px;
-    height: 100vh;
+    height: 110vh;
+    margin-top: 50px;
 }
 
 .report-title {

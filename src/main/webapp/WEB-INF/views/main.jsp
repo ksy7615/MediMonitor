@@ -195,6 +195,6 @@
 </div>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/main.js"></script>
-
+<c:import url="/footer" />
 </body>
 </html>
