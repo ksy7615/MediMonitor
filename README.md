@@ -86,6 +86,12 @@
 #### 관리자의 유저 삭제 관리
 <img src="https://github.com/user-attachments/assets/8f18fe43-70bc-48e8-9022-ddc57adabf12" width="1000px">
 
+#### 마이페이지
+<img src="https://github.com/user-attachments/assets/5032304a-ea90-4fd7-975c-4b3ee354400e" width="700px">
+
+#### 상세페이지 접근기록
+<img src="https://github.com/user-attachments/assets/13b6c5b9-35c0-445e-8e00-2991edd5a568" width="700px">
+
 #### 쪽지 
 <img src="https://github.com/user-attachments/assets/b74a815e-fee9-4e66-b53e-4647cc4189d3" width="1000px">
 
@@ -132,7 +138,8 @@
 <img src="https://github.com/user-attachments/assets/18200053-ae71-44a5-923b-3977aa18541b" width="1000px">
 
 - 주석
+<img src="https://github.com/user-attachments/assets/ec313f1f-b343-4615-a0c3-d2095bbe4f1f" width="1000px">
 
-- 
+
 
 
