@@ -41,7 +41,7 @@ let selectedViewport = null;
 let thumbnailCnt = 0;
 let viewportSeriesMap = {};
 let renderingEngine;
-let toolGroupId = 'defaultToolGroup';
+let toolGroupId = 'toolGroupId';
 let metadata = {};
 
 let previousGridSize = {rows: 1, cols: 1};
@@ -109,7 +109,7 @@ gridItems.forEach(item => {
         const row = parseInt(item.getAttribute('data-row'));
         const col = parseInt(item.getAttribute('data-col'));
         createGridInContent(row, col);
-        // 그리드 하나 클릭하면 현재 그리드 개수 저장해두기 (백업을 위해)
+
         previousGridSize = {rows: row, cols: col};
 
         toggleGrid();
@@ -137,7 +137,7 @@ const createGridInContent = (maxRow, maxCol) => {
             const cell = document.createElement('div');
             cell.className = 'viewport parentDiv';
             cell.id = `viewport${cellId}`;
-            cell.style.position = 'relative'; // Ensure the parent div is positioned relatively
+            cell.style.position = 'relative';
             cell.style.border = '1px solid #ccc';
             cell.style.width = '100%';
             cell.style.height = '100%';
@@ -275,11 +275,10 @@ const fetchSeriesKeys = async () => {
 
         studyInfo = series.study;
         seriesList = series.seriesList;
-        console.log(studyInfo);
 
         return series.seriesList;
     } catch (e) {
-        console.error("Error fetching series keys:", e);
+        console.error(e);
         return [];
     }
 };
@@ -311,7 +310,7 @@ const fetchSeriesImages = async (seriesKey) => {
         seriesImages[seriesKey] = imageIds;
         return imageIds;
     } catch (e) {
-        console.error("Error fetching series images:", e);
+        console.error(e);
         return [];
     }
 };
@@ -349,7 +348,7 @@ const displaySeries = async (seriesKey, element, renderingEngineId, viewportId, 
                 updateMetadataDisplay(element, meta);
             }
         } catch (e) {
-            console.error("Error displaying series:", e);
+            console.error(e);
         }
     }
 };
@@ -384,7 +383,7 @@ const eDisplaySeries = async (seriesKey, element, renderingEngineId, viewportId,
         try {
             render(imageIds, element, renderingEngineId, viewportId, currentIndex);
         } catch (e) {
-            console.error("Error displaying series:", e);
+            console.error(e);
         }
     }
 };
@@ -395,7 +394,7 @@ const startMetadataUpdater = (viewport, element) => {
     const updateMetadata = () => {
         const imageId = viewport.getImageIds()[viewport.getCurrentImageIdIndex()];
 
-        if (imageId !== lastImageId) {  // 변경이 있을 때만 업데이트
+        if (imageId !== lastImageId) {
             lastImageId = imageId;
             const meta = metadata[imageId];
             updateMetadataDisplay(element, meta);
@@ -419,7 +418,6 @@ const render = async (imageIds, element, renderingEngineId, viewportId, currentI
         const viewport = renderingEngine.getViewport(viewportInput.viewportId);
 
         if (!viewport) {
-            console.error(`Viewport with ID ${viewportId} not found.`);
             return;
         }
 
@@ -432,7 +430,7 @@ const render = async (imageIds, element, renderingEngineId, viewportId, currentI
 
         tools.setTools([element], renderingEngine.id, toolGroupId);
     } catch (error) {
-        console.error(`Rendering error for viewport ${viewportId}:`, error);
+        console.error(error);
     }
 };
 
@@ -735,8 +733,6 @@ function handleScrollLoop(event) {
 
         viewport.setStack(imageIds, newIndex);
         viewport.render();
-    } else {
-        console.error(`Viewport with ID ${viewportId} not found.`);
     }
 }
 

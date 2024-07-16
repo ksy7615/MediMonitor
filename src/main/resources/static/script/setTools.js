@@ -26,19 +26,17 @@ const { MouseBindings } = cornerstoneTools.Enums;
 let toolGroup;
 
 const setTools = (viewports, renderingEngineId, toolGroupId) => {
-    // 툴 초기화
+
     csToolsInit();
 
     if (!toolGroup) {
-        // 툴 그룹 ID 생성 및 툴 그룹 생성 (툴 그룹은 한 번만 생성)
+
         toolGroupId = `toolGroupId`;
 
-        // 툴 그룹에 툴 추가
         cornerstoneTools.addTool(StackScrollMouseWheelTool);
         cornerstoneTools.addTool(ZoomTool);
         cornerstoneTools.addTool(WindowLevelTool);
         cornerstoneTools.addTool(PanTool);
-        // 여기서부터 주석툴
         cornerstoneTools.addTool(LengthTool);
         cornerstoneTools.addTool(HeightTool);
         cornerstoneTools.addTool(ProbeTool);
@@ -55,11 +53,8 @@ const setTools = (viewports, renderingEngineId, toolGroupId) => {
         cornerstoneTools.addTool(MagnifyTool);
         cornerstoneTools.addTool(PlanarRotateTool);
 
-        // 툴 그룹 생성
         toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
-        console.log(toolGroup);
 
-        // 툴 적용
         toolGroup.addTool(StackScrollMouseWheelTool.toolName);
         toolGroup.addTool(ZoomTool.toolName);
         toolGroup.addTool(WindowLevelTool.toolName);
@@ -80,7 +75,6 @@ const setTools = (viewports, renderingEngineId, toolGroupId) => {
         toolGroup.addTool(MagnifyTool.toolName);
         toolGroup.addTool(PlanarRotateTool.toolName);
 
-        // 툴 활성화 (기본 도구 설정)
         toolGroup.setToolActive(StackScrollMouseWheelTool.toolName, {
             bindings: [{ mouseButton: MouseBindings.Auxiliary }],
         });
@@ -90,7 +84,6 @@ const setTools = (viewports, renderingEngineId, toolGroupId) => {
         });
     }
 
-    // 모든 뷰포트에 툴 그룹 적용
     viewports.forEach(viewport => {
         const viewportId = `CT_AXIAL_STACK-${viewport.id}`;
         toolGroup.addViewport(viewportId, renderingEngineId);
@@ -99,8 +92,6 @@ const setTools = (viewports, renderingEngineId, toolGroupId) => {
 
 const activateTool = (toolName, toolGroupId) => {
     const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
-    console.log(toolGroup);
-    console.log(toolName.toolName);
     if (toolGroup) {
         const toolNames = [
             ZoomTool.toolName,
@@ -122,8 +113,7 @@ const activateTool = (toolName, toolGroupId) => {
             MagnifyTool.toolName,
             PlanarRotateTool.toolName
         ];
-        
-        // 툴제거
+
         toolNames.forEach(tool => {
             toolGroup.setToolPassive(tool, {
                 removeAllBindings : true
