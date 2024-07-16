@@ -29,14 +29,6 @@ public class ReportService {
         return reportRepository.existsByStudykeyAndPreDoctor(studykey, username);
     }
 
-//    public boolean checkIfFirstDoctorExists(String username) {
-//        return reportRepository.existsByFirstDoctor(username);
-//    }
-//
-//    public boolean checkIfSecondDoctorExists(String username) {
-//        return reportRepository.existsBySecondDoctor(username);
-//    }
-
     public String getFirstDoctorByStudykey(Long studykey) {
         return reportRepository.findFirstDoctorByStudykey(studykey);
     }

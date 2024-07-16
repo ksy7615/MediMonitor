@@ -121,7 +121,6 @@
                     </thead>
                     <tbody class="contentBody">
 
-                    <!-- Add more rows as necessary -->
 
                     </tbody>
                 </table>
