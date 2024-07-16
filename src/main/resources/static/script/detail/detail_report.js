@@ -49,8 +49,6 @@ function fetchReportByStudykey(studykey) {
 }
 
 function formatTimestamp(timestamp) {
-    console.log(timestamp);
-
     const date = new Date(timestamp);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
