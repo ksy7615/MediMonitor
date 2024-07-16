@@ -441,7 +441,7 @@ const updateMetadataDisplay = (element, meta) => {
         metadataDiv = document.createElement('div');
         metadataDiv.className = 'metadata';
         metadataDiv.style.position = 'absolute';
-        metadataDiv.style.zIndex = '10';
+        metadataDiv.style.zIndex = '1';
         metadataDiv.style.color = 'white';
         metadataDiv.style.top = '10px';
         metadataDiv.style.left = '10px';
@@ -454,7 +454,7 @@ const updateMetadataDisplay = (element, meta) => {
         metadataDivTopRight = document.createElement('div');
         metadataDivTopRight.className = 'metadata-top-right';
         metadataDivTopRight.style.position = 'absolute';
-        metadataDivTopRight.style.zIndex = '10';
+        metadataDivTopRight.style.zIndex = '1';
         metadataDivTopRight.style.color = 'white';
         metadataDivTopRight.style.top = '10px';
         metadataDivTopRight.style.right = '10px';
@@ -467,7 +467,7 @@ const updateMetadataDisplay = (element, meta) => {
         metadataDivBottomRight = document.createElement('div');
         metadataDivBottomRight.className = 'metadata-bottom-right';
         metadataDivBottomRight.style.position = 'absolute';
-        metadataDivBottomRight.style.zIndex = '10';
+        metadataDivBottomRight.style.zIndex = '1';
         metadataDivBottomRight.style.color = 'white';
         metadataDivBottomRight.style.bottom = '10px';
         metadataDivBottomRight.style.right = '10px';
