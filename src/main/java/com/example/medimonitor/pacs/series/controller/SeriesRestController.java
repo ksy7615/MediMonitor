@@ -29,10 +29,8 @@ public class SeriesRestController {
         Study study = studyService.findByStudykey(studykey).stream().findFirst().orElse(null);
         List<String> seriesKeyList = seriesService.findAllSerieskey(studykey);
 
-        // 로그 저장
         saveLog(studykey, session);
 
-        // 정보 뽑아오기 ( Study 의 정보 + 시리즈키 값만 )
         Map<String, Object> response = new HashMap<>();
         response.put("study", study);
         response.put("seriesList", seriesKeyList);
@@ -40,7 +38,6 @@ public class SeriesRestController {
         return response;
     }
 
-    // 로그 저장을 위한 메서드
     private void saveLog(long studykey, HttpSession session) {
         UserResponseDto userResponseDto = (UserResponseDto) session.getAttribute("user");
         String username = userResponseDto != null ? userResponseDto.getUsername() : null;
