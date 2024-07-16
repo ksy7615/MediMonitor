@@ -121,7 +121,7 @@
             <button class="tools" id="HeghtFlip-tool-btn">
                 <img id="widthFlip" src="${pageContext.request.contextPath}/style/image/tool/widthFlip.png">
                 <span>수평뒤집기</span>
-            </button>WidthFlip
+            </button>
             <button class="tools" id="WidthFlip-tool-btn">
                 <img id="heightFlip" src="${pageContext.request.contextPath}/style/image/tool/heightFlip.png">
                 <span>수직대칭이동</span>
