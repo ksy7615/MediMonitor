@@ -1,15 +1,11 @@
 package com.example.medimonitor.medi.user.controller;
 
-import com.example.medimonitor.medi.user.domain.User;
 import com.example.medimonitor.medi.user.dto.UserRequestDto;
 import com.example.medimonitor.medi.user.dto.UserResponseDto;
 import com.example.medimonitor.medi.user.domain.UserService;
 import com.example.medimonitor.notifications.service.NotificationService;
 import com.example.medimonitor.util.Response;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +51,12 @@ public class UserController {
 
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/agree")
+    public String agree(@RequestParam Map<String, String> params, Model model) {
+        model.addAllAttributes(params);
+        return "user/agree";
     }
 
     @PostMapping("/check/username")
@@ -112,33 +113,6 @@ public class UserController {
 
         return mv;
     }
-
-//    @GetMapping("/admin/authority")
-//    public ModelAndView adminUserAuthorityList(@RequestParam(defaultValue = "1") int page) {
-//        int offset = (page - 1) * 8;
-//        ModelAndView mv = new ModelAndView("user/admin/authorityList");
-//
-//        List<UserResponseDto> userList = userService.findByAuthorityFalse(offset);
-//        mv.addObject("users", userList);
-//
-//        int totalUsers = userService.countUsersByAuthorityFalse();
-//        int totalPages = (int) Math.ceil((double) totalUsers / 8);
-//        mv.addObject("currentPage", page);
-//        mv.addObject("totalPages", totalPages);
-//
-//        return mv;
-//    }
-
-//    @GetMapping("/admin/authority")
-//    public ModelAndView adminUserAuthorityList(@RequestParam(defaultValue = "0") int page) {
-//        Pageable pageable = PageRequest.of(page, 8); // 8 users per page
-//        Page<UserResponseDto> userPage = userService.getUsersWithAuthorityFalse(pageable);
-//
-//        ModelAndView mv = new ModelAndView("user/admin/authorityList");
-//        mv.addObject("userPage", userPage);
-//        mv.addObject("currentPage", page);
-//        return mv;
-//    }
 
     @GetMapping("/login")
     public String userLogin() { return "user/login"; }

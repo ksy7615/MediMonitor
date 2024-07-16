@@ -28,12 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const username = usernameElement.value;
-    console.log('Username:', username); // username 값이 올바르게 설정되었는지 확인
-
     function fetchLogs(username, page, size) {
         let url = `/log?page=${page}&size=${size}`;
         let fetchOptions = {
-            method: 'POST', // POST 메소드로 설정
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },

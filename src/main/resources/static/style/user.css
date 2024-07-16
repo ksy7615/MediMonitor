@@ -35,11 +35,16 @@ body {
     margin-bottom: 30px;
 }
 
-/* Autofill 스타일 재정의 */
+
+
+
+
+
+
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px #464646 inset;
     box-shadow: 0 0 0 1000px #464646 inset;
-    -webkit-text-fill-color: white; /* 텍스트 색상 */
+    -webkit-text-fill-color: white;
 }
 
 .signup-form {
@@ -434,8 +439,18 @@ select:disabled {
     font-size: 80px;
     font-style: normal;
     text-align: center;
+    color: white;
 }
-/* 모달 스타일 */
+
+
+
+
+
+
+
+
+
+
 .modal {
     display: none;
     position: fixed;
@@ -483,7 +498,7 @@ select:disabled {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center; /* 가운데 정렬 */
+    align-items: center;
     background-color: #333;
     color: white;
     box-sizing: border-box;
@@ -492,14 +507,14 @@ select:disabled {
 }
 
 .mypage-sidebar button {
-    width: 70px; /* 버튼을 동그랗게 만들기 위해 크기를 조정 */
+    width: 70px;
     height: 70px;
     padding: 10px;
     margin: 10px 0;
     background-color: #555;
     color: white;
     border: 2px solid #555;
-    border-radius: 50%; /* 동그랗게 만들기 */
+    border-radius: 50%;
     cursor: pointer;
     text-align: center;
     display: flex;
@@ -509,14 +524,14 @@ select:disabled {
 }
 
 .mypage-sidebar button img.icon-image {
-    width: 30px; /* 아이콘 크기 조정 */
+    width: 30px;
     height: 30px;
-    margin-bottom: 5px; /* 아이콘과 텍스트 사이의 간격 조정 */
-    filter: invert(100%) brightness(200%); /* 색상 반전 및 밝기 조정 */
+    margin-bottom: 5px;
+    filter: invert(100%) brightness(200%);
 }
 
 .mypage-sidebar button span {
-    font-size: 9px; /* 텍스트 크기 조정 */
+    font-size: 9px;
 }
 
 .mypage-sidebar button:hover {

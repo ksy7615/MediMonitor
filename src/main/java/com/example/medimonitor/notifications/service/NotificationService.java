@@ -25,7 +25,6 @@ public class NotificationService {
     public SseEmitter sendNotification(String username) {
         SseEmitter emitter = createEmitter(username);
 
-//        sendToClient(username, "EventStream Created. [username=" + username + "]", "sse 접속 성공");
         return emitter;
     }
 
@@ -38,10 +37,6 @@ public class NotificationService {
     }
 
     private void saveNotification(String username, Object data, String comment, String type) {
-        // 여기에 기존 Notification 엔티티 저장 로직이 있다면 추가
-        // 예: notificationRepository.save(new Notification(username, data, comment, type));
-
-        // 메모리 기반 Alert 엔티티 저장
         Alert alert = new Alert(username, data.toString(), comment, type);
         notificationRepository.saveAlert(username, alert);
     }
@@ -59,8 +54,6 @@ public class NotificationService {
                 notificationRepository.deleteById(username);
                 emitter.completeWithError(e);
             }
-        } else {
-            System.err.println("No SSE emitter found for " + username); // 로그 추가
         }
         saveNotification(username, data, comment, "sse");
     }
@@ -75,14 +68,10 @@ public class NotificationService {
                         .name(type)
                         .data(data)
                         .comment(comment));
-                System.out.println("SSE message sent to " + username + ": " + data); // 로그 추가
             } catch (IOException e) {
                 notificationRepository.deleteById(username);
                 emitter.completeWithError(e);
-                System.err.println("Failed to send event to " + username + ": " + e.getMessage());
             }
-        } else {
-            System.err.println("No SSE emitter found for " + username); // 로그 추가
         }
         saveNotification(username, data, comment, type);
     }

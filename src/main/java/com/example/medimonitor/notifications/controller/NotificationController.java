@@ -22,7 +22,6 @@ public class NotificationController {
     @GetMapping(value = "/sendNotification/{username}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
     public SseEmitter sendNotification(@PathVariable(value = "username") String username) {
-        System.out.println("SSE connection established for username: " + username); // 로그 추가
         return notificationService.sendNotification(username);
     }
 

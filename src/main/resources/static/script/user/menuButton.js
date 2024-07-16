@@ -1,34 +1,7 @@
-// document.addEventListener('DOMContentLoaded', function() {
-//     var currentPage = parseInt(document.getElementById("currentPage").value);
-//     var totalPages = parseInt(document.getElementById("totalPages").value);
-//
-//     function loadUsers(page) {
-//         window.location.href = '/admin/authority?page=' + page;
-//     }
-//
-//     document.getElementById("left").addEventListener("click", function() {
-//         if (currentPage > 0) {
-//             loadUsers(currentPage - 1);
-//         }
-//     });
-//
-//     document.getElementById("right").addEventListener("click", function() {
-//         if (currentPage < totalPages - 1) {
-//             loadUsers(currentPage + 1);
-//         }
-//     });
-//
-//     // 페이지 로드 시 초기 값 설정
-//     document.getElementById("pageCnt").textContent = (currentPage + 1) + " / " + totalPages;
-// });
-
-
-
 $("#selectAll").click(function() {
     $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
 });
 
-// Toggle dropdown menu
 function toggleDropdownMenu() {
     var dropdownMenu = document.getElementById('dropdownMenu');
     dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
@@ -65,7 +38,6 @@ function deleteBtnMenu() {
     }
 }
 
-// 선택된 사용자를 승인하는 기능
 document.getElementById('approveBtn').addEventListener('click', function() {
     let selectedUsers = [];
     $(".userCheckbox:checked").each(function() {
@@ -97,7 +69,6 @@ document.getElementById('approveBtn').addEventListener('click', function() {
     }
 });
 
-// 선택된 사용자를 거절하는 기능
 document.getElementById('rejectBtn').addEventListener('click', function() {
     let selectedUsers = [];
     $(".userCheckbox:checked").each(function() {
