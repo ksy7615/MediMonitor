@@ -123,3 +123,16 @@
 - 드래그 앤 드롭 기능
 - 스크롤 시 이미키지 별 이미지 변화
 - 더블 클릭 → 확대 → 다시 더블 클릭 → 이전 상태
+
+#### 툴바
+- 윈도우 레벨, 흑백반전, 이동, 스크롤루프, 플레이
+<img src="https://github.com/user-attachments/assets/49b2707f-7c24-4ca5-b3ba-93766c080447" width="1000px">
+
+- 도구
+<img src="https://github.com/user-attachments/assets/18200053-ae71-44a5-923b-3977aa18541b" width="1000px">
+
+- 주석
+
+- 
+
+
