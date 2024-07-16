@@ -271,7 +271,15 @@ $(document).ready(() => {
 
             $.ajax(settings).done(function (response) {
                 if(response.status === 200) {
-                    location.href = "/agree";
+                    const params = new URLSearchParams({
+                        name: name,
+                        phone: phone,
+                        birth: birth,
+                        department: department,
+                        address: address,
+                        position: position
+                    }).toString();
+                    location.href = "/agree?" + params;
                 }
             }).fail(function (response) {
                 if(response.status === 400) {

@@ -12,21 +12,21 @@
         <table>
             <tr>
                 <th>성명</th>
-                <td><input type="text" name="name" id="name"></td>
+                <td><input type="text" name="name" id="name" value="${name}" readonly></td>
                 <th>연락처</th>
-                <td><input type="text" name="phone" id="phone"></td>
+                <td><input type="text" name="phone" id="phone" value="${phone}" readonly></td>
             </tr>
             <tr>
                 <th>생년월일</th>
-                <td><input type="text" name="birth" id="birth"></td>
+                <td><input type="text" name="birth" id="birth" value="${birth}" readonly></td>
                 <th>소속기관 및 부서</th>
-                <td><input type="text" name="department" id="department"></td>
+                <td><input type="text" name="department" id="department" value="${department}" readonly></td>
             </tr>
             <tr>
                 <th>주소</th>
-                <td><input type="text" name="address" id="address"></td>
+                <td><input type="text" name="address" id="address" value="${address}" readonly></td>
                 <th>직책</th>
-                <td><input type="text" name="position" id="position"></td>
+                <td><input type="text" name="position" id="position" value="${position}" readonly></td>
             </tr>
             <tr>
                 <th>영상정보 열람·제공하는 자</th>

@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -52,7 +54,9 @@ public class UserController {
     }
 
     @GetMapping("/agree")
-    public String agree() {
+//    @ResponseBody
+    public String agree(@RequestParam Map<String, String> params, Model model) {
+        model.addAllAttributes(params);
         return "user/agree";
     }
 
