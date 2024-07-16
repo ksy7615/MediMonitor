@@ -7,16 +7,13 @@ public class SeriesId implements Serializable {
     private long studykey;
     private long serieskey;
 
-    // Default constructor
     public SeriesId() {}
 
-    // Parameterized constructor
     public SeriesId(long studykey, long serieskey) {
         this.studykey = studykey;
         this.serieskey = serieskey;
     }
 
-    // Getters and setters
     public long getStudykey() {
         return studykey;
     }

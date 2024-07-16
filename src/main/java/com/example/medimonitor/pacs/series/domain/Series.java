@@ -17,7 +17,7 @@ public class Series {
     @Id
     private long serieskey;
     private String modality;
-    private String seriesdesc;      // A-4
+    private String seriesdesc;
     private String protocolname;
     private long imagecnt;
     private String seriestime;
