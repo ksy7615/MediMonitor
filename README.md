@@ -75,7 +75,7 @@
 ## 📹DEMO
 
 #### 회원가입 (동의서)
-<img src="https://github.com/user-attachments/assets/281dd0f4-4919-4f7d-96fb-620d34f53abe" width="1000px">
+<img src="https://github.com/user-attachments/assets/1e3fcc11-d5b5-464b-a78d-72db83903c33" width="1000px">
 
 #### 로그인 실패 → 승인X
 <img src="https://github.com/user-attachments/assets/cadfae7e-0e8c-4971-b90a-cc47a373a40d" width="1000px">
@@ -84,11 +84,14 @@
 <img src="https://github.com/user-attachments/assets/e87522b3-b35d-4e06-83b5-597e1de7db54" width="1000px">
 
 #### 관리자의 유저 삭제 관리
-<img src="" width="700px">
+<img src="https://github.com/user-attachments/assets/8f18fe43-70bc-48e8-9022-ddc57adabf12" width="1000px">
+
+#### 쪽지 
+<img src="" width="1000px">
 
 #### 검색
 - 환자 아이디, 환자 이름, 판독상태, 검사일자, 검사장비로 세부 검색
-<img src="" width="700px">
+<img src="https://github.com/user-attachments/assets/5cdb2797-0d82-4a6a-a936-cd70cb5611eb" width="1000px">
 
 #### Previous(미리보기)
 <img src="https://github.com/user-attachments/assets/bb545ecb-ffaa-4a1c-a5dd-6eeba6c7f3a4" width="700px">
@@ -112,5 +115,4 @@
 
 - 판독이 완료된 검사에 예비판독 시도
 <img src="https://github.com/user-attachments/assets/d89cc6a1-0483-411a-904c-ba124680ee93" width="400px">
-
 
