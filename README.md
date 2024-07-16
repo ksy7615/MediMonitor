@@ -87,7 +87,7 @@
 <img src="https://github.com/user-attachments/assets/8f18fe43-70bc-48e8-9022-ddc57adabf12" width="1000px">
 
 #### 쪽지 
-<img src="" width="1000px">
+<img src="https://github.com/user-attachments/assets/b74a815e-fee9-4e66-b53e-4647cc4189d3" width="1000px">
 
 #### 검색
 - 환자 아이디, 환자 이름, 판독상태, 검사일자, 검사장비로 세부 검색
@@ -103,6 +103,7 @@
 
 -  상세화면 리포트
 <img src="https://github.com/user-attachments/assets/24cf08c5-e1b8-4865-8c44-325c65463e19" width="700px">
+<img src="https://github.com/user-attachments/assets/46b5b5d6-c2b7-4103-a68f-d893efc5a842" width="1000px">
 
 - 예비판독 및 판독 성공
 <img src="https://github.com/user-attachments/assets/ee514d71-c45f-4bf6-996e-97efeba97e6b" width="400px">
@@ -116,3 +117,9 @@
 - 판독이 완료된 검사에 예비판독 시도
 <img src="https://github.com/user-attachments/assets/d89cc6a1-0483-411a-904c-ba124680ee93" width="400px">
 
+#### Thumbnail (썸네일)
+<img src="https://github.com/user-attachments/assets/1e948bf6-58f8-42b9-9ab7-af80e509167e" width="1000px">
+
+- 드래그 앤 드롭 기능
+- 스크롤 시 이미키지 별 이미지 변화
+- 더블 클릭 → 확대 → 다시 더블 클릭 → 이전 상태
