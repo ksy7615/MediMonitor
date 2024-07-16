@@ -132,7 +132,13 @@
 - 더블 클릭 → 확대 → 다시 더블 클릭 → 이전 상태
 
 #### 툴바
-- 이전, 다음, 윈도우 레벨, 흑백반전, 이동, 스크롤루프, 플레이 클립
+- 다음
+<img src="https://github.com/user-attachments/assets/69f7d375-6bf0-4248-951d-37e959e43cac" width="1000px">
+
+- 이전
+<img src="https://github.com/user-attachments/assets/866f15d4-28c7-4388-a513-423b503098da" width="1000px">
+
+- 윈도우 레벨, 흑백반전, 이동, 스크롤루프, 플레이 클립
 <img src="https://github.com/user-attachments/assets/49b2707f-7c24-4ca5-b3ba-93766c080447" width="1000px">
 
 - 도구
