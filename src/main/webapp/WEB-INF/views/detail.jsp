@@ -118,11 +118,11 @@
                 <img id="leftRotate" src="${pageContext.request.contextPath}/style/image/tool/leftRotate.png">
                 <span>왼쪽회전</span>
             </button>
-            <button class="tools" id="WidthFlip-tool-btn">
+            <button class="tools" id="HeghtFlip-tool-btn">
                 <img id="widthFlip" src="${pageContext.request.contextPath}/style/image/tool/widthFlip.png">
                 <span>수평뒤집기</span>
-            </button>
-            <button class="tools" id="HeghtFlip-tool-btn">
+            </button>WidthFlip
+            <button class="tools" id="WidthFlip-tool-btn">
                 <img id="heightFlip" src="${pageContext.request.contextPath}/style/image/tool/heightFlip.png">
                 <span>수직대칭이동</span>
             </button>
@@ -172,7 +172,7 @@
 
             <button class="tools" id="Angle-tool-btn">
                 <img id="angle" src="${pageContext.request.contextPath}/style/image/tool/angle.png">
-                <span>자율그리기</span>
+                <span>앵글그리기</span>
             </button>
 
             <button class="tools" id="CobbAngle-tool-btn">
@@ -187,7 +187,7 @@
 
             <button class="tools" id="PlanarFreehandROI-tool-btn">
                 <img id="planarFreehand" src="${pageContext.request.contextPath}/style/image/tool/planarFreehand.png">
-                <span>그리기</span>
+                <span>자율그리기</span>
             </button>
 
             <button class="tools" id="Eraser-tool-btn">
@@ -199,7 +199,7 @@
         <!-- 리셋 -->
         <button class="tools" id="Reset-tool-btn">
             <img id="reset" src="${pageContext.request.contextPath}/style/image/tool/reset.png">
-            <span>전부삭제</span>
+            <span>초기화</span>
         </button>
 
         <!-- 그리드 -->
