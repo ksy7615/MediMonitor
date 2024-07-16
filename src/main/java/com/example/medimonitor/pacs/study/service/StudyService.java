@@ -92,11 +92,9 @@ public class StudyService {
         return new PageImpl<>(studies.subList(start, end), pageable, studies.size());
     }
 
-    // 검색 서비스 메서드
     public Page<InfoResponseDto> searchStudies(String pid, String pname, String reportstatus, String modality, String startDate, String endDate, Pageable pageable) {
         Page<Study> studies = studyRepository.search(pid, pname, modality, startDate, endDate, pageable);
 
-        // 필터링된 결과를 리스트로 변환
         List<Study> filteredStudies = studies.getContent().stream().filter(study -> {
             Optional<Report> reportOpt = reportRepository.findFirstByStudykey(study.getStudykey());
             if (reportstatus == null || reportstatus.isEmpty()) {
@@ -106,7 +104,6 @@ public class StudyService {
                     .orElse(reportstatus.equalsIgnoreCase("notread"));
         }).collect(Collectors.toList());
 
-        // 필터링된 결과를 페이지로 변환
         Page<Study> filteredPage = new PageImpl<>(filteredStudies, pageable, studies.getTotalElements());
 
         return filteredPage.map(study -> {
