@@ -9,7 +9,7 @@ $(document).ready(() => {
             $('#name').css('border-bottom', 'none');
         }
     });
-
+    
     $('#phone').focusout(e => {
         if($('#phone').val() === ""){
             $('#error-msg-phone').show();

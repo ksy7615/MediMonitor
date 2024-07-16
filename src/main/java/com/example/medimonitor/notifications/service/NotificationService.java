@@ -25,7 +25,6 @@ public class NotificationService {
     public SseEmitter sendNotification(String username) {
         SseEmitter emitter = createEmitter(username);
 
-//        sendToClient(username, "EventStream Created. [username=" + username + "]", "sse 접속 성공");
         return emitter;
     }
 
@@ -38,10 +37,6 @@ public class NotificationService {
     }
 
     private void saveNotification(String username, Object data, String comment, String type) {
-        // 여기에 기존 Notification 엔티티 저장 로직이 있다면 추가
-        // 예: notificationRepository.save(new Notification(username, data, comment, type));
-
-        // 메모리 기반 Alert 엔티티 저장
         Alert alert = new Alert(username, data.toString(), comment, type);
         notificationRepository.saveAlert(username, alert);
     }

@@ -20,8 +20,6 @@ function formatMailDate(mailDate) {
     }
 }
 
-// modal.js
-
 function openMiniInbox() {
     $('#mini-inbox-modal').css('display', 'block');
 
@@ -35,7 +33,7 @@ function openMiniInbox() {
 
     $.ajax(settings).done(function (response) {
         const mailList = $('.inbox-mail-list');
-        mailList.empty(); // 기존 리스트 초기화
+        mailList.empty();
 
         if (response.length === 0) {
             const emptyMessage = $('<span></span>').attr('id', 'emptyMessage').text('쪽지함이 비었습니다.');
@@ -75,7 +73,7 @@ function openMiniSent() {
 
     $.ajax(settings).done(function (response) {
         const mailList = $('.sent-mail-list');
-        mailList.empty(); // 기존 리스트 초기화
+        mailList.empty();
 
         if (response.length === 0) {
             const emptyMessage = $('<span></span>').attr('id', 'emptyMessage').text('쪽지함이 비었습니다.');
@@ -103,7 +101,7 @@ function closeMiniSent() {
     $('#mini-sent-modal').css('display', 'none');
 }
 
-// 쪽지 상세보기
+
 function openDetailModal(code) {
     $('#detail-container-modal').show();
     var settings = {
@@ -119,7 +117,6 @@ function openDetailModal(code) {
             location.href = "redirect:/";
         }
         else {
-            // response 객체를 이용해 모달 내용을 업데이트
             $('#detail-title-span').text(response.title);
             $('.detail-date').text(response.formattedRegDate);
             $('#detail-content').val(response.content);
@@ -161,7 +158,6 @@ $(document).ready(() => {
             if (response.status === 200) {
                 $('#detail-container-modal').hide();
                 $('#detail-myModal').hide();
-                // window.history.back();
             }
         }).fail(function (response) {
             if (response.status === 400) {

@@ -23,10 +23,8 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 
     public int countBySender(String sender);
 
-//    @Query(nativeQuery = true, value = "SELECT * FROM message WHERE recipient=?1 ORDER BY reg_date DESC LIMIT 30 OFFSET 0")
     public List<Message> findFirst30ByRecipientOrderByRegDateDesc(String recipient);
 
-//    @Query(nativeQuery = true, value = "SELECT * FROM message WHERE sender=?1 ORDER BY reg_date DESC LIMIT 30 OFFSET 0")
     public List<Message> findFirst30BySenderOrderByRegDateDesc(String sender);
 
     @Modifying
