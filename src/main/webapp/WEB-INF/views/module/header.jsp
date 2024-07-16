@@ -45,10 +45,9 @@
             <span class="admin-text"  id="user-text">${user.name}</span>
         </div>
 
-        <input type="hidden" class="username"  id="username" value="${user.username}"> <!-- 사용자 ID를 data 속성에 포함 -->
+        <input type="hidden" class="username"  id="username" value="${user.username}">
     </c:if>
 
-    <!-- 보낸 메일함 -->
     <div id="mini-sent-modal" class="message-modal">
         <div class="message-modal-content">
             <span class="mini-close" onclick="closeMiniSent()"><i class="fas fa-times"></i></span>
@@ -65,7 +64,6 @@
     </div>
 
 
-    <!-- 받은 메일함 -->
     <div id="mini-inbox-modal" class="message-modal">
         <div class="message-modal-content">
             <span class="mini-close" onclick="closeMiniInbox()"><i class="fas fa-times"></i></span>
@@ -81,7 +79,7 @@
         </div>
     </div>
 
-    <!-- 아이디 검색 모달 -->
+
     <div id="userModal" class="find-user-modal">
         <div class="find-user-modal-content">
             <span class="find-user-close" onclick="closeUserModal()">&times;</span>
@@ -92,7 +90,7 @@
         </div>
     </div>
 
-    <!-- 쪽지 보내기 모달 -->
+
     <div id="messageWrite-modal" class="messageWrite-message-modal">
         <div class="messageWrite-message-modal-content">
             <span class="messageWrite-close" onclick="closeMessageWriteModal()"><i class="fas fa-times"></i></span>
@@ -134,7 +132,7 @@
         </div>
     </div>
 
-    <!-- 알림 모달 -->
+
     <div id="notification-modal" class="notification-modal">
         <div class="notification-modal-content">
             <span class="notification-close" onclick="closeNotificationModal()"><i class="fas fa-times"></i></span>
@@ -143,7 +141,6 @@
     </div>
 
 
-    <!-- 쪽지 상세보기 모달 -->
     <div id="detail-container-modal" class="detail-modal">
         <div class="detail-container">
             <span class="detail-close" onclick="closeDetailModal()"><i class="fas fa-times"></i></span>
@@ -158,7 +155,7 @@
         </div>
     </div>
 
-    <!-- 삭제 확인 모달 -->
+
     <div id="detail-myModal" class="detail-modal">
         <div class="detail-modal-content">
             <p>삭제 하시겠습니까?</p>
